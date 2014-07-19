@@ -19,7 +19,7 @@ MaschineStudio.prototype.configure = function (config)
     this.addMode (MODE_TEST, new TestMode (this.model));
 
     // add Views
-    this.addView (VIEW_PLAY, new MSView ());
+    this.addView (VIEW_PLAY, new PlayViewMS ());
 
     // set active view & mode
     this.setActiveView (VIEW_PLAY);
@@ -77,7 +77,7 @@ MaschineStudio.prototype.handleEvent = function (cc, value) {
         case MaschineButton.TOP_ROW_5:
         case MaschineButton.TOP_ROW_6:
         case MaschineButton.TOP_ROW_7:
-            view.onTopRow (event, cc - MaschineButton.TOP_ROW_0);
+            view.onFirstRow (event, cc - MaschineButton.TOP_ROW_0);
             break;
 
         // Encoders

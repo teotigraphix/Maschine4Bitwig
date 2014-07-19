@@ -41,9 +41,8 @@ DeviceMode.prototype.onTopRow = function (event, index)
 
 DeviceMode.prototype.onValueKnob = function (index, value)
 {
-    println("DeviceMode.onValueKnob()" + index + ", " + value);
+    //println("DeviceMode.onValueKnob()" + index + ", " + value);
     var param = this.model.getCursorDevice ().getFXParam (index);
     param.value = this.surface.changeValue (value, param.value);
-    //println(param.value);
     this.model.getCursorDevice ().setParameter (index, param.value);
 };

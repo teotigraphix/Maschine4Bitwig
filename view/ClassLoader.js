@@ -8,6 +8,5 @@ var VIEW_SESSION   = 1;
 var VIEW_SEQUENCER = 2;
 var VIEW_DRUM      = 3;
 
-load ("View.js");
-load ("MSView.js");
-//load ("PlayView.js");
+load ("BaseMaschineView.js");
+load ("PlayViewMS.js");
