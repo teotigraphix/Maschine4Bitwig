@@ -8,7 +8,7 @@ PlayViewMS.prototype = new BaseMaschineView ();
 
 PlayViewMS.prototype.attachTo = function (surface)
 {
-    println("PlayViewMS.attachTo() " + surface);
+    //println("PlayViewMS.attachTo() " + surface);
     BaseMaschineView.prototype.attachTo.call (this, surface);
 
     this.scales = this.model.getScales ();
@@ -21,9 +21,10 @@ PlayViewMS.prototype.attachTo = function (surface)
 
 PlayViewMS.prototype.updateNoteMapping = function ()
 {
-    println("PlayViewMS.updateNoteMapping()");
+    //println("PlayViewMS.updateNoteMapping()");
     var t = this.model.getTrackBank ().getSelectedTrack ();
     this.noteMap = t != null && t.canHoldNotes ? this.scales.getNoteMatrix () : this.scales.getEmptyMatrix ();
+    //println(this.noteMap);
     // Workaround: https://github.com/git-moss/Push4Bitwig/issues/7
     scheduleTask (doObject (this, function () { this.surface.setKeyTranslationTable (this.noteMap); }), null, 100);
 };
@@ -65,8 +66,9 @@ PlayViewMS.prototype.drawGrid = function ()
     }
 };
 
-PlayViewMS.prototype.onGrid = function (note, velocity)
+PlayViewMS.prototype.onGridNote = function (note, velocity)
 {
+    //println("onGridNote() " + note + ", " + velocity);
     var t = this.model.getTrackBank ().getSelectedTrack ();
     if (t == null || !t.canHoldNotes)
         return;

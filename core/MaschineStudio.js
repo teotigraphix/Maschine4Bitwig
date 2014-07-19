@@ -2,7 +2,7 @@
 function MaschineStudio ()
 {
     ControlSurface.call (this);
-    println("MaschineStudio()");
+    //println("MaschineStudio()");
 }
 
 MaschineStudio.prototype = new ControlSurface ();
@@ -13,6 +13,8 @@ MaschineStudio.MODE_BANK_DEVICE = 0;
 MaschineStudio.prototype.configure = function (config)
 {
     ControlSurface.prototype.configure.call (this, config);
+
+    this.setDefaultMode (MODE_DEVICE);
 
     // add Modes
     this.addMode (MODE_DEVICE, new DeviceMode (this.model));
@@ -26,6 +28,14 @@ MaschineStudio.prototype.configure = function (config)
     this.setActiveMode (MODE_DEVICE);
 
     this.updateMode (MODE_DEVICE);
+};
+
+MaschineStudio.prototype.onSelectedTrackChanged = function (index, isSelected)
+{
+    //if (isSelected && this.push.isActiveMode (MODE_MASTER))
+    //    this.push.setPendingMode (MODE_TRACK);
+    if (this.isActiveView (VIEW_PLAY))
+        this.getActiveView ().updateNoteMapping ();
 };
 
 MaschineStudio.prototype.updateMode = function (mode)
@@ -51,6 +61,20 @@ MaschineStudio.prototype.updateIndication = function (mode)
 //--------------------------------------
 // Handlers
 //--------------------------------------
+
+MaschineStudio.prototype.handleMidi = function (status, data1, data2)
+{
+    //println("MaschineStudio.handleMidi()");
+
+    var channel = MIDIChannel (status);
+    if (!this.isActiveMode (channel))
+    {
+        this.setActiveMode (channel);
+        this.scheduledFlush ();
+    }
+
+    ControlSurface.prototype.handleMidi.call (this, status, data1, data2);
+};
 
 MaschineStudio.prototype.handleEvent = function (cc, value) {
 
