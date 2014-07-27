@@ -13,7 +13,8 @@ Controller.prototype.init = function ()
     var output = new MidiOutput ();
 
     // create Model, pass user mode, this seems wrong
-    var model = new Model (21);
+    var scales = new Scales(36, 52, 4, 4);
+    var model = new Model (21, scales);
 
     // array of cc numbers that are used in the
     var buttons = [
@@ -55,8 +56,14 @@ Controller.prototype.init = function ()
         MaschineButton.REC,
         MaschineButton.ERASE,
 
+        // Edit
+        MaschineButton.UNDO,
+        MaschineButton.REDO,
+
         // Navigate
         MaschineButton.JOG_WHEEL,
+        MaschineButton.LEFT_ARROW,
+        MaschineButton.RIGHT_ARROW,
         MaschineButton.ENTER
     ];
     var gridNotes = [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51];
@@ -65,7 +72,9 @@ Controller.prototype.init = function ()
     var config = new ControlSurfaceConfig (model, input, output, buttons, gridNotes);
     config.shiftButtonId = MaschineButton.SHIFT;
     config.selectButtonId = MaschineButton.SELECT;
-    //config.display = new Display (this.output);
+
+    config.pads = new Grid (output);
+    //config.display = new Display (output);
 
     this.attach (new MaschineStudio (), config);
 };

@@ -1,4 +1,8 @@
 
+var PUSH_COLOR2_WHITE = 0;
+var PUSH_COLOR_BLACK = 0;
+var PUSH_COLOR2_OCEAN_HI = 0;
+
 function PlayViewMS ()
 {
 
@@ -57,12 +61,12 @@ PlayViewMS.prototype.drawGrid = function ()
     var t = this.model.getTrackBank ().getSelectedTrack ();
     var isKeyboardEnabled = t != null && t.canHoldNotes;
     var isRecording = this.model.getTransport ().isRecording || this.model.getTrackBank ().isClipRecording ();
-    for (var i = 36; i < 100; i++)
+    for (var i = 36; i < 52; i++)
     {
-//        this.surface.pads.light (i, isKeyboardEnabled ? (this.pressedKeys[i] > 0 ?
-//            (isRecording ? PUSH_COLOR2_RED_HI : PUSH_COLOR2_GREEN_HI) :
-//            this.scales.getColor (this.noteMap, i)) : PUSH_COLOR2_BLACK);
-//        this.surface.pads.blink (i, PUSH_COLOR2_BLACK);
+        this.surface.pads.light (i, isKeyboardEnabled ? (this.pressedKeys[i] > 0 ?
+            (isRecording ? COLOR.ARM : COLOR.PLAY) :
+            this.scales.getColor (this.noteMap, i)) : COLOR.OFF);
+        //this.surface.pads.blink (i, COLOR.OFF);
     }
 };
 
@@ -78,66 +82,103 @@ PlayViewMS.prototype.onGridNote = function (note, velocity)
         if (this.noteMap[note] == this.noteMap[i])
             this.pressedKeys[i] = velocity;
     }
+    //this.drawGrid();
+    //this.surface.pads.flush ();
 };
 
 // PlayViewMS.prototype.onOctaveDown = function (event)
 // PlayViewMS.prototype.onOctaveUp = function (event)
 
+PlayViewMS.prototype.onLeftArrow = function (event)
+{
+    if (!event.isDown ())
+        return;
+
+    var sel = this.model.getTrackBank ().getSelectedTrack ();
+    var index = sel == null ? 0 : sel.index - 1;
+    if (index == -1)
+    {
+        if (!this.model.getTrackBank ().canScrollTracksUp ())
+            return;
+        this.model.getTrackBank ().scrollTracksPageUp ();
+        scheduleTask (doObject (this, this.selectTrack), [7], 75);
+        return;
+    }
+    this.selectTrack (index);
+};
+
+PlayViewMS.prototype.onRightArrow = function (event)
+{
+    if (!event.isDown ())
+        return;
+
+    var sel = this.model.getTrackBank ().getSelectedTrack ();
+    var index = sel == null ? 0 : sel.index + 1;
+    if (index == 8)
+    {
+        var tb = this.model.getTrackBank ();
+        if (!tb.canScrollTracksDown ())
+            return;
+        tb.scrollTracksPageDown ();
+        scheduleTask (doObject (this, this.selectTrack), [0], 75);
+    }
+    this.selectTrack (index);
+};
+
 PlayViewMS.prototype.scrollUp = function (event)
 {
-    if (this.surface.isShiftPressed ())
-        this.model.getApplication ().arrowKeyLeft ();
-    else
-        this.model.getApplication ().arrowKeyUp ();
+    this.model.getApplication ().arrowKeyUp ();
 };
 
 PlayViewMS.prototype.scrollDown = function (event)
 {
-    if (this.surface.isShiftPressed ())
-        this.model.getApplication ().arrowKeyRight ();
-    else
-        this.model.getApplication ().arrowKeyDown ();
+    this.model.getApplication ().arrowKeyDown ();
 };
 
 PlayViewMS.prototype.scrollLeft = function (event)
 {
-    if (this.surface.getCurrentMode () == MODE_DEVICE /*|| this.surface.getCurrentMode () == */)
-        this.model.getCursorDevice ().selectPrevious ();
-    else
-    {
-        var sel = this.model.getTrackBank ().getSelectedTrack ();
-        var index = sel == null ? 0 : sel.index - 1;
-        if (index == -1)
-        {
-            if (!this.model.getTrackBank ().canScrollTracksUp ())
-                return;
-            this.model.getTrackBank ().scrollTracksPageUp ();
-            scheduleTask (doObject (this, this.selectTrack), [7], 75);
-            return;
-        }
-        this.selectTrack (index);
-    }
+    this.model.getApplication ().arrowKeyLeft ();
+    //if (this.surface.getCurrentMode () == MODE_DEVICE /*|| this.surface.getCurrentMode () == */)
+    //    this.model.getCursorDevice ().selectPrevious ();
+    //else
+    //{
+//        var sel = this.model.getTrackBank ().getSelectedTrack ();
+//        var index = sel == null ? 0 : sel.index - 1;
+//        if (index == -1)
+//        {
+//            if (!this.model.getTrackBank ().canScrollTracksUp ())
+//                return;
+//            this.model.getTrackBank ().scrollTracksPageUp ();
+//            scheduleTask (doObject (this, this.selectTrack), [7], 75);
+//            return;
+//        }
+//        this.selectTrack (index);
+    //}
 };
 
 PlayViewMS.prototype.scrollRight = function (event)
 {
-    if (this.surface.getCurrentMode () == MODE_DEVICE /*|| this.surface.getCurrentMode () == MODE_PRESET*/)
-        this.model.getCursorDevice ().selectNext ();
-    else
-    {
-        var sel = this.model.getTrackBank ().getSelectedTrack ();
-        var index = sel == null ? 0 : sel.index + 1;
-        if (index == 8)
-        {
-            var tb = this.model.getTrackBank ();
-            if (!tb.canScrollTracksDown ())
-                return;
-            tb.scrollTracksPageDown ();
-            scheduleTask (doObject (this, this.selectTrack), [0], 75);
-        }
-        this.selectTrack (index);
-    }
+    this.model.getApplication ().arrowKeyRight ();
+    //if (this.surface.getCurrentMode () == MODE_DEVICE /*|| this.surface.getCurrentMode () == MODE_PRESET*/)
+    //    this.model.getCursorDevice ().selectNext ();
+    //else
+    //{
+//        var sel = this.model.getTrackBank ().getSelectedTrack ();
+//        var index = sel == null ? 0 : sel.index + 1;
+//        if (index == 8)
+//        {
+//            var tb = this.model.getTrackBank ();
+//            if (!tb.canScrollTracksDown ())
+//                return;
+//            tb.scrollTracksPageDown ();
+//            scheduleTask (doObject (this, this.selectTrack), [0], 75);
+//        }
+//        this.selectTrack (index);
+    //}
 };
+
+
+
 
 // PlayViewMS.prototype.onAccent = function (event)
 

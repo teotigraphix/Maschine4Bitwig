@@ -96,9 +96,9 @@ MaschineButton.ENTER = 88; // Used as Shift
 MaschineButton.JOG_WHEEL = 80;
 
 // Proxy
-MaschineButton.ARROW_LEFT = MaschineButton.GROUP_E;
-MaschineButton.ARROW_UP = MaschineButton.GROUP_B;
-MaschineButton.ARROW_DOWN = MaschineButton.GROUP_F;
-MaschineButton.ARROW_RIGHT = MaschineButton.GROUP_G;
+MaschineButton.ARROW_LEFT = MaschineButton.GROUP_F;
+MaschineButton.ARROW_UP = MaschineButton.GROUP_C;
+MaschineButton.ARROW_DOWN = MaschineButton.GROUP_G;
+MaschineButton.ARROW_RIGHT = MaschineButton.GROUP_H;
 
 MaschineButton.SHIFT = MaschineButton.ENTER;

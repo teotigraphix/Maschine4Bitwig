@@ -2,6 +2,9 @@
 function BaseMaschineView ()
 {
     BaseView.call (this);
+
+    this.tapCount = 0;
+    this.lastTap = 0;
 }
 
 BaseMaschineView.prototype = new BaseView ();
@@ -53,11 +56,17 @@ BaseMaschineView.prototype.onKnobLarge = function(increment) {}; // master
 BaseMaschineView.prototype.onTap = function (event)
 {
     // TODO fix first press, should not change tmepo
-    this.surface.setButton (MaschineButton.TAP, event.isDown () || event.isLong ()
-        ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+    this.refreshButton (MaschineButton.TAP, event);
 
-    if (event.isDown ())
+    if (!event.isLong () && event.isDown ())
+    {
         this.model.getTransport ().tapTempo ();
+    }
+};
+
+BaseMaschineView.prototype.tapDelayReset = function ()
+{
+    //scheduleTask()
 };
 
 BaseMaschineView.prototype.onStepMode = function() {};
@@ -70,8 +79,7 @@ BaseMaschineView.prototype.onNoteRepeat = function() {};
 
 BaseMaschineView.prototype.onGoupButton = function (event, index)
 {
-    this.surface.setButton (44 + index, event.isDown () || event.isLong ()
-        ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+    this.refreshButton (44 + index, event);
 
     switch (index)
     {
@@ -79,28 +87,28 @@ BaseMaschineView.prototype.onGoupButton = function (event, index)
             break;
 
         case 1:
-            this.onUp (event);
             break;
 
         case 2:
+            this.onUp (event);
             break;
 
         case 3:
             break;
 
         case 4:
-            this.onLeft (event);
             break;
 
         case 5:
-            this.onDown (event);
+            this.onLeft (event);
             break;
 
         case 6:
-            this.onRight (event);
+            this.onDown (event);
             break;
 
         case 7:
+            this.onRight (event);
             break;
     }
 };
@@ -111,10 +119,14 @@ BaseMaschineView.prototype.onGoupButton = function (event, index)
 
 BaseMaschineView.prototype.onRestart = function (event)
 {
-    this.surface.setButton (MaschineButton.RESTART, event.isDown () || event.isLong ()
-        ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+    this.refreshButton (MaschineButton.RESTART, event);
 
-    this.model.getTransport ().restart ();
+    if (this.surface.isShiftPressed ()) {
+        this.model.getTransport ().stop ();
+        this.model.getTransport ().setPosition (0);
+    }
+    else
+        this.model.getTransport ().restart ();
 }; // loop
 
 BaseMaschineView.prototype.onMetro = function (event)
@@ -131,7 +143,10 @@ BaseMaschineView.prototype.onPlay = function (event)
     if (!event.isDown ())
         return;
 
-    this.model.getTransport ().play ();
+    if (this.surface.isShiftPressed ())
+        this.model.getTransport ().toggleLoop ();
+    else
+        this.model.getTransport ().play ();
 };
 
 BaseMaschineView.prototype.onRec = function (event)
@@ -147,8 +162,7 @@ BaseMaschineView.prototype.onRec = function (event)
 
 BaseMaschineView.prototype.onErase = function (event)
 {
-    this.surface.setButton (MaschineButton.ERASE, event.isDown () || event.isLong ()
-        ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+    this.refreshButton (MaschineButton.ERASE, event);
 
     if (event.isDown ())
         this.model.getApplication ().deleteSelection ();
@@ -156,6 +170,8 @@ BaseMaschineView.prototype.onErase = function (event)
 
 BaseMaschineView.prototype.onShift = function (event)
 {
+    this.refreshButton (MaschineButton.SHIFT, event);
+
     this.surface.setButton (MaschineButton.SHIFT, event.isUp () ? MaschineButton.STATE_UP : MaschineButton.STATE_DOWN);
 };
 
@@ -184,8 +200,27 @@ BaseMaschineView.prototype.onCopy = function() {};
 BaseMaschineView.prototype.onPaste = function() {};
 BaseMaschineView.prototype.onNote = function() {};
 BaseMaschineView.prototype.onNudge = function() {};
-BaseMaschineView.prototype.onUndo = function() {}; // step undo
-BaseMaschineView.prototype.onRedo = function() {}; // step redo
+
+BaseMaschineView.prototype.onUndo = function (event) // step undo
+{
+    this.refreshButton (MaschineButton.UNDO, event);
+
+    if (!event.isDown ())
+        return;
+
+    this.model.getApplication ().undo ();
+};
+
+BaseMaschineView.prototype.onRedo = function (event) // step redo
+{
+    this.refreshButton (MaschineButton.REDO, event);
+
+    if (!event.isDown ())
+        return;
+
+    this.model.getApplication ().redo ();
+};
+
 BaseMaschineView.prototype.onQuantize = function() {}; // 50%
 BaseMaschineView.prototype.onClear = function() {}; // clr auto
 
@@ -200,13 +235,16 @@ BaseMaschineView.prototype.onJogWheel = function (event, increase)
 };
 
 // TODO BaseMaschineView.prototype.onJogWheelClick = function() {};
-// TODO BaseMaschineView.prototype.onBack = function() {}; // Shift Button overrides
-// TODO BaseMaschineView.prototype.onEnter = function() {};
+BaseMaschineView.prototype.onBack = function() {};
+// TODO BaseMaschineView.prototype.onEnter = function() {}; // Shift Button overrides
 
-//>> leftArrow
-//>> rightArrow
+BaseMaschineView.prototype.onLeftArrow = function (event) {};
+BaseMaschineView.prototype.onRightArrow = function (event) {};
 
-BaseMaschineView.prototype.onShift = function (event) {};
+BaseMaschineView.prototype.onShift = function (event)
+{
+    this.refreshButton (MaschineButton.SHIFT, event);
+};
 
 BaseMaschineView.prototype.updateButtons = function ()
 {
@@ -218,3 +256,19 @@ BaseMaschineView.prototype.updateButtons = function ()
     this.surface.setButton (MaschineButton.PLAY, t.isPlaying ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
     this.surface.setButton (MaschineButton.REC, t.isRecording ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
 };
+
+///////////////////////////////////////////////
+
+BaseMaschineView.prototype.refreshButton = function (buttonId, event)
+{
+    this.surface.setButton (buttonId, event.isDown () || event.isLong ()
+        ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+};
+
+
+
+
+
+
+
+

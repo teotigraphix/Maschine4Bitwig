@@ -69,8 +69,8 @@ MaschineStudio.prototype.handleMidi = function (status, data1, data2)
     var channel = MIDIChannel (status);
     if (!this.isActiveMode (channel))
     {
-        this.setActiveMode (channel);
-        this.scheduledFlush ();
+        //this.setActiveMode (channel);
+        //this.scheduledFlush ();
     }
 
     ControlSurface.prototype.handleMidi.call (this, status, data1, data2);
@@ -150,8 +150,28 @@ MaschineStudio.prototype.handleEvent = function (cc, value) {
             break;
 
         // Edit
+        case MaschineButton.UNDO:
+            view.onUndo (event);
+            break;
+
+        case MaschineButton.REDO:
+            view.onRedo (event);
+            break;
+
         case MaschineButton.JOG_WHEEL:
             view.onJogWheel (event, value == 1);
+            break;
+
+        case MaschineButton.BACK:
+            //view.onBack (event);
+            break;
+
+        case MaschineButton.LEFT_ARROW:
+            view.onLeftArrow (event);
+            break;
+
+        case MaschineButton.RIGHT_ARROW:
+            view.onRightArrow (event);
             break;
 
         case MaschineButton.ENTER:

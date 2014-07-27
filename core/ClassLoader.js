@@ -5,3 +5,4 @@
 load ("MaschineMidiInput.js");
 load ("MaschineButton.js");
 load ("MaschineStudio.js");
+load ("Grid.js");
