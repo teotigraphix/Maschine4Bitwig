@@ -64,16 +64,14 @@ MaschineStudio.prototype.updateIndication = function (mode)
 
 MaschineStudio.prototype.handleMidi = function (status, data1, data2)
 {
+    this.currentChannel = MIDIChannel (status);
     //println("MaschineStudio.handleMidi()");
-
-    var channel = MIDIChannel (status);
-    if (!this.isActiveMode (channel))
-    {
-        //this.setActiveMode (channel);
-        //this.scheduledFlush ();
-    }
-
     ControlSurface.prototype.handleMidi.call (this, status, data1, data2);
+};
+
+MaschineStudio.prototype.getCurrentChannel = function ()
+{
+    return this.currentChannel;
 };
 
 MaschineStudio.prototype.handleEvent = function (cc, value) {
@@ -82,7 +80,15 @@ MaschineStudio.prototype.handleEvent = function (cc, value) {
     if (view == null)
         return;
 
-    //println("handleEvent() " + cc);
+    if (!this.isActiveMode (this.currentChannel))
+    {
+        this.setActiveMode (this.currentChannel);
+        this.scheduledFlush ();
+        host.showPopupNotification("Mode changed: " + this.currentChannel);
+    }
+
+
+    println("handleEvent() " + this.currentChannel);
     var event = this.isButton(cc) ? new ButtonEvent(this.buttonStates[cc]) : null;
 
     switch (cc) {

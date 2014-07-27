@@ -38,13 +38,15 @@ TestMode.prototype.onTopRow = function (event, index) {
         case 6:
             this.surface.getActiveView ().scales.decOctave ();
             this.surface.getActiveView ().updateNoteMapping ();
-            println(this.surface.getActiveView ().scales.getOctave());
+            //println(this.surface.getActiveView ().scales.getOctave());
+            host.showPopupNotification("Current octave: " + this.surface.getActiveView ().scales.getOctave());
             break;
 
         case 7:
             this.surface.getActiveView ().scales.incOctave ();
             this.surface.getActiveView ().updateNoteMapping ();
-            println(this.surface.getActiveView ().scales.getOctave());
+            //println(this.surface.getActiveView ().scales.getOctave());
+            host.showPopupNotification("Current octave: " + this.surface.getActiveView ().scales.getOctave());
             break;
     }
 };

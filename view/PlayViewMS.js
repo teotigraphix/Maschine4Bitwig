@@ -1,8 +1,4 @@
 
-var PUSH_COLOR2_WHITE = 0;
-var PUSH_COLOR_BLACK = 0;
-var PUSH_COLOR2_OCEAN_HI = 0;
-
 function PlayViewMS ()
 {
 

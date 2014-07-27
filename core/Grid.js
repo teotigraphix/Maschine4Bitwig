@@ -3,6 +3,7 @@
 // (c) 2014
 // Licensed under GPLv3 - http://www.gnu.org/licenses/gpl.html
 
+
 function Grid (output)
 {
     this.output = output;
@@ -44,46 +45,24 @@ Grid.prototype.blinkEx = function (x, y, color)
 
 Grid.prototype.flush = function ()
 {
-    //println("Grid.flush()");
+    println("Grid.flush()");
     //println(this.currentButtonColors);
     for (var i = 36; i < 52; i++)
     {
-        //if (this.currentButtonColors[i] != this.buttonColors[i])
-        //{
+        if (this.currentButtonColors[i] != this.buttonColors[i])
+        {
             this.currentButtonColors[i] = this.buttonColors[i];
 
             var color = this.buttonColors[i];
-            //var hue = Math.floor (color.hue * 127.0 / 360.0);
-            //var saturation = Math.floor ((1 - Math.pow (1 - color.saturation, 2)) * 127.0);
-            //var brightness = Math.floor (color.brightness * 127.0);
-            //println("send " + i + ", " + hue + ", " + saturation + ", " + brightness);
+            var hue = Math.floor (color.hue * 127.0 / 360.0);
+            var saturation = Math.floor ((1 - Math.pow (1 - color.saturation, 2)) * 127.0);
+            var brightness = Math.floor (color.brightness * 127.0);
+            println("send " + i + ", " + hue + ", " + saturation + ", " + brightness);
 
-            //hue = 16;
-            //saturation = 0;
-            //brightness = 127;
-
-            //this.output.sendNote (i, 0);
-
-            //this.output.sendNoteEx (0, i, color.hue);
-            //this.output.sendNoteEx (1, i, color.saturation);
-            //this.output.sendNoteEx (2, i, color.brightness);
-
-            //sendChannelController(0, i, hue);
-            //sendChannelController(1, i, saturation);
-            //sendChannelController(2, i, brightness);
-//            scheduleTask(function (index, hue) {
-//                println("set hue");
-//                host.getMidiOutPort(0).sendMidi(0x90 | 0, index, hue);
-//            }, [i, hue], 20);
-//            scheduleTask(function (index, saturation) {
-//                host.getMidiOutPort(0).sendMidi(0x90 | 1, index, saturation);
-//            },[i,saturation], 50);
-//            scheduleTask(function (index, brightness) {
-//                host.getMidiOutPort(0).sendMidi(0x90 | 2, index, brightness);
-//            },[i,brightness], 60);
-
-            baseChanged = true;
-        //}
+            this.output.sendNoteEx (0, i, hue);
+            this.output.sendNoteEx (1, i, saturation);
+            this.output.sendNoteEx (2, i, brightness);
+        }
     }
 //    for (var i = 36; i < 100; i++)
 //    {
@@ -122,15 +101,14 @@ function Color(hue, saturation, brightness)
     this.brightness = brightness;
 };
 
-
 var COLOR =
 {
-    OCEAN : new Color(16, 56, 66),
-    OFF : new Color(0, 0, 0),
-    ON : new Color(66, 0, 127),
+    OCEAN : new Color(210.0, 1, 1.0),
+    OFF : new Color(0.0, 0.0, 0.0),
+    ON : new Color(0.0, 0.0, 0.0),
 
-    ARM : new Color(0, 10, 10),
-    PLAY : new Color(120, 127, 127)
+    ARM : new Color(0.0, 1.0, 1.0),
+    PLAY : new Color(100.0, 1.0, 1.0)
 
 //    ON : new Color(180.0, 0.0, 1.0),
 //    OFF : new Color(0.0, 0.0, 0.0), // 180.0
@@ -163,6 +141,11 @@ var COLOR =
 //    UNSELECTED_TOGGLE_BRIGHTNESS_FACTOR : 0.1
 };
 
+
 var NOTE_BLACK = COLOR.OFF;
 var NOTE_WHITE = COLOR.ON;
 var NOTE_OCEAN = COLOR.OCEAN;
+
+var PUSH_COLOR2_WHITE = COLOR.ON;
+var PUSH_COLOR_BLACK = COLOR.OFF;
+var PUSH_COLOR2_OCEAN_HI = COLOR.OCEAN;
