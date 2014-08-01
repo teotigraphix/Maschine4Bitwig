@@ -45,7 +45,7 @@ Grid.prototype.blinkEx = function (x, y, color)
 
 Grid.prototype.flush = function ()
 {
-    println("Grid.flush()");
+    //println("Grid.flush()");
     //println(this.currentButtonColors);
     for (var i = 36; i < 52; i++)
     {
@@ -57,7 +57,7 @@ Grid.prototype.flush = function ()
             var hue = Math.floor (color.hue * 127.0 / 360.0);
             var saturation = Math.floor ((1 - Math.pow (1 - color.saturation, 2)) * 127.0);
             var brightness = Math.floor (color.brightness * 127.0);
-            println("send " + i + ", " + hue + ", " + saturation + ", " + brightness);
+           // println("send " + i + ", " + hue + ", " + saturation + ", " + brightness);
 
             this.output.sendNoteEx (0, i, hue);
             this.output.sendNoteEx (1, i, saturation);

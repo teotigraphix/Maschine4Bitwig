@@ -87,8 +87,7 @@ MaschineStudio.prototype.handleEvent = function (cc, value) {
         host.showPopupNotification("Mode changed: " + this.currentChannel);
     }
 
-
-    println("handleEvent() " + this.currentChannel);
+    //println("handleEvent() " + this.currentChannel);
     var event = this.isButton(cc) ? new ButtonEvent(this.buttonStates[cc]) : null;
 
     switch (cc) {

@@ -12,7 +12,7 @@ DeviceMode.prototype.onTopRow = function (event, index)
     if (!event.isDown ())
         return;
 
-    println("DeviceMode.onTopRow()" + index);
+    //println("DeviceMode.onTopRow()" + index);
     switch (index)
     {
         case 0:
