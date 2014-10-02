@@ -7,6 +7,7 @@ loadAPI(1);
 load ("Config.js");
 load ("framework/ClassLoader.js");
 load ("maschine/ClassLoader.js");
+load ("mode/ClassLoader.js");
 load ("view/ClassLoader.js");
 load ("Controller.js");
 

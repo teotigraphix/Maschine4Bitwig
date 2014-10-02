@@ -3,17 +3,19 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-function Model (userCCStart, scales)
+function Model (userCCStart, scales, numTracks, numScenes, numSends)
 {
     this.application = new ApplicationProxy ();
     this.transport = new TransportProxy ();
     this.groove = new GrooveProxy ();
     this.masterTrack = new MasterTrackProxy ();
-    this.trackBank = new TrackBankProxy ();
-    this.effectTrackBank = new EffectTrackBankProxy ();
+    this.trackBank = new TrackBankProxy (numTracks ? numTracks : 8, numScenes ? numScenes : 8, numSends ? numSends : 6);
+    this.effectTrackBank = new EffectTrackBankProxy (numTracks ? numTracks : 8, numScenes ? numScenes : 8);
     this.userControlBank = new UserControlBankProxy (userCCStart);
     this.cursorDevice = new CursorDeviceProxy ();
-    
+    this.arranger = new ArrangerProxy ();
+    this.mixer = new MixerProxy ();
+
     this.currentTrackBank = this.trackBank;
 
     this.scales = scales;
@@ -38,7 +40,18 @@ Model.prototype.getSelectedDevice = function ()
 };
 
 /**
- * @returns {TransportProxy|
+ * @returns {ArrangerProxy}
+ */
+Model.prototype.getArranger = function () { return this.arranger; };
+
+
+/**
+ * @returns {MixerProxy}
+ */
+Model.prototype.getMixer = function () { return this.mixer; };
+
+/**
+ * @returns {TransportProxy}
  */
 Model.prototype.getTransport = function () { return this.transport; };
 
@@ -55,6 +68,11 @@ Model.prototype.getMasterTrack = function () { return this.masterTrack; };
 Model.prototype.toggleCurrentTrackBank = function ()
 {
     this.currentTrackBank = this.currentTrackBank === this.trackBank ? this.effectTrackBank : this.trackBank;
+};
+
+Model.prototype.isEffectTrackBankActive = function ()
+{
+    return this.currentTrackBank === this.effectTrackBank;
 };
 
 /**
@@ -99,4 +117,15 @@ Model.prototype.getApplication = function ()
 Model.prototype.createCursorClip = function (cols, rows)
 {
     return new CursorClipProxy (cols, rows);
+};
+
+/**
+ * Returns true if session recording is enabled, a clip is recording 
+ * or overdub is enabled.
+ */
+Model.prototype.hasRecordingState = function ()
+{
+    return this.transport.isRecording ||
+           this.transport.isLauncherOverdub ||
+           this.currentTrackBank.isClipRecording ();
 };

@@ -3,38 +3,59 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-// Experimental class, Bitwig API seems unfinished and crashy
-
 function ArrangerProxy ()
 {
-    this.arranger = host.createArranger (0 /* screenIndex ??? */);
+    this.arranger = host.createArranger ();
     
-    this.isCueMarkeVisible = false;
+    this.cueMarkersVisible = false;
     this.followsPlayback = false;
-    this.hasLargeTrackHeight = false;
+    this.largeTrackHeight = false;
 
-    this.arranger.addCueMarkerVisibilityObserver (doObject (this, ArrangerProxy.prototype.handleCueMarkerVisibility));
-    this.arranger.addPlaybackFollowObserver (doObject (this, ArrangerProxy.prototype.handlePlaybackFollow));
-    this.arranger.addTrackRowHeightObserver (doObject (this, ArrangerProxy.prototype.handleTrackRowHeight));
+    this.arranger.areCueMarkersVisible ().addValueObserver (doObject (this, ArrangerProxy.prototype.handleCueMarkerVisibility));
+    this.arranger.isPlaybackFollowEnabled ().addValueObserver (doObject (this, ArrangerProxy.prototype.handlePlaybackFollow));
+    this.arranger.hasDoubleRowTrackHeight ().addValueObserver (doObject (this, ArrangerProxy.prototype.handleTrackRowHeight));
 }
 
-//--------------------------------------
-// Bitwig Arranger API
-//--------------------------------------
+/**
+ * Gets an object that allows to show/hide the cue markers in the arranger panel.
+ * @returns {BooleanValue}
+ */
+ArrangerProxy.prototype.areCueMarkersVisible = function ()
+{
+    return this.cueMarkersVisible;
+};
 
 ArrangerProxy.prototype.toggleCueMarkerVisibility = function ()
 {
-    this.arranger.toggleCueMarkerVisibility ();
+    this.arranger.areCueMarkersVisible ().toggle ();
+};
+
+/**
+ * Gets an object that allows to enable/disable arranger playback follow.
+ * @returns {BooleanValue}
+ */
+ArrangerProxy.prototype.isPlaybackFollowEnabled = function ()
+{
+    return this.followsPlayback;
 };
 
 ArrangerProxy.prototype.togglePlaybackFollow = function ()
 {
-    this.arranger.togglePlaybackFollow ();
+    this.arranger.isPlaybackFollowEnabled ().toggle ();
+};
+
+/**
+ *Gets an object that allows to control the arranger track height.
+ * @returns {BooleanValue}
+ */
+ArrangerProxy.prototype.hasDoubleRowTrackHeight = function ()
+{
+    return this.largeTrackHeight;
 };
 
 ArrangerProxy.prototype.toggleTrackRowHeight = function ()
 {
-    this.arranger.toggleTrackRowHeight ();
+    this.arranger.hasDoubleRowTrackHeight ().toggle ();
 };
 
 //--------------------------------------
@@ -43,7 +64,7 @@ ArrangerProxy.prototype.toggleTrackRowHeight = function ()
 
 ArrangerProxy.prototype.handleCueMarkerVisibility = function (on)
 {
-    this.isCueMarkeVisible = on;
+    this.cueMarkersVisible = on;
 };
 
 ArrangerProxy.prototype.handlePlaybackFollow = function (on)
@@ -53,5 +74,5 @@ ArrangerProxy.prototype.handlePlaybackFollow = function (on)
     
 ArrangerProxy.prototype.handleTrackRowHeight = function (on)
 {
-    this.hasLargeTrackHeight = on;
+    this.largeTrackHeight = on;
 };

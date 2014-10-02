@@ -32,10 +32,10 @@ PlayViewMS.prototype.updateNoteMapping = function ()
 
 PlayViewMS.prototype.onActivate = function ()
 {
-    BaseMaschineView.prototype.onActivate.call (this);
-//    this.surface.setButton (PUSH_BUTTON_NOTE, PUSH_BUTTON_STATE_HI);
-//    this.surface.setButton (PUSH_BUTTON_SESSION, PUSH_BUTTON_STATE_ON);
-//    this.surface.setButton (PUSH_BUTTON_ACCENT, Config.accentActive ? PUSH_BUTTON_STATE_HI : PUSH_BUTTON_STATE_ON);
+    AbstractView.prototype.onActivate.call (this);
+    this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_DOWN);
+    this.surface.setButton (MaschineButton.STEP_MODE, MaschineButton.STATE_UP);
+    this.surface.setButton (MaschineButton.SCENE, MaschineButton.STATE_UP);
     this.model.getTrackBank ().setIndication (false);
     this.updateSceneButtons ();
     this.initMaxVelocity ();
@@ -54,22 +54,22 @@ PlayViewMS.prototype.usesButton = function (buttonID)
 
 PlayViewMS.prototype.drawGrid = function ()
 {
-    var t = this.model.getTrackBank ().getSelectedTrack ();
+    var t = this.model.getCurrentTrackBank ().getSelectedTrack ();
     var isKeyboardEnabled = t != null && t.canHoldNotes;
-    var isRecording = this.model.getTransport ().isRecording || this.model.getTrackBank ().isClipRecording ();
+    var isRecording = this.model.hasRecordingState ();
+    //println("PlayViewMS.drawGrid():" + isRecording);
     for (var i = 36; i < 52; i++)
     {
         this.surface.pads.light (i, isKeyboardEnabled ? (this.pressedKeys[i] > 0 ?
             (isRecording ? COLOR.ARM : COLOR.PLAY) :
-            this.scales.getColor (this.noteMap, i)) : COLOR.OFF);
-        //this.surface.pads.blink (i, COLOR.OFF);
+            this.scales.getColor (this.noteMap, i)) : COLOR.OFF, null, false);
     }
 };
 
 PlayViewMS.prototype.onGridNote = function (note, velocity)
 {
-    //println("onGridNote() " + note + ", " + velocity);
-    var t = this.model.getTrackBank ().getSelectedTrack ();
+    //println("note:" + note);
+    var t = this.model.getCurrentTrackBank ().getSelectedTrack ();
     if (t == null || !t.canHoldNotes)
         return;
     // Mark selected notes
@@ -78,8 +78,6 @@ PlayViewMS.prototype.onGridNote = function (note, velocity)
         if (this.noteMap[note] == this.noteMap[i])
             this.pressedKeys[i] = velocity;
     }
-    //this.drawGrid();
-    //this.surface.pads.flush ();
 };
 
 // PlayViewMS.prototype.onOctaveDown = function (event)

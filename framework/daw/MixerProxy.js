@@ -3,11 +3,9 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-// Experimental class, Bitwig API seems unfinished and crashy
-
 function MixerProxy ()
 {
-    this.mixer = host.createMixer ('ARRANGE', 0 /* screenIndex ??? */);
+    this.mixer = host.createMixer ();
     
     this.isClipLauncherSectionVisibile = false;
     this.isCrossFadeSectionVisibile = false;
@@ -16,46 +14,98 @@ function MixerProxy ()
     this.isMeterSectionVisibile = false;
     this.isSendsSectionVisibile = false;
 
-    this.arranger.addClipLauncherSectionVisibilityObserver (doObject (this, MixerProxy.prototype.handleClipLauncherSectionVisibility));
-    this.arranger.addCrossFadeSectionVisibilityObserver (doObject (this, MixerProxy.prototype.handleCrossFadeSectionVisibility));
-    this.arranger.addDeviceSectionVisibilityObserver (doObject (this, MixerProxy.prototype.handleDeviceSectionVisibility));
-    this.arranger.addIoSectionVisibilityObserver (doObject (this, MixerProxy.prototype.handleIoSectionVisibility));
-    this.arranger.addMeterSectionVisibilityObserver (doObject (this, MixerProxy.prototype.handleMeterSectionVisibility));
-    this.arranger.addSendsSectionVisibilityObserver (doObject (this, MixerProxy.prototype.handleSendsSectionVisibility));
+    this.mixer.isClipLauncherSectionVisible ().addValueObserver (doObject (this, MixerProxy.prototype.handleClipLauncherSectionVisibility));
+    this.mixer.isCrossFadeSectionVisible ().addValueObserver (doObject (this, MixerProxy.prototype.handleCrossFadeSectionVisibility));
+    this.mixer.isDeviceSectionVisible ().addValueObserver (doObject (this, MixerProxy.prototype.handleDeviceSectionVisibility));
+    this.mixer.isIoSectionVisible ().addValueObserver (doObject (this, MixerProxy.prototype.handleIoSectionVisibility));
+    this.mixer.isMeterSectionVisible ().addValueObserver (doObject (this, MixerProxy.prototype.handleMeterSectionVisibility));
+    this.mixer.isSendSectionVisible ().addValueObserver (doObject (this, MixerProxy.prototype.handleSendsSectionVisibility));
 }
 
-//--------------------------------------
-// Bitwig Arranger API
-//--------------------------------------
+/**
+ * Gets an object that allows to show/hide the clip launcher section of the mixer panel.
+ * @returns {BooleanValue}
+ */
+MixerProxy.prototype.isClipLauncherSectionVisible = function ()
+{
+    return this.isClipLauncherSectionVisibile;
+};
 
 MixerProxy.prototype.toggleClipLauncherSectionVisibility = function ()
 {
-    this.arranger.toggleClipLauncherSectionVisibility ();
+    this.mixer.isClipLauncherSectionVisible ().toggle ();
 };
 
+/**
+ * Gets an object that allows to show/hide the cross-fade section of the mixer panel.
+ * @returns {BooleanValue}
+ */
+MixerProxy.prototype.isCrossFadeSectionVisible = function ()
+{
+    return this.isCrossFadeSectionVisibile;
+};
+/**
+ * Toggles the visibility of the cross-fade section in the mixer panel.
+ */
 MixerProxy.prototype.toggleCrossFadeSectionVisibility = function ()
 {
-    this.arranger.toggleCrossFadeSectionVisibility ();
+    this.mixer.isCrossFadeSectionVisible ().toggle ();
+};
+
+/**
+ * Gets an object that allows to show/hide the devices section of the mixer panel.
+ * @returns {BooleanValue}
+ */
+MixerProxy.prototype.isDeviceSectionVisible = function ()
+{
+    return this.isDeviceSectionVisibile;
 };
 
 MixerProxy.prototype.toggleDeviceSectionVisibility = function ()
 {
-    this.arranger.toggleDeviceSectionVisibility ();
+    this.mixer.isDeviceSectionVisible ().toggle ();
+};
+
+/**
+ * Gets an object that allows to show/hide the io section of the mixer panel.
+ * @returns {BooleanValue}
+ */
+MixerProxy.prototype.isIoSectionVisible = function ()
+{
+    return this.isIoSectionVisibile;
 };
 
 MixerProxy.prototype.toggleIoSectionVisibility = function ()
 {
-    this.arranger.toggleIoSectionVisibility ();
+    this.mixer.isIoSectionVisible ().toggle ();
+};
+
+/**
+ * Gets an object that allows to show/hide the meter section of the mixer panel.
+ * @returns {BooleanValue}
+ */
+MixerProxy.prototype.isMeterSectionVisible = function ()
+{
+    return this.isMeterSectionVisibile;
 };
 
 MixerProxy.prototype.toggleMeterSectionVisibility = function ()
 {
-    this.arranger.toggleMeterSectionVisibility ();
+    this.mixer.isMeterSectionVisible ().toggle ();
+};
+
+/**
+ * Gets an object that allows to show/hide the sends section of the mixer panel.
+ * @returns {BooleanValue}
+ */
+MixerProxy.prototype.isSendSectionVisible = function ()
+{
+    return this.isSendsSectionVisibile;
 };
 
 MixerProxy.prototype.toggleSendsSectionVisibility = function ()
 {
-    this.arranger.toggleSendsSectionVisibility ();
+    this.mixer.isSendSectionVisible ().toggle ();
 };
 
 //--------------------------------------
@@ -69,25 +119,25 @@ MixerProxy.prototype.handleClipLauncherSectionVisibility = function (on)
 
 MixerProxy.prototype.handleCrossFadeSectionVisibility = function (on)
 {
-    this.isCueMarkeVisible = on;
+    this.isCrossFadeSectionVisibile = on;
 };
 
 MixerProxy.prototype.handleDeviceSectionVisibility = function (on)
 {
-    this.isCueMarkeVisible = on;
+    this.isDeviceSectionVisibile = on;
 };
 
 MixerProxy.prototype.handleIoSectionVisibility = function (on)
 {
-    this.isCueMarkeVisible = on;
+    this.isIoSectionVisibile = on;
 };
 
 MixerProxy.prototype.handleMeterSectionVisibility = function (on)
 {
-    this.isCueMarkeVisible = on;
+    this.isMeterSectionVisibile = on;
 };
 
 MixerProxy.prototype.handleSendsSectionVisibility = function (on)
 {
-    this.isCueMarkeVisible = on;
+    this.isSendsSectionVisibile = on;
 };

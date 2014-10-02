@@ -6,11 +6,25 @@
 function ApplicationProxy ()
 {
     this.application = host.createApplication ();
+    
+    this.panelLayout = 'ARRANGE';
+
+    this.application.addPanelLayoutObserver (doObject (this, ApplicationProxy.prototype.handlePanelLayout), 10);
 }
 
-ApplicationProxy.prototype.setPerspective = function (perspective)
+/**
+ * Switches the Bitwig Studio user interface to the panel layout with the given name.
+ *
+ * @param panelLayout {string} the name of the new panel layout
+ */
+ApplicationProxy.prototype.setPanelLayout = function (panelLayout)
 {
-    this.application.setPerspective (perspective);
+    this.application.setPanelLayout (panelLayout);
+};
+
+ApplicationProxy.prototype.getPanelLayout = function ()
+{
+    return this.panelLayout;
 };
 
 ApplicationProxy.prototype.toggleNoteEditor = function ()
@@ -26,6 +40,14 @@ ApplicationProxy.prototype.toggleAutomationEditor = function ()
 ApplicationProxy.prototype.toggleDevices = function ()
 {
     this.application.toggleDevices ();
+};
+
+/**
+ * Toggles the visibility of the inspector panel.
+ */
+ApplicationProxy.prototype.toggleInspector = function ()
+{
+    this.application.toggleInspector ();
 };
 
 ApplicationProxy.prototype.toggleMixer = function ()
@@ -57,9 +79,7 @@ ApplicationProxy.prototype.doubleClip = function ()
 
 ApplicationProxy.prototype.deleteSelection = function ()
 {
-    // Weird workaround as 'delete' is a reserved word in JS
-    var deleteFunction = this.application['delete'];
-    deleteFunction.call (this.application);
+    this.application.remove ();
 };
 
 ApplicationProxy.prototype.redo = function ()
@@ -74,7 +94,10 @@ ApplicationProxy.prototype.undo = function ()
 
 ApplicationProxy.prototype.quantize = function ()
 {
-    displayNotification ("Quantize: Function not supported (yet).");
+    // TODO Clip must already be visible in editor and the editor must be focused
+    // this.application.getAction ("focus_or_toggle_detail_editor").invoke ();
+    this.application.getAction ("Select All").invoke ();
+    this.application.getAction ("Quantize").invoke ();
 };
 
 ApplicationProxy.prototype.addEffect = function ()
@@ -82,9 +105,28 @@ ApplicationProxy.prototype.addEffect = function ()
     displayNotification ("Add Effect: Function not supported (yet).");
 };
 
-ApplicationProxy.prototype.addTrack = function ()
+/**
+ * Creates a new audio track.
+ */
+ApplicationProxy.prototype.addAudioTrack = function ()
 {
-    displayNotification ("Add Track: Function not supported (yet).");
+    this.application.createAudioTrack (-1, null);
+};
+
+/**
+ * Creates a new effect track.
+ */
+ApplicationProxy.prototype.addEffectTrack = function ()
+{
+    this.application.createEffectTrack (-1, null);
+};
+
+/**
+ * Creates a new instrument track.
+ */
+ApplicationProxy.prototype.addInstrumentTrack = function ()
+{
+    this.application.createInstrumentTrack (-1, null);
 };
 
 ApplicationProxy.prototype.arrowKeyLeft = function ()
@@ -105,4 +147,60 @@ ApplicationProxy.prototype.arrowKeyRight = function ()
 ApplicationProxy.prototype.arrowKeyDown = function ()
 {
     this.application.arrowKeyDown ();
+};
+
+//--------------------------------------
+// Actions
+//--------------------------------------
+
+/**
+ * Returns the action for the given action identifier.
+ * @see Application.getAction()
+ * @param id the action identifier string, must not be `null`
+ * @returns {Action}
+ */
+ApplicationProxy.prototype.getAction  = function (id)
+{
+    return this.application.getAction (id);
+};
+
+/**
+ * Returns a list of action categories that is used by Bitwig Studio to group actions
+ * into categories.
+ * @see Application.getActionCategories()
+ * @returns {ActionCategory[]}
+ */
+ApplicationProxy.prototype.getActionCategories  = function ()
+{
+    return this.application.getActionCategories ();
+};
+
+/**
+ * Returns the action category associated with the given identifier.
+ * @see Application.getActionCategory()
+ * @param id the category identifier string, must not be `null`
+ * @returns {ActionCategory}
+ */
+ApplicationProxy.prototype.getActionCategory   = function (id)
+{
+    return this.application.getActionCategory  (id);
+};
+
+/**
+ * Returns a list of actions that the application supports.
+ * @see Application.getActions()
+ * @returns {Action[]}
+ */
+ApplicationProxy.prototype.getActions  = function ()
+{
+    return this.application.getActions ();
+};
+
+//--------------------------------------
+// Callback Handlers
+//--------------------------------------
+
+ApplicationProxy.prototype.handlePanelLayout = function (panelLayout)
+{
+    this.panelLayout = panelLayout;
 };

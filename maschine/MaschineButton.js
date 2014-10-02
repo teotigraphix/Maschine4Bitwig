@@ -47,7 +47,7 @@ MaschineButton.GRP = 35;
 MaschineButton.SND = 36;
 MaschineButton.CUE = 37;
 
-MaschineButton.KNOB_LARGE = 38; // 0(to left), 1(to right)
+MaschineButton.ENCODER_LARGE = 38; // 0(to left), 1(to right)
 
 MaschineButton.TAP = 40;
 MaschineButton.STEP_MODE = 41;

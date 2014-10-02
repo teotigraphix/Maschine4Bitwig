@@ -1,4 +1,4 @@
-// Written by Jürgen Moßgraber - mossgrabers.de
+// Written by Jï¿½rgen Moï¿½graber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -85,7 +85,7 @@ AbstractControlSurface.prototype.flush = function ()
         }), null, 70);
     }
     this.redrawGrid ();
-}
+};
 
 AbstractControlSurface.prototype.redrawGrid = function ()
 {
@@ -148,6 +148,11 @@ AbstractControlSurface.prototype.setActiveView = function (viewId)
 
 AbstractControlSurface.prototype.updateButtons = function () {};
 
+AbstractControlSurface.prototype.getView = function (viewId)
+{
+    return this.views[viewId];
+};
+
 AbstractControlSurface.prototype.getActiveView = function ()
 {
     if (this.activeViewId < 0)
@@ -180,8 +185,6 @@ AbstractControlSurface.prototype.addModeListener = function (listener)
 AbstractControlSurface.prototype.setDefaultMode = function (mode)
 {
     this.defaultMode = mode;
-    if (this.currentMode == null)
-        this.currentMode = this.defaultMode;
     if (this.previousMode == null)
         this.previousMode = this.defaultMode;
 };
@@ -240,7 +243,7 @@ AbstractControlSurface.prototype.isActiveMode = function (modeId)
 
 AbstractControlSurface.prototype.getMode = function (modeId)
 {
-    return this.modes[modeId];
+    return this.modes[modeId] ? this.modes[modeId] : this.modes[this.defaultMode];
 };
 
 //--------------------------------------
@@ -259,7 +262,14 @@ AbstractControlSurface.prototype.isShiftPressed = function ()
 
 AbstractControlSurface.prototype.isPressed = function (button)
 {
-    return this.buttonStates[button] != ButtonEvent.UP;
+    switch (this.buttonStates[button])
+    {
+        case ButtonEvent.DOWN:
+        case ButtonEvent.LONG:
+            return true;
+        default:
+            return false;
+    }
 };
 
 //--------------------------------------
@@ -277,6 +287,13 @@ AbstractControlSurface.prototype.handleMidi = function (status, data1, data2)
                 this.handleGridNote (data1, code == 0x80 ? 0 : data2);
             else
                 this.handleTouch (data1, code == 0x80 ? 0 : data2);
+            break;
+
+        // Polyphonic Aftertouch
+        case 0xA0:
+            var view = this.getActiveView ();
+            if (view != null)
+                view.onPolyAftertouch (data1, data2);
             break;
 
         case 0xB0:
@@ -341,7 +358,7 @@ AbstractControlSurface.prototype.isButton = function (cc)
 AbstractControlSurface.prototype.setButtonConsumed = function (buttonID)
 {
     this.buttonConsumed[buttonID] = true;
-}
+};
 
 AbstractControlSurface.prototype.checkButtonState = function (buttonID)
 {

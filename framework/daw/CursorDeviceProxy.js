@@ -5,6 +5,8 @@
 
 function CursorDeviceProxy ()
 {
+    this.canSelectPrevious = false;
+    this.canSelectNext = false;
     this.hasNextParamPage = false;
     this.hasPreviousParamPage = false;
 
@@ -19,11 +21,12 @@ function CursorDeviceProxy ()
     };
 
     this.isMacroMappings = initArray(false, 8);
-
-    this.cursorDevice = host.createCursorDevice ();
+    this.cursorDevice = host.createEditorDeviceSelection (true);
 
     this.cursorDevice.addIsEnabledObserver (doObject (this, CursorDeviceProxy.prototype.handleIsEnabled));
     this.cursorDevice.addNameObserver (34, 'None', doObject (this, CursorDeviceProxy.prototype.handleName));
+    this.cursorDevice.addCanSelectPreviousObserver (doObject (this, CursorDeviceProxy.prototype.handleCanSelectPrevious));
+    this.cursorDevice.addCanSelectNextObserver (doObject (this, CursorDeviceProxy.prototype.handleCanSelectNext));
     this.cursorDevice.addPreviousParameterPageEnabledObserver (doObject (this, CursorDeviceProxy.prototype.handlePreviousParameterPageEnabled));
     this.cursorDevice.addNextParameterPageEnabledObserver (doObject (this, CursorDeviceProxy.prototype.handleNextParameterPageEnabled));
     this.cursorDevice.addSelectedPageObserver (-1, doObject (this, CursorDeviceProxy.prototype.handleSelectedPage));
@@ -109,12 +112,12 @@ CursorDeviceProxy.prototype.getEnvelopeParameter = function (index)
 
 CursorDeviceProxy.prototype.getMacro = function (index)
 {
-    return this.cursorDevice.getMacro (index)
+    return this.cursorDevice.getMacro (index);
 };
 
 CursorDeviceProxy.prototype.getModulationSource = function (index)
 {
-    return this.cursorDevice.getModulationSource (index)
+    return this.cursorDevice.getModulationSource (index);
 };
 
 CursorDeviceProxy.prototype.getParameter = function (indexInPage)
@@ -154,12 +157,12 @@ CursorDeviceProxy.prototype.getCurrentPreset = function ()
 
 CursorDeviceProxy.prototype.setPresetCategory = function (index)
 {
-    return this.cursorDevice.setPresetCategory (index)
+    return this.cursorDevice.setPresetCategory (index);
 };
 
 CursorDeviceProxy.prototype.setPresetCreator = function (index)
 {
-    return this.cursorDevice.setPresetCreator (index)
+    return this.cursorDevice.setPresetCreator (index);
 };
 
 CursorDeviceProxy.prototype.switchToNextPreset = function ()
@@ -225,18 +228,24 @@ CursorDeviceProxy.prototype.getFXParam = function (index)
     return this.fxparams[index];
 };
 
+CursorDeviceProxy.prototype.canSelectPreviousFX = function ()
+{
+    return this.canSelectPrevious;
+};
+
+CursorDeviceProxy.prototype.canSelectNextFX = function ()
+{
+    return this.canSelectNext;
+};
+
 CursorDeviceProxy.prototype.hasPreviousParameterPage = function ()
 {
-    // TODO When working this.hasPreviousParamPage is correctly updated replace
-    // return this.hasPreviousParamPage;
-    return this.selectedParameterPage > 0;
+    return this.hasPreviousParamPage;
 };
 
 CursorDeviceProxy.prototype.hasNextParameterPage = function ()
 {
-    // TODO When working this.hasNextParamPage is correctly updated replace
-    // return this.hasNextParamPage;
-    return true;
+    return this.hasNextParamPage;
 };
 
 CursorDeviceProxy.prototype.getSelectedParameterPageName = function ()
@@ -259,7 +268,7 @@ CursorDeviceProxy.prototype.createFXParams = function (count)
             index: i,
             name: '',
             valueStr: '',
-            value: 0,
+            value: 0
         });
     }
     return fxparams;
@@ -277,6 +286,20 @@ CursorDeviceProxy.prototype.handleIsEnabled = function (isEnabled)
 CursorDeviceProxy.prototype.handleName = function (name)
 {
     this.selectedDevice.name = name;
+};
+
+CursorDeviceProxy.prototype.handleCanSelectPrevious = function (isEnabled)
+{
+    // TODO Never called
+    println ("CanSelectPrevious: " + isEnabled);
+    this.canSelectPrevious = isEnabled;
+};
+
+CursorDeviceProxy.prototype.handleCanSelectNext = function (isEnabled)
+{
+    // TODO Never called
+    println ("CanSelectNext:" + isEnabled);
+    this.canSelectNext = isEnabled;
 };
 
 CursorDeviceProxy.prototype.handlePreviousParameterPageEnabled = function (isEnabled)

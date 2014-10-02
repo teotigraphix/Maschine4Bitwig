@@ -2,13 +2,27 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-MaschineStudio.VIEW_PLAY = 0;
+MaschineStudio.VIEW_PLAY      = 0;
+MaschineStudio.VIEW_DRUM      = 1;
+MaschineStudio.VIEW_SEQUENCER = 2;
+MaschineStudio.VIEW_SESSION   = 3;
+
 MaschineStudio.MODE_BANK_DEVICE = 0;
 
-function MaschineStudio (output, input, buttons)
+function MaschineStudio (output, input)
 {
     // array of cc numbers that are used in the
     var buttons = [
+        MaschineButton.CHANNEL,
+        MaschineButton.PLUGIN,
+        MaschineButton.ARRANGE,
+        MaschineButton.MIX,
+        MaschineButton.BROWSE,
+        MaschineButton.SAMPLING,
+
+        MaschineButton.ALL,
+        MaschineButton.AUTO,
+
         MaschineButton.TOP_ROW_0,
         MaschineButton.TOP_ROW_1,
         MaschineButton.TOP_ROW_2,
@@ -17,8 +31,6 @@ function MaschineStudio (output, input, buttons)
         MaschineButton.TOP_ROW_5,
         MaschineButton.TOP_ROW_6,
         MaschineButton.TOP_ROW_7,
-
-        MaschineButton.TAP,
 
         // Encoders
         MaschineButton.ENCODER_1,
@@ -29,6 +41,22 @@ function MaschineStudio (output, input, buttons)
         MaschineButton.ENCODER_6,
         MaschineButton.ENCODER_7,
         MaschineButton.ENCODER_8,
+
+        MaschineButton.IN1,
+        MaschineButton.IN2,
+        MaschineButton.IN3,
+        MaschineButton.IN4,
+        MaschineButton.MST,
+        MaschineButton.GRP,
+        MaschineButton.SND,
+        MaschineButton.CUE,
+        MaschineButton.ENCODER_LARGE,
+
+        // Performance
+        MaschineButton.TAP,
+        MaschineButton.STEP_MODE,
+        MaschineButton.MACRO,
+        MaschineButton.NOTE_REPEAT,
 
         // Groups
         MaschineButton.GROUP_A,
@@ -43,19 +71,39 @@ function MaschineStudio (output, input, buttons)
         // Transport
         MaschineButton.RESTART,
         MaschineButton.METRO,
+        MaschineButton.EVENTS,
+        MaschineButton.GRID,
         MaschineButton.PLAY,
         MaschineButton.REC,
         MaschineButton.ERASE,
+        MaschineButton.SHIFT, // Abstract
+
+        // Pads
+        MaschineButton.SCENE,
+        MaschineButton.PATTERN,
+        MaschineButton.PAD_MODE,
+        MaschineButton.NAVIGATE,
+        MaschineButton.DUPLICATE,
+        MaschineButton.SELECT,
+        MaschineButton.SOLO,
+        MaschineButton.MUTE,
 
         // Edit
+        MaschineButton.COPY,
+        MaschineButton.PASTE,
+        MaschineButton.NOTE,
+        MaschineButton.NUDGE,
         MaschineButton.UNDO,
         MaschineButton.REDO,
+        MaschineButton.QUANTIZE,
+        MaschineButton.CLEAR,
 
         // Navigate
         MaschineButton.JOG_WHEEL,
+        MaschineButton.BACK,
         MaschineButton.LEFT_ARROW,
         MaschineButton.RIGHT_ARROW,
-        MaschineButton.ENTER
+        MaschineButton.ENTER // Abstract SHIFT
     ];
 
     AbstractControlSurface.call (this, output, input, buttons);
@@ -98,7 +146,7 @@ MaschineStudio.prototype.getCurrentChannel = function ()
 
 MaschineStudio.prototype.handleEvent = function (cc, value) {
 
-    var view = this.getActiveView();
+    var view = this.getActiveView ();
     if (view == null)
         return;
 
@@ -114,9 +162,36 @@ MaschineStudio.prototype.handleEvent = function (cc, value) {
 
     switch (cc) {
 
-        // Performance
-        case MaschineButton.TAP:
-            view.onTap (event);
+        case MaschineButton.CHANNEL:
+            view.onChannel (event);
+            break;
+
+        case MaschineButton.PLUGIN:
+            view.onPlugin (event);
+            break;
+
+        case MaschineButton.ARRANGE:
+            view.onArrange (event);
+            break;
+
+        case MaschineButton.MIX:
+            view.onMix (event);
+            break;
+
+        case MaschineButton.BROWSE:
+            view.onBrowse (event);
+            break;
+
+        case MaschineButton.SAMPLING:
+            view.onSampling (event);
+            break;
+
+        case MaschineButton.ALL:
+            view.onAll (event);
+            break;
+
+        case MaschineButton.AUTO:
+            view.onAuto (event);
             break;
 
         // Top Row Buttons
@@ -143,6 +218,60 @@ MaschineStudio.prototype.handleEvent = function (cc, value) {
             view.onValueKnob (cc - MaschineButton.ENCODER_1, value);
             break;
 
+        // Master
+        case MaschineButton.IN1:
+            view.onIn1 (event);
+            break;
+
+        case MaschineButton.IN2:
+            view.onIn2 (event);
+            break;
+
+        case MaschineButton.IN3:
+            view.onIn3 (event);
+            break;
+
+        case MaschineButton.IN4:
+            view.onIn4 (event);
+            break;
+
+        case MaschineButton.ENCODER_LARGE:
+            view.onEncoderLarge (value == 0 ? 0 : -1);
+            break;
+
+        case MaschineButton.MST:
+            view.onMst (event);
+            break;
+
+        case MaschineButton.GRP:
+            view.onGrp (event);
+            break;
+
+        case MaschineButton.SND:
+            view.onSnd (event);
+            break;
+
+        case MaschineButton.CUE:
+            view.onCue (event);
+            break;
+
+        // Performance
+        case MaschineButton.TAP:
+            view.onTap (event);
+            break;
+
+        case MaschineButton.STEP_MODE:
+            view.onStepMode (event);
+            break;
+
+        case MaschineButton.MACRO:
+            view.onMacro (event);
+            break;
+
+        case MaschineButton.NOTE_REPEAT:
+            view.onNoteRepeat (event);
+            break;
+
         // Groups
         case MaschineButton.GROUP_A:
         case MaschineButton.GROUP_B:
@@ -164,6 +293,14 @@ MaschineStudio.prototype.handleEvent = function (cc, value) {
             view.onMetro (event);
             break;
 
+        case MaschineButton.EVENTS:
+            view.onEvents (event);
+            break;
+
+        case MaschineButton.GRID:
+            view.onGrid (event);
+            break;
+
         case MaschineButton.PLAY:
             view.onPlay (event);
             break;
@@ -176,7 +313,56 @@ MaschineStudio.prototype.handleEvent = function (cc, value) {
             view.onErase (event);
             break;
 
+        // Pads
+        case MaschineButton.SCENE:
+            view.onScene (event);
+            break;
+
+        case MaschineButton.PATTERN:
+            view.onPattern (event);
+            break;
+
+        case MaschineButton.PAD_MODE:
+            view.onPadMode (event);
+            break;
+
+        case MaschineButton.NAVIGATE:
+            view.onNavigate (event);
+            break;
+
+        case MaschineButton.DUPLICATE:
+            view.onDuplicate (event);
+            break;
+
+        case MaschineButton.SELECT:
+            view.onSelect (event);
+            break;
+
+        case MaschineButton.SOLO:
+            view.onSolo (event);
+            break;
+
+        case MaschineButton.MUTE:
+            view.onMute (event);
+            break;
+
         // Edit
+        case MaschineButton.COPY:
+            view.onCopy (event);
+            break;
+
+        case MaschineButton.PASTE:
+            view.onPaste (event);
+            break;
+
+        case MaschineButton.NOTE:
+            view.onNote (event);
+            break;
+
+        case MaschineButton.NUDGE:
+            view.onNudge (event);
+            break;
+
         case MaschineButton.UNDO:
             view.onUndo (event);
             break;
@@ -185,12 +371,20 @@ MaschineStudio.prototype.handleEvent = function (cc, value) {
             view.onRedo (event);
             break;
 
+        case MaschineButton.QUANTIZE:
+            view.onQuantize (event);
+            break;
+
+        case MaschineButton.CLEAR:
+            view.onClear (event);
+            break;
+
         case MaschineButton.JOG_WHEEL:
             view.onJogWheel (event, value == 1);
             break;
 
         case MaschineButton.BACK:
-            //view.onBack (event);
+            view.onBack (event);
             break;
 
         case MaschineButton.LEFT_ARROW:

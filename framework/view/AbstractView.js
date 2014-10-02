@@ -36,8 +36,6 @@ AbstractView.prototype.usesButton = function (buttonID)
 
 AbstractView.prototype.onActivate = function () {};
 
-AbstractView.prototype.updateDevice = function () {};
-
 AbstractView.prototype.drawGrid = function () {};
 
 AbstractView.prototype.onGridNote = function (note, velocity) {};
@@ -46,6 +44,8 @@ AbstractView.prototype.onActivate = function ()
 {
     this.updateNoteMapping ();
 };
+
+AbstractView.prototype.onPolyAftertouch = function (note, value) {};
 
 AbstractView.prototype.updateDevice = function ()
 {
