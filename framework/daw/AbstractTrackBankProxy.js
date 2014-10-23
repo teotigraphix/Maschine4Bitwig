@@ -52,6 +52,9 @@ function AbstractTrackBankProxy (numTracks, numScenes, numSends)
     this.numScenes = numScenes;
     this.numSends = numSends;
 
+    this.numDevices = 8;
+    this.deviceBanks = [];
+
     this.textLength = 8;
 
     this.canScrollTracksUpFlag   = false;
@@ -65,6 +68,7 @@ function AbstractTrackBankProxy (numTracks, numScenes, numSends)
     this.recCount = numTracks * numScenes;
     this.listeners = [];
     this.noteListeners = [];
+    this.prefferedViews = [];
 
     this.tracks = this.createTracks (this.numTracks);
 }
@@ -73,7 +77,7 @@ AbstractTrackBankProxy.prototype.init = function ()
 {
     // Monitor 'all' tracks for selection to move the 'window' of the main
     // track bank to the selected track
-    var trackSelectionMonitor = host.createEditorTrackSelection (true, 0, 0);
+    var trackSelectionMonitor = host.createArrangerCursorTrack (0, 0);
     trackSelectionMonitor.addPositionObserver (doObject (this, AbstractTrackBankProxy.prototype.handleTrackSelection));
 
     for (var i = 0; i < this.numTracks; i++)
@@ -88,6 +92,7 @@ AbstractTrackBankProxy.prototype.init = function ()
                 this.notifyListeners (pressed, note, Math.round (velocity * 127.0));
         }));
 
+        t.addPositionObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handlePosition));
         t.addNameObserver (this.textLength, '', doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleName));
         t.addIsSelectedObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleBankTrackSelection));
         t.addVuMeterObserver (Config.maxParameterValue, -1, true, doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleVUMeters));
@@ -117,6 +122,15 @@ AbstractTrackBankProxy.prototype.init = function ()
         cs.addHasContentObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleSlotHasContent));
         cs.addColorObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleSlotColor));
         cs.addPlaybackStateObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handlePlaybackState));
+        
+        // Devices on the track
+        var bank = t.createDeviceBank (this.numDevices);
+        // TODO this.deviceBanks.push (bank);
+        for (var j = 0; j < this.numDevices; j++)
+        {
+            var device = bank.getDevice (j);
+            device.addNameObserver (this.textLength, '', doObjectDoubleIndex (this, i, j, AbstractTrackBankProxy.prototype.handleDeviceName));
+        }
     }
 
     this.trackBank.addCanScrollChannelsUpObserver (doObject (this, AbstractTrackBankProxy.prototype.handleCanScrollTracksUp));
@@ -184,7 +198,7 @@ AbstractTrackBankProxy.prototype.select = function (index)
 {
     var t = this.trackBank.getChannel (index);
     if (t != null)
-        t.select ();
+        t.selectInEditor ();
 };
 
 AbstractTrackBankProxy.prototype.changeVolume = function (index, value, fractionValue)
@@ -199,6 +213,11 @@ AbstractTrackBankProxy.prototype.setVolume = function (index, value)
     var t = this.getTrack (index);
     t.volume = value;
     this.trackBank.getChannel (t.index).getVolume ().set (t.volume, Config.maxParameterValue);
+};
+
+AbstractTrackBankProxy.prototype.resetVolume = function (index)
+{
+    this.trackBank.getChannel (index).getVolume ().reset ();
 };
 
 AbstractTrackBankProxy.prototype.setVolumeIndication = function (index, indicate)
@@ -218,6 +237,11 @@ AbstractTrackBankProxy.prototype.setPan = function (index, value, fractionValue)
     var t = this.getTrack (index);
     t.pan = value;
     this.trackBank.getChannel (t.index).getPan ().set (t.pan, Config.maxParameterValue);
+};
+
+AbstractTrackBankProxy.prototype.resetPan = function (index)
+{
+    this.trackBank.getChannel (index).getPan ().reset ();
 };
 
 AbstractTrackBankProxy.prototype.setPanIndication = function (index, indicate)
@@ -258,9 +282,19 @@ AbstractTrackBankProxy.prototype.toggleArm = function (index)
     this.setArm (index, !this.getTrack (index).recarm);
 };
 
+AbstractTrackBankProxy.prototype.setMonitor = function (index, value)
+{
+    this.trackBank.getTrack (index).getMonitor ().set (value);
+};
+
 AbstractTrackBankProxy.prototype.toggleMonitor = function (index)
 {
     this.trackBank.getTrack (index).getMonitor ().toggle ();
+};
+
+AbstractTrackBankProxy.prototype.setAutoMonitor = function (index, value)
+{
+    this.trackBank.getTrack (index).getAutoMonitor ().set (value);
 };
 
 AbstractTrackBankProxy.prototype.toggleAutoMonitor = function (index)
@@ -398,9 +432,25 @@ AbstractTrackBankProxy.prototype.getSelectedSlots = function (trackIndex)
     return selection;
 };
 
+/**
+ * Returns the first selected slot or null if none is selected.
+ */
+AbstractTrackBankProxy.prototype.getSelectedSlot = function (trackIndex)
+{
+    var track = this.getTrack (trackIndex);
+    for (var i = 0; i < track.slots.length; i++)
+    {
+        if (track.slots[i].isSelected)
+            return track.slots[i];
+    }
+    return null;
+};
+
 AbstractTrackBankProxy.prototype.showClipInEditor = function (trackIndex, slotIndex)
 {
-    this.trackBank.getChannel (trackIndex).getClipLauncherSlots ().showInEditor (slotIndex);
+    var cs = this.trackBank.getChannel (trackIndex).getClipLauncherSlots ();
+    cs.select (slotIndex);
+    cs.showInEditor (slotIndex);
 };
 
 /**
@@ -424,6 +474,24 @@ AbstractTrackBankProxy.prototype.getColorIndex = function (red, green, blue)
     return null;
 };
 
+// Stores the given view for the currently selected track
+AbstractTrackBankProxy.prototype.setPreferredView = function (view)
+{
+    var sel = this.getSelectedTrack ();
+    if (sel == null)
+        return;
+    var pos = this.getTrack (sel.index).position;
+    if (pos != -1)
+        this.prefferedViews[pos] = view;
+};
+
+// Get the stored view for the currently selected track or null
+AbstractTrackBankProxy.prototype.getPreferredView = function (index)
+{
+    var pos = this.getTrack (index).position;
+    return typeof (this.prefferedViews[pos]) == 'undefined' ? null : this.prefferedViews[pos];
+};
+
 AbstractTrackBankProxy.prototype.createTracks = function (count)
 {
     var tracks = [];
@@ -432,19 +500,20 @@ AbstractTrackBankProxy.prototype.createTracks = function (count)
         var t =
         {
             index: i,
+            position: i,
             exists: false,
             selected: false,
             name: '',
             volumeStr: '',
             volume: 0,
+            panStr: '',
+            pan: 0,
             vu: 0,
             mute: false,
             solo: false,
             recarm: false,
             monitor: false,
             autoMonitor: false,
-            panStr: '',
-            pan: 0,
             sends: [],
             slots: [],
             crossfadeMode: 'AB'
@@ -483,6 +552,11 @@ AbstractTrackBankProxy.prototype.handleBankTrackSelection = function (index, isS
     this.tracks[index].selected = isSelected;
     for (var l = 0; l < this.listeners.length; l++)
         this.listeners[l].call (null, index, isSelected);
+};
+
+AbstractTrackBankProxy.prototype.handlePosition = function (index, position)
+{
+    this.tracks[index].position = position;
 };
 
 AbstractTrackBankProxy.prototype.handleName = function (index, name)
@@ -581,9 +655,9 @@ AbstractTrackBankProxy.prototype.handlePlaybackState = function (index, slot, st
     if (wasRecording === this.tracks[index].slots[slot].isRecording)
         return;
     if (wasRecording)
-        this.recCount--;
-    else
         this.recCount++;
+    else
+        this.recCount--;
 };
 
 AbstractTrackBankProxy.prototype.handleCanScrollTracksUp = function (canScroll)
@@ -604,4 +678,10 @@ AbstractTrackBankProxy.prototype.handleCanScrollScenesUp = function (canScroll)
 AbstractTrackBankProxy.prototype.handleCanScrollScenesDown = function (canScroll)
 {
     this.canScrollScenesDownFlag = canScroll;
+};
+
+AbstractTrackBankProxy.prototype.handleDeviceName = function (index, device, name)
+{
+    // TODO
+    // println(index+":"+ device+":"+ name);
 };

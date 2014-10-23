@@ -16,16 +16,26 @@ function TransportProxy ()
     this.isPlaying         = false;
     this.isRecording       = false;
     this.isLooping         = false;
+    this.isOverdub         = false;
     this.isLauncherOverdub = false;
     this.crossfade         = 0;
+    this.numerator         = 4;
+    this.denominator       = 4;
+    this.metroVolume       = 95;
     
     this.transport.addClickObserver (doObject (this, TransportProxy.prototype.handleClick));
     this.transport.addIsPlayingObserver (doObject (this, TransportProxy.prototype.handleIsPlaying));
     this.transport.addIsRecordingObserver (doObject (this, TransportProxy.prototype.handleIsRecording));
     this.transport.addIsLoopActiveObserver (doObject (this, TransportProxy.prototype.handleIsLoopActive));
+    this.transport.addOverdubObserver (doObject (this, TransportProxy.prototype.handleOverdub));
     this.transport.addLauncherOverdubObserver (doObject (this, TransportProxy.prototype.handleLauncherOverdub));
+    this.transport.addMetronomeVolumeObserver (doObject (this, TransportProxy.prototype.handleMetronomeVolume));
     this.transport.getTempo ().addRawValueObserver (doObject (this, TransportProxy.prototype.handleTempo));
     this.transport.getCrossfade ().addValueObserver (Config.maxParameterValue, doObject (this, TransportProxy.prototype.handleCrossfade));
+
+    var ts = this.transport.getTimeSignature ();
+    ts.getNumerator ().addValueObserver (doObject (this, TransportProxy.prototype.handleNumerator));
+    ts.getDenominator ().addValueObserver (doObject (this, TransportProxy.prototype.handleDenominator));
 }
 
 TransportProxy.prototype.fastForward = function ()
@@ -234,6 +244,22 @@ TransportProxy.prototype.setLauncherOverdub = function (on)
     this.transport.setLauncherOverdub (!on);
 };
 
+TransportProxy.prototype.changeMetronomeVolume = function (value, fractionValue)
+{
+    this.metroVolume = changeValue (value, this.metroVolume, fractionValue, Config.maxParameterValue);
+    this.transport.setMetronomeValue (this.metroVolume, Config.maxParameterValue);
+};
+
+TransportProxy.prototype.getNumerator = function ()
+{
+    return this.numerator;
+};
+
+TransportProxy.prototype.getDenominator = function ()
+{
+    return this.denominator;
+};
+
 //--------------------------------------
 // Callback Handlers
 //--------------------------------------
@@ -258,9 +284,20 @@ TransportProxy.prototype.handleIsLoopActive = function (isLoop)
     this.isLooping = isLoop;
 };
 
+TransportProxy.prototype.handleOverdub = function (isOverdub)
+{
+    this.isOverdub = isOverdub;
+};
+
 TransportProxy.prototype.handleLauncherOverdub = function (isOverdub)
 {
     this.isLauncherOverdub = isOverdub;
+};
+
+TransportProxy.prototype.handleMetronomeVolume = function (volume)
+{
+    // volume is in the range of -48.0 to 0.0, scale to 0 to 127
+    this.metroVolume = Math.round ((48.0 + volume) * 127 / 48.0);
 };
 
 TransportProxy.prototype.handleTempo = function (value)
@@ -271,4 +308,14 @@ TransportProxy.prototype.handleTempo = function (value)
 TransportProxy.prototype.handleCrossfade = function (value)
 {
     this.crossfade = value;
+};
+
+TransportProxy.prototype.handleNumerator = function (value)
+{
+    this.numerator = value;
+};
+
+TransportProxy.prototype.handleDenominator = function (value)
+{
+    this.denominator = value;
 };

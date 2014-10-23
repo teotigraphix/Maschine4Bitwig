@@ -11,6 +11,8 @@ function MasterTrackProxy ()
     this.vu = null;
     this.mute = null;
     this.solo = null;
+    this.monitor = false;
+    this.autoMonitor = false;
     this.pan = null;
     this.panStr = null;
     this.volume = null;
@@ -23,6 +25,8 @@ function MasterTrackProxy ()
     this.masterTrack.getMute ().addValueObserver (doObject (this, MasterTrackProxy.prototype.handleMute));
     this.masterTrack.getSolo ().addValueObserver (doObject (this, MasterTrackProxy.prototype.handleSolo));
     this.masterTrack.getArm ().addValueObserver (doObject (this, MasterTrackProxy.prototype.handleRecArm));
+    this.masterTrack.getMonitor ().addValueObserver (doObjectIndex (this, i, MasterTrackProxy.prototype.handleMonitor));
+    this.masterTrack.getAutoMonitor ().addValueObserver (doObjectIndex (this, i, MasterTrackProxy.prototype.handleAutoMonitor));
 
     // Master Track Pan value & text
     var p = this.masterTrack.getPan ();
@@ -122,13 +126,33 @@ MasterTrackProxy.prototype.toggleArm = function ()
     this.setArm (!this.recarm);
 };
 
+MasterTrackProxy.prototype.setMonitor = function (value)
+{
+    this.masterTrack.getMonitor ().set (value);
+};
+
+MasterTrackProxy.prototype.toggleMonitor = function ()
+{
+    this.masterTrack.getMonitor ().toggle ();
+};
+
+MasterTrackProxy.prototype.setAutoMonitor = function (value)
+{
+    this.masterTrack.getAutoMonitor ().set (value);
+};
+
+MasterTrackProxy.prototype.toggleAutoMonitor = function ()
+{
+    this.masterTrack.getAutoMonitor ().toggle ();
+};
+
 //--------------------------------------
 // Actions
 //--------------------------------------
 
 MasterTrackProxy.prototype.select = function ()
 {
-    this.masterTrack.select ();
+    this.masterTrack.selectInEditor ();
 };
 
 //--------------------------------------
@@ -165,6 +189,16 @@ MasterTrackProxy.prototype.handleSolo = function (isSoloed)
 MasterTrackProxy.prototype.handleRecArm = function (isArmed)
 {
     this.recarm = isArmed;
+};
+
+MasterTrackProxy.prototype.handleMonitor = function (index, on)
+{
+    this.monitor = on;
+};
+
+MasterTrackProxy.prototype.handleAutoMonitor = function (index, on)
+{
+    this.autoMonitor = on;
 };
 
 MasterTrackProxy.prototype.handlePan = function (value)

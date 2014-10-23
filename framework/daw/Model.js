@@ -31,7 +31,7 @@ Model.prototype.getScales = function ()
 
 Model.prototype.hasSelectedDevice = function ()
 {
-    return this.cursorDevice.getSelectedDevice ().name != 'None';
+    return this.cursorDevice.hasSelectedDevice ();
 };
 
 Model.prototype.getSelectedDevice = function ()
@@ -128,4 +128,9 @@ Model.prototype.hasRecordingState = function ()
     return this.transport.isRecording ||
            this.transport.isLauncherOverdub ||
            this.currentTrackBank.isClipRecording ();
+};
+
+Model.prototype.getQuartersPerMeasure = function ()
+{
+    return 4 * this.transport.getNumerator () / this.transport.getDenominator ();
 };
