@@ -2,12 +2,21 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
+function Maschine ()
+{
+}
+
+Maschine.MODE_BANK_DEVICE = 0;
+Maschine.MODE_SCALE = 1;
+Maschine.MODE_NAVIGATE = 2;
+
 MaschineStudio.VIEW_PLAY      = 0;
 MaschineStudio.VIEW_DRUM      = 1;
 MaschineStudio.VIEW_SEQUENCER = 2;
 MaschineStudio.VIEW_SESSION   = 3;
 
 MaschineStudio.MODE_BANK_DEVICE = 0;
+MaschineStudio.MODE_SCALE = 1;
 
 function MaschineStudio (output, input)
 {
@@ -115,9 +124,32 @@ function MaschineStudio (output, input)
         this.gridNotes.push (i);
 
     this.pads = new Grid (output);
+    this.display = new Display(output);
+
+    this.display.clear ().allDone ();
 }
 
 MaschineStudio.prototype = new AbstractControlSurface ();
+
+
+MaschineStudio.prototype.shutdown = function ()
+{
+    // Clear display
+    for (var i = 0; i < 2; i++)
+        this.display.clearRow (i);
+//
+//    // Turn off all buttons
+//    for (var i = 0; i < this.buttons.length; i++)
+//        this.setButton (this.buttons[i], PUSH_BUTTON_STATE_OFF);
+//
+//    // Turn off 1st/2nd row buttons
+//    for (var i = 20; i < 27; i++)
+//        this.setButton (i, PUSH_BUTTON_STATE_OFF);
+//    for (var i = 102; i < 110; i++)
+//        this.setButton (i, PUSH_BUTTON_STATE_OFF);
+
+    this.pads.turnOff ();
+};
 
 //--------------------------------------
 // Display
@@ -125,7 +157,25 @@ MaschineStudio.prototype = new AbstractControlSurface ();
 
 MaschineStudio.prototype.setButton = function (button, state)
 {
+    //println(button + ", " + state);
     this.output.sendCC (button, state);
+};
+
+MaschineStudio.prototype.sendColor = function (channel, color)
+{
+    var hue = Math.floor (color.hue * 127.0 / 360.0);
+    var saturation = Math.floor ((1 - Math.pow (1 - color.saturation, 2)) * 127.0);
+    var brightness = Math.floor (color.brightness * 127.0);
+    //println("send " + i + ", " + hue + ", " + saturation + ", " + brightness);
+
+    this.sendCCEx (0, channel, hue);
+    this.sendCCEx (1, channel, saturation);
+    this.sendCCEx (2, channel, brightness);
+};
+
+MaschineStudio.prototype.sendCCEx = function (channel, cc, value)
+{
+    host.getMidiOutPort (0).sendMidi (0xB0 | channel, cc, value);
 };
 
 //--------------------------------------
@@ -135,7 +185,8 @@ MaschineStudio.prototype.setButton = function (button, state)
 MaschineStudio.prototype.handleMidi = function (status, data1, data2)
 {
     this.currentChannel = MIDIChannel (status);
-    //println("MaschineStudio.handleMidi()");
+    // MaschineStudio.handleMidi()176, , 16, 65
+    //println("MaschineStudio.handleMidi()" + status + ", " + data1 + ", " + data2);
     AbstractControlSurface.prototype.handleMidi.call (this, status, data1, data2);
 };
 

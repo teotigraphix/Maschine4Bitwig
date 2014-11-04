@@ -227,8 +227,30 @@ AbstractView.prototype.onPattern = function() {};
 
 AbstractView.prototype.onPadMode = function (event) // keyboard
 {
+    if (event.isLong ())
+    {
+        println("Long");
+        this.surface.setActiveMode(MaschineStudio.MODE_SCALE);
+        return;
+    }
+
     if (!event.isDown ())
         return;
+
+    if (this.surface.isActiveMode(MaschineStudio.MODE_SCALE))
+    {
+        this.surface.setActiveMode(MaschineStudio.MODE_BANK_DEVICE);
+        return;
+    }
+
+    if (this.surface.isPressed(MaschineButton.SHIFT))
+    {
+        println("onPadMode()");
+        this.scales.toggleChromatic ();
+        this.surface.getDisplay().showNotification ("Chromatic " + this.scales.isChromatic ());
+        this.updateScale ();
+        return;
+    }
 
     println("Pad Mode");
     if (!this.surface.isActiveView (MaschineStudio.VIEW_PLAY))
@@ -237,7 +259,19 @@ AbstractView.prototype.onPadMode = function (event) // keyboard
     }
 };
 
-AbstractView.prototype.onNavigate = function () {};
+AbstractView.prototype.updateScale = function ()
+{
+    this.surface.getActiveView ().updateNoteMapping ();
+    //Config.setScale (this.scales.getName (this.scales.getSelectedScale ()));
+    //Config.setScaleBase (Scales.BASES[this.scales.getScaleOffset ()]);
+    //Config.setScaleInScale (!this.scales.isChromatic ());
+};
+
+AbstractView.prototype.onNavigate = function (event)
+{
+
+};
+
 AbstractView.prototype.onDuplicate = function () {};
 AbstractView.prototype.onSelect = function () {};
 AbstractView.prototype.onSolo = function () {};
@@ -298,4 +332,12 @@ AbstractView.prototype.onRightArrow = function (event) {};
 AbstractView.prototype.onShift = function (event)
 {
     this.refreshButton (MaschineButton.SHIFT, event);
+};
+
+
+///
+AbstractView.prototype.canSelectedTrackHoldNotes = function ()
+{
+    var t = this.model.getCurrentTrackBank ().getSelectedTrack ();
+    return t != null && t.canHoldNotes;
 };

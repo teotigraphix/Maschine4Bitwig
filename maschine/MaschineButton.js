@@ -6,36 +6,40 @@ function MaschineButton()
 {
 }
 
+MaschineButton.STUDIO = 0;
+MaschineButton.MKII = 1;
+MaschineButton.MIKROMKII = 2;
+
 MaschineButton.STATE_UP = 0;
 MaschineButton.STATE_DOWN = 127;
 
-MaschineButton.CHANNEL = 5;
-MaschineButton.PLUGIN = 6;
-MaschineButton.ARRANGE = 7;
-MaschineButton.MIX = 8;
-MaschineButton.BROWSE = 9;
-MaschineButton.SAMPLING = 10;
-MaschineButton.ALL = 11;
-MaschineButton.AUTO = 12;
+MaschineButton.CHANNEL = 0;
+MaschineButton.PLUGIN = 1;
+MaschineButton.ARRANGE = 2;
+MaschineButton.MIX = 3;
+MaschineButton.BROWSE = 4;
+MaschineButton.SAMPLING = 5;
+MaschineButton.ALL = 6;
+MaschineButton.AUTO = 7;
 
-MaschineButton.TOP_ROW_0 = 13;
-MaschineButton.TOP_ROW_1 = 14;
-MaschineButton.TOP_ROW_2 = 15;
-MaschineButton.TOP_ROW_3 = 16;
-MaschineButton.TOP_ROW_4 = 17;
-MaschineButton.TOP_ROW_5 = 18;
-MaschineButton.TOP_ROW_6 = 19;
-MaschineButton.TOP_ROW_7 = 20;
+MaschineButton.TOP_ROW_0 = 8;
+MaschineButton.TOP_ROW_1 = 9;
+MaschineButton.TOP_ROW_2 = 10;
+MaschineButton.TOP_ROW_3 = 11;
+MaschineButton.TOP_ROW_4 = 12;
+MaschineButton.TOP_ROW_5 = 13;
+MaschineButton.TOP_ROW_6 = 14;
+MaschineButton.TOP_ROW_7 = 15;
 
 // Knobs 21-28
-MaschineButton.ENCODER_1 = 21;
-MaschineButton.ENCODER_2 = 22;
-MaschineButton.ENCODER_3 = 23;
-MaschineButton.ENCODER_4 = 24;
-MaschineButton.ENCODER_5 = 25;
-MaschineButton.ENCODER_6 = 26;
-MaschineButton.ENCODER_7 = 27;
-MaschineButton.ENCODER_8 = 28;
+MaschineButton.ENCODER_1 = 16; // 21
+MaschineButton.ENCODER_2 = 17;
+MaschineButton.ENCODER_3 = 18;
+MaschineButton.ENCODER_4 = 19;
+MaschineButton.ENCODER_5 = 20;
+MaschineButton.ENCODER_6 = 21;
+MaschineButton.ENCODER_7 = 22;
+MaschineButton.ENCODER_8 = 23; // 28
 
 MaschineButton.IN1 = 30;
 MaschineButton.IN2 = 31;

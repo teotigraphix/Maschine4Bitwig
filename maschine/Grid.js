@@ -41,8 +41,6 @@ Grid.prototype.blinkEx = function (x, y, color)
 
 Grid.prototype.flush = function ()
 {
-    //println("Grid.flush()");
-    //println(this.currentButtonColors);
     for (var i = 36; i < 52; i++)
     {
         if (this.currentButtonColors[i] != this.buttonColors[i])
@@ -50,38 +48,23 @@ Grid.prototype.flush = function ()
             this.currentButtonColors[i] = this.buttonColors[i];
 
             var color = this.buttonColors[i];
-            //println(color.hue);
-            var hue = Math.floor (color.hue * 127.0 / 360.0);
-            var saturation = Math.floor ((1 - Math.pow (1 - color.saturation, 2)) * 127.0);
-            var brightness = Math.floor (color.brightness * 127.0);
-            //println("send " + i + ", " + hue + ", " + saturation + ", " + brightness);
-
-            this.output.sendNoteEx (0, i, hue);
-            this.output.sendNoteEx (1, i, saturation);
-            this.output.sendNoteEx (2, i, brightness);
+            this.sendColor (i, color);
         }
     }
-//    for (var i = 36; i < 100; i++)
-//    {
-//        var baseChanged = false;
-//        if (this.currentButtonColors[i] != this.buttonColors[i])
-//        {
-//            this.currentButtonColors[i] = this.buttonColors[i];
-//            this.output.sendNote (i, this.buttonColors[i]);
-//            baseChanged = true;
-//        }
-//        // No "else" here: Blinking color needs a base color
-//        if (baseChanged || this.currentBlinkColors[i] != this.blinkColors[i] || this.currentBlinkFast[i] != this.blinkFast[i])
-//        {
-//            this.currentBlinkColors[i] = this.blinkColors[i];
-//            this.currentBlinkFast[i] = this.blinkFast[i];
-//
-//            this.output.sendNote (i, this.currentButtonColors[i]);
-//            if (this.blinkColors[i] != PUSH_COLOR_BLACK)
-//                this.output.sendNoteEx (this.blinkFast[i] ? 14 : 10, i, this.blinkColors[i]);
-//        }
-//    }
 };
+
+Grid.prototype.sendColor = function (channel, color)
+{
+    //println(color.hue);
+    var hue = Math.floor (color.hue * 127.0 / 360.0);
+    var saturation = Math.floor ((1 - Math.pow (1 - color.saturation, 2)) * 127.0);
+    var brightness = Math.floor (color.brightness * 127.0);
+    //println("send " + i + ", " + hue + ", " + saturation + ", " + brightness);
+
+    this.output.sendNoteEx (0, channel, hue);
+    this.output.sendNoteEx (1, channel, saturation);
+    this.output.sendNoteEx (2, channel, brightness);
+}
 
 Grid.prototype.turnOff = function ()
 {
@@ -96,6 +79,8 @@ function Color(hue, saturation, brightness)
     this.saturation = saturation;
     this.brightness = brightness;
 };
+
+
 
 var COLOR =
 {

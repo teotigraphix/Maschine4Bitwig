@@ -2,9 +2,6 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-
-var MODE_DEVICE = 0;
-
 function Controller ()
 {
     var output = new MidiOutput ();
@@ -12,7 +9,7 @@ function Controller ()
     input.init ();
 
     var scales = new Scales(36, 52, 4, 4);
-    //scales.setChromatic (true);
+    scales.setChromatic (true);
 
     this.model = new Model (21, scales, 4, 4, 4);
     this.model.getTrackBank ().addTrackSelectionListener (doObject (this, function (index, isSelected)
@@ -27,7 +24,18 @@ function Controller ()
     this.surface.setDefaultMode (MaschineStudio.MODE_BANK_DEVICE);
 
     // add Modes
-    this.surface.addMode (MaschineStudio.MODE_BANK_DEVICE, new DeviceMode (this.model));
+    this.surface.addMode (Maschine.MODE_BANK_DEVICE, new DeviceMode (this.model));
+    this.surface.addMode (Maschine.MODE_SCALE, new ScalesMode (this.model));
+    this.surface.addMode (Maschine.MODE_NAVIGATE, new NavigateMode (this.model));
+
+//    this.surface.addMode (MODE_BANK_DEVICE, new DeviceMode (this.model));
+//    this.surface.addMode (MODE_DEVICE_LAYER, new DeviceLayerMode (this.model));
+//    this.surface.addMode (MODE_BANK_COMMON, new ParamPageMode (this.model, MODE_BANK_COMMON, 'Common'));
+//    this.surface.addMode (MODE_BANK_ENVELOPE, new ParamPageMode (this.model, MODE_BANK_ENVELOPE, 'Envelope'));
+//    this.surface.addMode (MODE_BANK_DIRECT, new DirectParameterMode (this.model, MODE_BANK_DIRECT, 'Direct'));
+//    this.surface.addMode (MODE_BANK_MODULATE, new ParamPageMode (this.model, MODE_BANK_MODULATE, 'Modulate'));
+//    this.surface.addMode (MODE_BANK_MACRO, new ParamPageMode (this.model, MODE_BANK_MACRO, 'Macro'));
+//    this.surface.addMode (MODE_BANK_USER, new ParamPageMode (this.model, MODE_BANK_USER, 'User'));
 
     // add Views
     this.surface.addView (MaschineStudio.VIEW_PLAY, new PlayViewMS (this.model));
@@ -42,7 +50,9 @@ function Controller ()
 
     // set active view & mode
     this.surface.setActiveView (MaschineStudio.VIEW_PLAY);
-    this.surface.setActiveMode (MaschineStudio.MODE_BANK_DEVICE);
+    this.surface.setActiveMode (Maschine.MODE_BANK_DEVICE);
+
+    this.updateMode (Maschine.MODE_BANK_DEVICE);
 }
 
 Controller.prototype = new AbstractController ();
@@ -50,6 +60,17 @@ Controller.prototype = new AbstractController ();
 Controller.prototype.flush = function ()
 {
     AbstractController.prototype.flush.call (this);
+
+    this.surface.sendColor(MaschineButton.ARROW_LEFT, COLOR.OCEAN);
+    this.surface.sendColor(MaschineButton.ARROW_UP, COLOR.OCEAN);
+    this.surface.sendColor(MaschineButton.ARROW_RIGHT, COLOR.OCEAN);
+    this.surface.sendColor(MaschineButton.ARROW_DOWN, COLOR.OCEAN);
+
+    if (this.model.hasSelectedDevice ())
+    {
+        var selectedDevice = this.model.getSelectedDevice();
+        this.surface.setButton (MaschineButton.TOP_ROW_7, selectedDevice.enabled ? 127 : 0);
+    }
 };
 
 Controller.prototype.updateMode = function (mode)
@@ -57,8 +78,6 @@ Controller.prototype.updateMode = function (mode)
     this.updateIndication (mode);
 
     // update button lights based on mode
-
-
 };
 
 Controller.prototype.updateIndication = function (mode)
@@ -66,10 +85,10 @@ Controller.prototype.updateIndication = function (mode)
 //    var isVolume = mode == MODE_VOLUME;
 //    var isPan    = mode == MODE_PAN;
 //
-//    var tb = this.model.getCurrentTrackBank ();
-//    var selectedTrack = tb.getSelectedTrack ();
-//    for (var i = 0; i < 8; i++)
-//    {
+    var tb = this.model.getCurrentTrackBank ();
+    var selectedTrack = tb.getSelectedTrack ();
+    for (var i = 0; i < 8; i++)
+    {
 //        var hasTrackSel = selectedTrack != null && selectedTrack.index == i && mode == MODE_TRACK;
 //        tb.setVolumeIndication (i, isVolume || hasTrackSel);
 //        tb.setPanIndication (i, isPan || hasTrackSel);
@@ -86,8 +105,8 @@ Controller.prototype.updateIndication = function (mode)
 //            );
 //        }
 //
-//        var cd = this.model.getCursorDevice ();
-//        cd.getParameter (i).setIndication (mode == MODE_BANK_DEVICE);
+        var cd = this.model.getCursorDevice ();
+        cd.getParameter (i).setIndication (mode == MaschineStudio.MODE_BANK_DEVICE);
 //        cd.getCommonParameter (i).setIndication (mode == MODE_BANK_COMMON);
 //        cd.getEnvelopeParameter (i).setIndication (mode == MODE_BANK_ENVELOPE);
 //        cd.getMacro (i).getAmount ().setIndication (mode == MODE_BANK_MACRO);
@@ -100,5 +119,5 @@ Controller.prototype.updateIndication = function (mode)
 //        mt.setPanIndication (mode == MODE_MASTER);
 //
 //        this.model.getGroove ().setIndication (mode == MODE_GROOVE);
-//    }
+    }
 };
