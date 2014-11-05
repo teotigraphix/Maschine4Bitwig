@@ -261,13 +261,6 @@ AbstractView.prototype.scrollRight = function (event)
     }
 };
 
-
-PlayViewMS.prototype.clearPressedKeys = function ()
-{
-    for (var i = 0; i < 128; i++)
-        this.pressedKeys[i] = 0;
-};
-
 // PlayViewMS.prototype.onAccent = function (event)
 
 PlayViewMS.prototype.initMaxVelocity = function ()

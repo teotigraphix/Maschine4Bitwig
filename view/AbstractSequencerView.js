@@ -25,13 +25,12 @@ AbstractSequencerView.prototype.onActivate = function ()
 {
     AbstractView.prototype.onActivate.call (this);
 
-    this.surface.setButton (PUSH_BUTTON_NOTE, PUSH_BUTTON_STATE_HI);
-    this.surface.setButton (PUSH_BUTTON_SESSION, PUSH_BUTTON_STATE_ON);
     //this.surface.setButton (PUSH_BUTTON_ACCENT, Config.accentActive ? PUSH_BUTTON_STATE_HI : PUSH_BUTTON_STATE_ON);
 
     this.surface.setButton (MaschineButton.PAD_MODE, 0);
     this.surface.setButton (MaschineButton.STEP_MODE, 0);
-    this.surface.setButton (MaschineButton.SCENE, 127);
+    this.surface.setButton (MaschineButton.SCENE, 0);
+    this.surface.setButton (MaschineButton.PATTERN, 0);
 
     this.model.getCurrentTrackBank ().setIndication (false);
     //this.drawSceneButtons ();

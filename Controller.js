@@ -12,6 +12,10 @@ function Controller ()
     scales.setChromatic (true);
 
     this.model = new Model (21, scales, 4, 4, 4);
+
+    this.model.getTrackBank ().textLength = 6;
+    this.model.getCursorDevice().textLength = 6;
+
     this.model.getTrackBank ().addTrackSelectionListener (doObject (this, function (index, isSelected)
     {
         //if (isSelected && this.surface.isActiveMode (MODE_MASTER))
@@ -38,9 +42,11 @@ function Controller ()
 //    this.surface.addMode (MODE_BANK_USER, new ParamPageMode (this.model, MODE_BANK_USER, 'User'));
 
     // add Views
-    this.surface.addView (MaschineStudio.VIEW_PLAY, new PlayViewMS (this.model));
-    //this.surface.addView (MaschineStudio.VIEW_DRUM, new DrumView (this.model));
-    this.surface.addView (MaschineStudio.VIEW_SESSION, new SessionViewMS (this.model));
+    this.surface.addView (Maschine.VIEW_PLAY, new PlayViewMS (this.model));
+    this.surface.addView (Maschine.VIEW_DRUM, new DrumView (this.model));
+    this.surface.addView (Maschine.VIEW_SESSION, new SessionViewMS (this.model));
+    this.surface.addView (Maschine.VIEW_EIDT_TOOLS, new EditToolsView (this.model));
+
 
     this.surface.addModeListener (doObject (this, function (oldMode, newMode)
     {

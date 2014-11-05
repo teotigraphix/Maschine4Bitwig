@@ -10,6 +10,12 @@ Maschine.MODE_BANK_DEVICE = 0;
 Maschine.MODE_SCALE = 1;
 Maschine.MODE_NAVIGATE = 2;
 
+Maschine.VIEW_PLAY      = 0;
+Maschine.VIEW_DRUM      = 1;
+Maschine.VIEW_SEQUENCER = 2;
+Maschine.VIEW_SESSION   = 3;
+Maschine.VIEW_EIDT_TOOLS   = 4;
+
 MaschineStudio.VIEW_PLAY      = 0;
 MaschineStudio.VIEW_DRUM      = 1;
 MaschineStudio.VIEW_SEQUENCER = 2;

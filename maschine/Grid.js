@@ -23,7 +23,8 @@ Grid.prototype.light = function (note, color)
 
 Grid.prototype.lightEx = function (x, y, color)
 {
-    this.buttonColors[36 + x + 4 * y] = color;
+    this.buttonColors[48 + x - 4 * y] = color;
+    //this.setLight (92 + x - 8 * y, color, blinkColor, fast);
 };
 
 Grid.prototype.blink = function (note, color, fast)

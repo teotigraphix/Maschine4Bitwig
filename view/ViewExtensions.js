@@ -109,8 +109,6 @@ AbstractView.prototype.onNoteRepeat = function() {};
 
 AbstractView.prototype.onGoupButton = function (event, index)
 {
-    this.refreshButton (44 + index, event);
-
     switch (index)
     {
         case 0:
@@ -124,6 +122,10 @@ AbstractView.prototype.onGoupButton = function (event, index)
             break;
 
         case 3:
+            if (!this.surface.isActiveView (MaschineStudio.VIEW_EIDT_TOOLS))
+            {
+                this.surface.setActiveView (MaschineStudio.VIEW_EIDT_TOOLS);
+            }
             break;
 
         case 4:
@@ -216,30 +218,38 @@ AbstractView.prototype.onScene = function (event)
     if (!event.isDown ())
         return;
 
-    println("Session Mode");
-    if (!this.surface.isActiveView (MaschineStudio.VIEW_SESSION))
+    println("Session View");
+    if (!this.surface.isActiveView (Maschine.VIEW_SESSION))
     {
-        this.surface.setActiveView (MaschineStudio.VIEW_SESSION);
+        this.surface.setActiveView (Maschine.VIEW_SESSION);
     }
 };
 
-AbstractView.prototype.onPattern = function() {};
+AbstractView.prototype.onPattern = function()
+{
+    println("Drum View");
+    if (!this.surface.isActiveView (Maschine.VIEW_DRUM))
+    {
+        this.surface.setActiveView (Maschine.VIEW_DRUM);
+    }
+
+};
 
 AbstractView.prototype.onPadMode = function (event) // keyboard
 {
     if (event.isLong ())
     {
         println("Long");
-        this.surface.setActiveMode(MaschineStudio.MODE_SCALE);
+        this.surface.setActiveMode(Maschine.MODE_SCALE);
         return;
     }
 
     if (!event.isDown ())
         return;
 
-    if (this.surface.isActiveMode(MaschineStudio.MODE_SCALE))
+    if (this.surface.isActiveMode(Maschine.MODE_SCALE))
     {
-        this.surface.setActiveMode(MaschineStudio.MODE_BANK_DEVICE);
+        this.surface.setActiveMode(Maschine.MODE_BANK_DEVICE);
         return;
     }
 
@@ -253,9 +263,9 @@ AbstractView.prototype.onPadMode = function (event) // keyboard
     }
 
     println("Pad Mode");
-    if (!this.surface.isActiveView (MaschineStudio.VIEW_PLAY))
+    if (!this.surface.isActiveView (Maschine.VIEW_PLAY))
     {
-        this.surface.setActiveView (MaschineStudio.VIEW_PLAY);
+        this.surface.setActiveView (Maschine.VIEW_PLAY);
     }
 };
 
@@ -340,4 +350,10 @@ AbstractView.prototype.canSelectedTrackHoldNotes = function ()
 {
     var t = this.model.getCurrentTrackBank ().getSelectedTrack ();
     return t != null && t.canHoldNotes;
+};
+
+AbstractView.prototype.clearPressedKeys = function ()
+{
+    for (var i = 0; i < 128; i++)
+        this.pressedKeys[i] = 0;
 };
