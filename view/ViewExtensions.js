@@ -116,12 +116,6 @@ AbstractView.prototype.onPadMode = function (event) // keyboard
     if (!event.isDown ())
         return;
 
-    if (this.surface.isActiveMode(Maschine.MODE_SCALE))
-    {
-        this.surface.setActiveMode(Maschine.MODE_BANK_DEVICE);
-        return;
-    }
-
     if (this.surface.isPressed(MaschineButton.SHIFT))
     {
         this.scales.toggleChromatic ();
@@ -129,10 +123,17 @@ AbstractView.prototype.onPadMode = function (event) // keyboard
         this.updateScale ();
         return;
     }
-
-    if (!this.surface.isActiveView (Maschine.VIEW_PLAY))
+    else
     {
-        this.surface.setActiveView (Maschine.VIEW_PLAY);
+        if (this.surface.isActiveMode(Maschine.MODE_SCALE))
+        {
+            this.surface.setActiveMode(Maschine.MODE_BANK_DEVICE);
+            return;
+        }
+        if (!this.surface.isActiveView (Maschine.VIEW_PLAY))
+        {
+            this.surface.setActiveView (Maschine.VIEW_PLAY);
+        }
     }
 };
 
@@ -150,11 +151,11 @@ AbstractView.prototype.onScene = function (event)
 
 AbstractView.prototype.onPattern = function()
 {
-    println("Drum View");
-    if (!this.surface.isActiveView (Maschine.VIEW_DRUM))
-    {
-        this.surface.setActiveView (Maschine.VIEW_DRUM);
-    }
+//    println("Drum View");
+//    if (!this.surface.isActiveView (Maschine.VIEW_DRUM))
+//    {
+//        this.surface.setActiveView (Maschine.VIEW_DRUM);
+//    }
 
 };
 
