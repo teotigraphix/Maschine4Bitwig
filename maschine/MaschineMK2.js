@@ -194,23 +194,24 @@ MaschineMK2.prototype.handleEvent = function (cc, value)
         // Master TODO
 
         case MaschineMK2Button.VOLUME: // TODO add to View
-            view.onVolume (event);
+            //view.onVolume (event);
             break;
 
         case MaschineMK2Button.SWING: // TODO add to View
-            view.onSwing (event);
+            //view.onSwing (event);
             break;
 
-        case MaschineMK2Button.TEMPO: // TODO add to View
+        case MaschineMK2Button.TEMPO:
             view.onTempo (event);
             break;
 
         case MaschineButton.JOG_WHEEL:
-            view.onJogWheel (event, value == 1);
+            if (value != 127)
+                view.onJogWheel (event, value == 2);
             break;
 
         case MaschineButton.JOG_WHEEL_PUSH:
-            view.onJogWheelPush (event, value);
+            //view.onJogWheelPush (event, value);
             break;
 
         case MaschineButton.NOTE_REPEAT: // TAP

@@ -50,6 +50,7 @@
         <min>0</min>
         <max>127</max>
         <default>0</default>
+        <inc>2</inc>
       </wheel>
       <button id="Duplicate">
         <name>Duplicate</name>

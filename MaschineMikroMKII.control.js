@@ -6,7 +6,10 @@ loadAPI(1);
 
 load ("Config.js");
 load ("framework/ClassLoader.js");
+
 load ("maschine/ClassLoader.js");
+Maschine.INSTANCE = Maschine.MIKROMK2;
+
 load ("mode/ClassLoader.js");
 load ("view/ClassLoader.js");
 load ("Controller.js");
