@@ -160,17 +160,6 @@ AbstractView.prototype.onPlay = function (event)
     this.model.getTransport ().play ();
 };
 
-AbstractView.prototype.onRec = function (event)
-{
-    if (!event.isDown ())
-        return;
-
-    if (this.surface.isShiftPressed ())
-        this.model.getTransport ().toggleLauncherOverdub ();
-    else
-        this.model.getTransport ().record ();
-};
-
 AbstractView.prototype.onErase = function (event)
 {
     this.refreshButton (MaschineButton.ERASE, event);

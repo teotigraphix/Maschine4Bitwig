@@ -30,14 +30,32 @@ AbstractView.prototype.onRestart = function (event)
 {
     this.refreshButton (MaschineButton.RESTART, event);
 
-    if (this.surface.isShiftPressed ()) {
+    if (!event.isDown ())
+        return;
+
+    if (this.surface.isSelectPressed ())
+    {
         this.model.getTransport ().stop ();
         this.model.getTransport ().setPosition (0);
+    }
+    else if (this.surface.isShiftPressed ())
+    {
+        this.model.getTransport ().toggleLoop ();
     }
     else
         this.model.getTransport ().restart ();
 }; // loop
 
+AbstractView.prototype.onRec = function (event)
+{
+    if (!event.isDown ())
+        return;
+
+    if (this.surface.isShiftPressed ())
+        this.model.getTransport ().toggleLauncherOverdub ();
+    else
+        this.model.getTransport ().record ();
+};
 
 AbstractView.prototype.showTempo = function ()
 {
