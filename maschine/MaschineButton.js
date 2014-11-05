@@ -2,9 +2,7 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-function MaschineButton()
-{
-}
+function MaschineButton () {}
 
 MaschineButton.STATE_UP = 0;
 MaschineButton.STATE_DOWN = 127;
@@ -97,6 +95,7 @@ MaschineButton.RIGHT_ARROW = 87;
 MaschineButton.ENTER = 88; // Used as Shift
 
 MaschineButton.JOG_WHEEL = 80;
+MaschineButton.JOG_WHEEL_PUSH = 81;
 
 // Proxy
 MaschineButton.ARROW_LEFT = MaschineButton.GROUP_F;
@@ -105,3 +104,15 @@ MaschineButton.ARROW_DOWN = MaschineButton.GROUP_G;
 MaschineButton.ARROW_RIGHT = MaschineButton.GROUP_H;
 
 MaschineButton.SHIFT = MaschineButton.ENTER;
+
+function MaschineMK2Button () {}
+
+MaschineMK2Button.CONTROL = MaschineButton.CHANNEL;
+MaschineMK2Button.STEP = MaschineButton.PLUGIN;
+
+MaschineMK2Button.VOLUME = 70;
+MaschineMK2Button.SWING = 71;
+MaschineMK2Button.TEMPO = 72;
+MaschineMK2Button.ARROW_JOG_LEFT = 73;
+MaschineMK2Button.ARROW_JOG_RIGHT = 74;
+

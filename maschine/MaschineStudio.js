@@ -4,16 +4,19 @@
 
 // array of cc numbers that are used in the
 var MASCHINE_STUDIO_BUTTONS = [
-    MaschineButton.CHANNEL,
-    MaschineButton.PLUGIN,
+    // Controller
+    MaschineButton.CHANNEL, // (MIDI)
+    MaschineButton.PLUGIN, // (INSTANCE)
     MaschineButton.ARRANGE,
     MaschineButton.MIX,
     MaschineButton.BROWSE,
     MaschineButton.SAMPLING,
 
+    // Knob buttons
     MaschineButton.ALL,
-    MaschineButton.AUTO,
+    MaschineButton.AUTO, // (SAVE)
 
+    // First Row Buttons
     MaschineButton.TOP_ROW_0,
     MaschineButton.TOP_ROW_1,
     MaschineButton.TOP_ROW_2,
@@ -33,6 +36,7 @@ var MASCHINE_STUDIO_BUTTONS = [
     MaschineButton.ENCODER_7,
     MaschineButton.ENCODER_8,
 
+    // Master
     MaschineButton.IN1,
     MaschineButton.IN2,
     MaschineButton.IN3,
@@ -60,24 +64,24 @@ var MASCHINE_STUDIO_BUTTONS = [
     MaschineButton.GROUP_H,
 
     // Transport
-    MaschineButton.RESTART,
+    MaschineButton.RESTART, // (LOOP)
     MaschineButton.METRO,
     MaschineButton.EVENTS,
-    MaschineButton.GRID,
+    MaschineButton.GRID,  // (REC MODE)
     MaschineButton.PLAY,
-    MaschineButton.REC,
+    MaschineButton.REC, // (COUNT-IN)
     MaschineButton.ERASE,
     MaschineButton.SHIFT, // Abstract
 
     // Pads
     MaschineButton.SCENE,
     MaschineButton.PATTERN,
-    MaschineButton.PAD_MODE,
+    MaschineButton.PAD_MODE,  // (KEYBOARD)
     MaschineButton.NAVIGATE,
     MaschineButton.DUPLICATE,
     MaschineButton.SELECT,
     MaschineButton.SOLO,
-    MaschineButton.MUTE,
+    MaschineButton.MUTE, // (CHOKE)
 
     // Edit
     MaschineButton.COPY,
@@ -91,6 +95,7 @@ var MASCHINE_STUDIO_BUTTONS = [
 
     // Navigate
     MaschineButton.JOG_WHEEL,
+    MaschineButton.JOG_WHEEL_PUSH,
     MaschineButton.BACK,
     MaschineButton.LEFT_ARROW,
     MaschineButton.RIGHT_ARROW,
@@ -156,7 +161,7 @@ MaschineStudio.prototype.handleEvent = function (cc, value) {
             view.onAuto (event);
             break;
 
-        // Top Row Buttons
+        // First Row Buttons
         case MaschineButton.TOP_ROW_0:
         case MaschineButton.TOP_ROW_1:
         case MaschineButton.TOP_ROW_2:
@@ -343,6 +348,10 @@ MaschineStudio.prototype.handleEvent = function (cc, value) {
 
         case MaschineButton.JOG_WHEEL:
             view.onJogWheel (event, value == 1);
+            break;
+
+        case MaschineButton.JOG_WHEEL_PUSH:
+            view.onJogWheelPush (event, value);
             break;
 
         case MaschineButton.BACK:
