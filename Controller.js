@@ -2,7 +2,11 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-function Controller ()
+GlobalConfig.MASTER_TRACK_TEXT_LENGTH  = 6;
+GlobalConfig.TRACK_BANK_TEXT_LENGTH    = 6;
+GlobalConfig.CURSOR_DEVICE_TEXT_LENGTH = 6;
+
+function Controller (kind)
 {
     var output = new MidiOutput ();
     var input = new MaschineMidiInput ();
@@ -13,19 +17,28 @@ function Controller ()
 
     this.model = new Model (21, scales, 4, 4, 4);
 
-    this.model.getTrackBank ().textLength = 6;
-    this.model.getCursorDevice().textLength = 6;
-
     this.model.getTrackBank ().addTrackSelectionListener (doObject (this, function (index, isSelected)
     {
         //if (isSelected && this.surface.isActiveMode (MODE_MASTER))
         //    this.surface.setPendingMode (MODE_TRACK);
-        if (this.surface.isActiveView (MaschineStudio.VIEW_PLAY))
+        if (this.surface.isActiveView (Maschine.VIEW_PLAY))
             this.surface.getActiveView ().updateNoteMapping ();
     }));
 
-    this.surface = new MaschineStudio (output, input);
-    this.surface.setDefaultMode (MaschineStudio.MODE_BANK_DEVICE);
+    if (kind == Maschine.STUDIO)
+    {
+        this.surface = new MaschineStudio (output, input);
+    }
+    else if (kind == Maschine.MK2)
+    {
+        this.surface = new MaschineMK2 (output, input);
+    }
+    else if (kind == Maschine.MIKROMK2)
+    {
+
+    }
+
+    this.surface.setDefaultMode (Maschine.MODE_BANK_DEVICE);
 
     // add Modes
     this.surface.addMode (Maschine.MODE_BANK_DEVICE, new DeviceMode (this.model));
@@ -55,7 +68,7 @@ function Controller ()
     }));
 
     // set active view & mode
-    this.surface.setActiveView (MaschineStudio.VIEW_PLAY);
+    this.surface.setActiveView (Maschine.VIEW_PLAY);
     this.surface.setActiveMode (Maschine.MODE_BANK_DEVICE);
 
     this.updateMode (Maschine.MODE_BANK_DEVICE);
@@ -112,7 +125,7 @@ Controller.prototype.updateIndication = function (mode)
 //        }
 //
         var cd = this.model.getCursorDevice ();
-        cd.getParameter (i).setIndication (mode == MaschineStudio.MODE_BANK_DEVICE);
+        cd.getParameter (i).setIndication (mode == Maschine.MODE_BANK_DEVICE);
 //        cd.getCommonParameter (i).setIndication (mode == MODE_BANK_COMMON);
 //        cd.getEnvelopeParameter (i).setIndication (mode == MODE_BANK_ENVELOPE);
 //        cd.getMacro (i).getAmount ().setIndication (mode == MODE_BANK_MACRO);

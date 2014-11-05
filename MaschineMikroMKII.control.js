@@ -21,7 +21,7 @@ var controller = null;
 
 function init ()
 {
-    controller = new Controller (MaschineButton.MIKROMKII);
+    controller = new Controller (Maschine.MIKROMK2);
     println ("Initialized.");
 }
 

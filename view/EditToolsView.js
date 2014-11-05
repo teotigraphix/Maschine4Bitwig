@@ -11,7 +11,7 @@ EditToolsView.prototype = new BaseMaschineView ();
 
 EditToolsView.prototype.attachTo = function (surface)
 {
-    println("EditToolsView.attachTo() " + surface);
+    //println("EditToolsView.attachTo() " + surface);
     AbstractView.prototype.attachTo.call (this, surface);
 
 };
@@ -26,7 +26,7 @@ EditToolsView.prototype.updateNoteMapping = function ()
 EditToolsView.prototype.onActivate = function ()
 {
     AbstractView.prototype.onActivate.call (this);
-    println("EditToolsView.onActivate() ");
+    //println("EditToolsView.onActivate() ");
     this.surface.setButton (MaschineButton.SCENE, MaschineButton.STATE_UP);
     this.surface.setButton (MaschineButton.PATTERN, MaschineButton.STATE_UP);
     this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_UP);

@@ -6,7 +6,7 @@
 function ScalesMode (model)
 {
     BaseMode.call (this, model);
-    this.id = MaschineStudio.MODE_SCALE;
+    this.id = Maschine.MODE_SCALE;
     this.isTemporary = false;
     this.scales = model.getScales ();
 }

@@ -2,10 +2,6 @@
 // Static configurations
 // ------------------------------
 
-GlobalConfig.MASTER_TRACK_TEXT_LENGTH  = 6;
-GlobalConfig.TRACK_BANK_TEXT_LENGTH    = 6;
-GlobalConfig.CURSOR_DEVICE_TEXT_LENGTH = 6;
-
 // Inc/Dec of knobs
 Config.fractionValue     = 1;
 Config.fractionMinValue  = 0.5;

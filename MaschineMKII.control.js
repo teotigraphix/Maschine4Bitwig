@@ -21,7 +21,7 @@ var controller = null;
 
 function init ()
 {
-    controller = new Controller ();
+    controller = new Controller (Maschine.MK2);
     println ("Initialized.");
 }
 

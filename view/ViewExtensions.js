@@ -94,9 +94,9 @@ AbstractView.prototype.onStepMode = function()
         return;
 
     println("Step Mode");
-    if (!this.surface.isActiveView (MaschineStudio.VIEW_SEQUENCER))
+    if (!this.surface.isActiveView (Maschine.VIEW_SEQUENCER))
     {
-        this.surface.setActiveView (MaschineStudio.VIEW_SEQUENCER);
+        this.surface.setActiveView (Maschine.VIEW_SEQUENCER);
     }
 };
 

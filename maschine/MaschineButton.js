@@ -6,10 +6,6 @@ function MaschineButton()
 {
 }
 
-MaschineButton.STUDIO = 0;
-MaschineButton.MKII = 1;
-MaschineButton.MIKROMKII = 2;
-
 MaschineButton.STATE_UP = 0;
 MaschineButton.STATE_DOWN = 127;
 
@@ -32,14 +28,14 @@ MaschineButton.TOP_ROW_6 = 14;
 MaschineButton.TOP_ROW_7 = 15;
 
 // Knobs 21-28
-MaschineButton.ENCODER_1 = 16; // 21
+MaschineButton.ENCODER_1 = 16; // 16
 MaschineButton.ENCODER_2 = 17;
 MaschineButton.ENCODER_3 = 18;
 MaschineButton.ENCODER_4 = 19;
 MaschineButton.ENCODER_5 = 20;
 MaschineButton.ENCODER_6 = 21;
 MaschineButton.ENCODER_7 = 22;
-MaschineButton.ENCODER_8 = 23; // 28
+MaschineButton.ENCODER_8 = 23; // 23
 
 MaschineButton.IN1 = 30;
 MaschineButton.IN2 = 31;
