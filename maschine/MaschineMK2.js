@@ -219,11 +219,11 @@ MaschineMK2.prototype.handleEvent = function (cc, value)
             break;
 
         case MaschineMK2Button.ARROW_JOG_LEFT: // TODO add to View
-            view.onArrowJogLeft (event);
+            //view.onArrowJogLeft (event);
             break;
 
         case MaschineMK2Button.ARROW_JOG_RIGHT: // TODO add to View
-            view.onArrowJogRight (event);
+            //view.onArrowJogRight (event);
             break;
 
         case MaschineButton.ENTER:

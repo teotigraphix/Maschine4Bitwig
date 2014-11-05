@@ -35,7 +35,7 @@ function Controller (kind)
     }
     else if (kind == Maschine.MIKROMK2)
     {
-
+        this.surface = new MaschineMikroMK2 (output, input);
     }
 
     this.surface.setDefaultMode (Maschine.MODE_BANK_DEVICE);

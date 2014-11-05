@@ -2,7 +2,6 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-
 AbstractView.prototype.onTempo = function (event)
 {
     this.refreshButton (MaschineMK2Button.TEMPO, event);
@@ -10,13 +9,17 @@ AbstractView.prototype.onTempo = function (event)
     if (event.isLong ())
     {
         this.showTempo ();
-        return;
     }
+};
 
-    if (event.isDown ())
-    {
-        this.model.getTransport ().tapTempo ();
-    }
+AbstractView.prototype.onNoteRepeat = function (event)
+{
+    this.refreshButton (MaschineButton.NOTE_REPEAT, event);
+
+    if (!event.isDown ())
+        return;
+
+    this.model.getTransport ().tapTempo ();
 };
 
 AbstractView.prototype.onPlay = function (event)

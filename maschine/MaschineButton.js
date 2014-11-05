@@ -116,3 +116,11 @@ MaschineMK2Button.TEMPO = 72;
 MaschineMK2Button.ARROW_JOG_LEFT = 73;
 MaschineMK2Button.ARROW_JOG_RIGHT = 74;
 
+function MaschineMikroMK2Button () {}
+
+MaschineMikroMK2Button.CONTROL = MaschineButton.CHANNEL;
+MaschineMikroMK2Button.F1 = 8;
+MaschineMikroMK2Button.F2 = 9;
+MaschineMikroMK2Button.F3 = 10;
+MaschineMikroMK2Button.MAIN = MaschineButton.ENTER;
+MaschineMikroMK2Button.GROUP = 1;

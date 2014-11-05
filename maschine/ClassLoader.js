@@ -9,3 +9,4 @@ load ("Grid.js");
 load ("Display.js");
 load ("MaschineStudio.js");
 load ("MaschineMK2.js");
+load ("MaschineMikroMK2.js");
