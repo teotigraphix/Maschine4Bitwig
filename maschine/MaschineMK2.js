@@ -84,8 +84,8 @@ var MASCHINE_MK2_BUTTONS = [
     //MaschineButton.SHIFT, // Abstract
 
     // MK2 Specific
-    MaschineButton.ARROW_LEFT, // < STEP
-    MaschineButton.ARROW_RIGHT, // STEP >
+    MaschineButton.LEFT_ARROW, // < STEP
+    MaschineButton.RIGHT_ARROW, // STEP >
 
     // Pads
     MaschineButton.SCENE,

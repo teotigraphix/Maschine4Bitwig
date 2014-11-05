@@ -19,7 +19,8 @@ AbstractView.prototype.onNoteRepeat = function (event)
     if (!event.isDown ())
         return;
 
-    this.model.getTransport ().tapTempo ();
+    if (this.surface.isShiftPressed ())
+        this.model.getTransport ().tapTempo ();
 };
 
 AbstractView.prototype.onPlay = function (event)

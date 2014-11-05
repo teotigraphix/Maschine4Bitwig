@@ -51,8 +51,8 @@ var MASCHINE_MK1_BUTTONS = [
 
     // Transport
     MaschineButton.RESTART, // (LOOP)
-    MaschineButton.ARROW_LEFT, // < STEP
-    MaschineButton.ARROW_RIGHT, // STEP >
+    MaschineButton.LEFT_ARROW, // < STEP
+    MaschineButton.RIGHT_ARROW, // STEP >
     MaschineButton.GRID, // (REC MODE)
 
     MaschineButton.PLAY,
