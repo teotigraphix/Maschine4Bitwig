@@ -10,6 +10,8 @@ else if (Maschine.INSTANCE == Maschine.MK2)
     load ("ViewExtensionsMK2.js");
 else if (Maschine.INSTANCE == Maschine.MIKROMK2)
     load ("ViewExtensionsMikroMK2.js");
+else if (Maschine.INSTANCE == Maschine.MK1)
+    load ("ViewExtensionsMK1.js");
 
 load ("AbstractSequencerView.js");
 load ("BaseMaschineView.js");

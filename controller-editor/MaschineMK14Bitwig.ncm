@@ -1,0 +1,2769 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<ni-controller-midi-map port="internal" version="1">
+
+  <midi-map name="MaschineMK14Bitwig" type="Maschine">
+    <handleGroupControls/>
+    <velocitycurve>3</velocitycurve>
+    <handleTransport>0</handleTransport>
+    <wrapmode>0</wrapmode>
+    <controls>
+      <button id="A">
+        <name> </name>
+        <controller>44</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="B">
+        <name> </name>
+        <controller>45</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Browse">
+        <name>Browse</name>
+        <controller>4</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>toggle</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="C">
+        <name>Up</name>
+        <controller>46</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Control">
+        <name>Control</name>
+        <controller>0</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>toggle</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="D">
+        <name> </name>
+        <controller>47</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Duplicate">
+        <name>Duplicate</name>
+        <controller>64</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="E">
+        <name> </name>
+        <controller>48</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Erase">
+        <name>Erase</name>
+        <controller>58</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="F">
+        <name>Left</name>
+        <controller>49</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="F1">
+        <name>Snap</name>
+        <controller>6</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>toggle</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="F2">
+        <name>Auto</name>
+        <controller>7</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>toggle</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="G">
+        <name>Down</name>
+        <controller>50</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Grid">
+        <name>Grid</name>
+        <controller>55</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="H">
+        <name>Right</name>
+        <controller>51</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Keyboard">
+        <name>Pad Mode</name>
+        <controller>62</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Loop">
+        <name>Restart</name>
+        <controller>52</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Mute">
+        <name>Mute</name>
+        <controller>67</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Navigate">
+        <name>Navigate</name>
+        <controller>63</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Next">
+        <name>&gt;</name>
+        <controller>87</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Pattern">
+        <name>Pattern</name>
+        <controller>61</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Play">
+        <name>Play</name>
+        <controller>56</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Prev.">
+        <name>&lt;</name>
+        <controller>86</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Record">
+        <name>Rec</name>
+        <controller>57</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Repeat">
+        <name>Note Rp</name>
+        <controller>43</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Sample">
+        <name>Sampling</name>
+        <controller>5</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>toggle</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Scene">
+        <name>Scene</name>
+        <controller>60</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Select">
+        <name>Select</name>
+        <controller>65</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Solo">
+        <name>Solo</name>
+        <controller>66</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>gate</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <button id="Step">
+        <name>Step</name>
+        <controller>1</controller>
+        <channel>0</channel>
+        <off>0</off>
+        <on>127</on>
+        <behavior>toggle</behavior>
+        <reaction>ondown</reaction>
+      </button>
+      <knob id="Swing">
+        <controller>9</controller>
+        <channel>0</channel>
+        <min>0</min>
+        <max>127</max>
+        <default>0</default>
+        <range>360</range>
+        <steps>20</steps>
+        <bipolar>off</bipolar>
+      </knob>
+      <knob id="Tempo">
+        <controller>3</controller>
+        <channel>0</channel>
+        <min>0</min>
+        <max>127</max>
+        <default>0</default>
+        <range>360</range>
+        <steps>20</steps>
+        <bipolar>off</bipolar>
+      </knob>
+      <knob id="Volume">
+        <controller>7</controller>
+        <channel>0</channel>
+        <min>0</min>
+        <max>127</max>
+        <default>0</default>
+        <range>360</range>
+        <steps>20</steps>
+        <bipolar>off</bipolar>
+      </knob>
+    </controls>
+    <pages>
+      <current_index>0</current_index>
+      <page name="Function page">
+        <button id="Button1">
+          <name>F1</name>
+          <controller>8</controller>
+          <channel>0</channel>
+          <off>0</off>
+          <on>127</on>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </button>
+        <button id="Button2">
+          <name>F2</name>
+          <controller>9</controller>
+          <channel>0</channel>
+          <off>0</off>
+          <on>127</on>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </button>
+        <button id="Button3">
+          <name>F3</name>
+          <controller>10</controller>
+          <channel>0</channel>
+          <off>0</off>
+          <on>127</on>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </button>
+        <button id="Button4">
+          <name>F4</name>
+          <controller>11</controller>
+          <channel>0</channel>
+          <off>0</off>
+          <on>127</on>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </button>
+        <button id="Button5">
+          <name>F5</name>
+          <controller>12</controller>
+          <channel>0</channel>
+          <off>0</off>
+          <on>127</on>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </button>
+        <button id="Button6">
+          <name>F6</name>
+          <controller>13</controller>
+          <channel>0</channel>
+          <off>0</off>
+          <on>127</on>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </button>
+        <button id="Button7">
+          <name>F7</name>
+          <controller>14</controller>
+          <channel>0</channel>
+          <off>0</off>
+          <on>127</on>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </button>
+        <button id="Button8">
+          <name>F8</name>
+          <controller>15</controller>
+          <channel>0</channel>
+          <off>0</off>
+          <on>127</on>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </button>
+        <knob id="Knob1">
+          <name>Param 1</name>
+          <mcu-vpot>16</mcu-vpot>
+          <range>360</range>
+          <steps>20</steps>
+          <bipolar>off</bipolar>
+        </knob>
+        <knob id="Knob2">
+          <name>Param 2</name>
+          <mcu-vpot>17</mcu-vpot>
+          <range>360</range>
+          <steps>20</steps>
+          <bipolar>off</bipolar>
+        </knob>
+        <knob id="Knob3">
+          <name>Param 3</name>
+          <mcu-vpot>17</mcu-vpot>
+          <range>360</range>
+          <steps>20</steps>
+          <bipolar>off</bipolar>
+        </knob>
+        <knob id="Knob4">
+          <name>Param 4</name>
+          <mcu-vpot>19</mcu-vpot>
+          <range>360</range>
+          <steps>20</steps>
+          <bipolar>off</bipolar>
+        </knob>
+        <knob id="Knob5">
+          <name>Param 5</name>
+          <mcu-vpot>20</mcu-vpot>
+          <range>360</range>
+          <steps>20</steps>
+          <bipolar>off</bipolar>
+        </knob>
+        <knob id="Knob6">
+          <name>Param 6</name>
+          <mcu-vpot>21</mcu-vpot>
+          <range>360</range>
+          <steps>20</steps>
+          <bipolar>off</bipolar>
+        </knob>
+        <knob id="Knob7">
+          <name>Param 7</name>
+          <mcu-vpot>22</mcu-vpot>
+          <range>360</range>
+          <steps>20</steps>
+          <bipolar>off</bipolar>
+        </knob>
+        <knob id="Knob8">
+          <name>Param 8</name>
+          <mcu-vpot>23</mcu-vpot>
+          <range>360</range>
+          <steps>20</steps>
+          <bipolar>off</bipolar>
+        </knob>
+      </page>
+    </pages>
+    <groups>
+      <current_index>2</current_index>
+      <group name="Pad Page A">
+        <pad id="Pad1" subtype="trigger">
+          <note>12</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad10" subtype="trigger">
+          <note>21</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad11" subtype="trigger">
+          <note>22</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad12" subtype="trigger">
+          <note>23</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad13" subtype="trigger">
+          <note>24</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad14" subtype="trigger">
+          <note>25</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad15" subtype="trigger">
+          <note>26</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad16" subtype="trigger">
+          <note>27</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad2" subtype="trigger">
+          <note>13</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad3" subtype="trigger">
+          <note>14</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad4" subtype="trigger">
+          <note>15</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad5" subtype="trigger">
+          <note>16</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad6" subtype="trigger">
+          <note>17</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad7" subtype="trigger">
+          <note>18</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad8" subtype="trigger">
+          <note>19</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad9" subtype="trigger">
+          <note>20</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure1" subtype="pressure">
+          <polyat>12</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure10" subtype="pressure">
+          <polyat>21</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure11" subtype="pressure">
+          <polyat>22</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure12" subtype="pressure">
+          <polyat>23</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure13" subtype="pressure">
+          <polyat>24</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure14" subtype="pressure">
+          <polyat>25</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure15" subtype="pressure">
+          <polyat>26</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure16" subtype="pressure">
+          <polyat>27</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure2" subtype="pressure">
+          <polyat>13</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure3" subtype="pressure">
+          <polyat>14</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure4" subtype="pressure">
+          <polyat>15</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure5" subtype="pressure">
+          <polyat>16</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure6" subtype="pressure">
+          <polyat>17</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure7" subtype="pressure">
+          <polyat>18</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure8" subtype="pressure">
+          <polyat>19</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure9" subtype="pressure">
+          <polyat>20</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+      </group>
+      <group name="Pad Page B">
+        <pad id="Pad1" subtype="trigger">
+          <note>24</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad10" subtype="trigger">
+          <note>33</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad11" subtype="trigger">
+          <note>34</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad12" subtype="trigger">
+          <note>35</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad13" subtype="trigger">
+          <note>36</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad14" subtype="trigger">
+          <note>37</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad15" subtype="trigger">
+          <note>38</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad16" subtype="trigger">
+          <note>39</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad2" subtype="trigger">
+          <note>25</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad3" subtype="trigger">
+          <note>26</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad4" subtype="trigger">
+          <note>27</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad5" subtype="trigger">
+          <note>28</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad6" subtype="trigger">
+          <note>29</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad7" subtype="trigger">
+          <note>30</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad8" subtype="trigger">
+          <note>31</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad9" subtype="trigger">
+          <note>32</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure1" subtype="pressure">
+          <polyat>24</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure10" subtype="pressure">
+          <polyat>33</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure11" subtype="pressure">
+          <polyat>34</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure12" subtype="pressure">
+          <polyat>35</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure13" subtype="pressure">
+          <polyat>36</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure14" subtype="pressure">
+          <polyat>37</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure15" subtype="pressure">
+          <polyat>38</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure16" subtype="pressure">
+          <polyat>39</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure2" subtype="pressure">
+          <polyat>25</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure3" subtype="pressure">
+          <polyat>26</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure4" subtype="pressure">
+          <polyat>27</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure5" subtype="pressure">
+          <polyat>28</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure6" subtype="pressure">
+          <polyat>29</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure7" subtype="pressure">
+          <polyat>30</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure8" subtype="pressure">
+          <polyat>31</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure9" subtype="pressure">
+          <polyat>32</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+      </group>
+      <group name="Pad Page C">
+        <pad id="Pad1" subtype="trigger">
+          <note>36</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad10" subtype="trigger">
+          <note>45</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad11" subtype="trigger">
+          <note>46</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad12" subtype="trigger">
+          <note>47</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad13" subtype="trigger">
+          <note>48</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad14" subtype="trigger">
+          <note>49</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad15" subtype="trigger">
+          <note>50</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad16" subtype="trigger">
+          <note>51</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad2" subtype="trigger">
+          <note>37</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad3" subtype="trigger">
+          <note>38</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad4" subtype="trigger">
+          <note>39</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad5" subtype="trigger">
+          <note>40</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad6" subtype="trigger">
+          <note>41</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad7" subtype="trigger">
+          <note>42</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad8" subtype="trigger">
+          <note>43</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad9" subtype="trigger">
+          <note>44</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure1" subtype="pressure">
+          <polyat>36</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure10" subtype="pressure">
+          <polyat>45</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure11" subtype="pressure">
+          <polyat>46</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure12" subtype="pressure">
+          <polyat>47</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure13" subtype="pressure">
+          <polyat>48</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure14" subtype="pressure">
+          <polyat>49</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure15" subtype="pressure">
+          <polyat>50</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure16" subtype="pressure">
+          <polyat>51</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure2" subtype="pressure">
+          <polyat>37</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure3" subtype="pressure">
+          <polyat>38</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure4" subtype="pressure">
+          <polyat>39</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure5" subtype="pressure">
+          <polyat>40</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure6" subtype="pressure">
+          <polyat>41</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure7" subtype="pressure">
+          <polyat>42</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure8" subtype="pressure">
+          <polyat>43</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure9" subtype="pressure">
+          <polyat>44</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+      </group>
+      <group name="Pad Page D">
+        <pad id="Pad1" subtype="trigger">
+          <note>48</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad10" subtype="trigger">
+          <note>57</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad11" subtype="trigger">
+          <note>58</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad12" subtype="trigger">
+          <note>59</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad13" subtype="trigger">
+          <note>60</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad14" subtype="trigger">
+          <note>61</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad15" subtype="trigger">
+          <note>62</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad16" subtype="trigger">
+          <note>63</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad2" subtype="trigger">
+          <note>49</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad3" subtype="trigger">
+          <note>50</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad4" subtype="trigger">
+          <note>51</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad5" subtype="trigger">
+          <note>52</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad6" subtype="trigger">
+          <note>53</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad7" subtype="trigger">
+          <note>54</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad8" subtype="trigger">
+          <note>55</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad9" subtype="trigger">
+          <note>56</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure1" subtype="pressure">
+          <polyat>48</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure10" subtype="pressure">
+          <polyat>57</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure11" subtype="pressure">
+          <polyat>58</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure12" subtype="pressure">
+          <polyat>59</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure13" subtype="pressure">
+          <polyat>60</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure14" subtype="pressure">
+          <polyat>61</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure15" subtype="pressure">
+          <polyat>62</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure16" subtype="pressure">
+          <polyat>63</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure2" subtype="pressure">
+          <polyat>49</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure3" subtype="pressure">
+          <polyat>50</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure4" subtype="pressure">
+          <polyat>51</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure5" subtype="pressure">
+          <polyat>52</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure6" subtype="pressure">
+          <polyat>53</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure7" subtype="pressure">
+          <polyat>54</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure8" subtype="pressure">
+          <polyat>55</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure9" subtype="pressure">
+          <polyat>56</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+      </group>
+      <group name="Pad Page E">
+        <pad id="Pad1" subtype="trigger">
+          <note>60</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad10" subtype="trigger">
+          <note>69</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad11" subtype="trigger">
+          <note>70</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad12" subtype="trigger">
+          <note>71</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad13" subtype="trigger">
+          <note>72</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad14" subtype="trigger">
+          <note>73</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad15" subtype="trigger">
+          <note>74</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad16" subtype="trigger">
+          <note>75</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad2" subtype="trigger">
+          <note>61</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad3" subtype="trigger">
+          <note>62</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad4" subtype="trigger">
+          <note>63</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad5" subtype="trigger">
+          <note>64</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad6" subtype="trigger">
+          <note>65</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad7" subtype="trigger">
+          <note>66</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad8" subtype="trigger">
+          <note>67</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad9" subtype="trigger">
+          <note>68</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure1" subtype="pressure">
+          <polyat>60</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure10" subtype="pressure">
+          <polyat>69</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure11" subtype="pressure">
+          <polyat>70</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure12" subtype="pressure">
+          <polyat>71</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure13" subtype="pressure">
+          <polyat>72</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure14" subtype="pressure">
+          <polyat>73</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure15" subtype="pressure">
+          <polyat>74</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure16" subtype="pressure">
+          <polyat>75</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure2" subtype="pressure">
+          <polyat>61</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure3" subtype="pressure">
+          <polyat>62</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure4" subtype="pressure">
+          <polyat>63</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure5" subtype="pressure">
+          <polyat>64</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure6" subtype="pressure">
+          <polyat>65</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure7" subtype="pressure">
+          <polyat>66</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure8" subtype="pressure">
+          <polyat>67</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure9" subtype="pressure">
+          <polyat>68</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+      </group>
+      <group name="Pad Page F">
+        <pad id="Pad1" subtype="trigger">
+          <note>72</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad10" subtype="trigger">
+          <note>81</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad11" subtype="trigger">
+          <note>82</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad12" subtype="trigger">
+          <note>83</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad13" subtype="trigger">
+          <note>84</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad14" subtype="trigger">
+          <note>85</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad15" subtype="trigger">
+          <note>86</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad16" subtype="trigger">
+          <note>87</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad2" subtype="trigger">
+          <note>73</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad3" subtype="trigger">
+          <note>74</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad4" subtype="trigger">
+          <note>75</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad5" subtype="trigger">
+          <note>76</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad6" subtype="trigger">
+          <note>77</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad7" subtype="trigger">
+          <note>78</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad8" subtype="trigger">
+          <note>79</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad9" subtype="trigger">
+          <note>80</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure1" subtype="pressure">
+          <polyat>72</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure10" subtype="pressure">
+          <polyat>81</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure11" subtype="pressure">
+          <polyat>82</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure12" subtype="pressure">
+          <polyat>83</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure13" subtype="pressure">
+          <polyat>84</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure14" subtype="pressure">
+          <polyat>85</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure15" subtype="pressure">
+          <polyat>86</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure16" subtype="pressure">
+          <polyat>87</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure2" subtype="pressure">
+          <polyat>73</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure3" subtype="pressure">
+          <polyat>74</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure4" subtype="pressure">
+          <polyat>75</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure5" subtype="pressure">
+          <polyat>76</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure6" subtype="pressure">
+          <polyat>77</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure7" subtype="pressure">
+          <polyat>78</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure8" subtype="pressure">
+          <polyat>79</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure9" subtype="pressure">
+          <polyat>80</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+      </group>
+      <group name="Pad Page G">
+        <pad id="Pad1" subtype="trigger">
+          <note>84</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad10" subtype="trigger">
+          <note>93</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad11" subtype="trigger">
+          <note>94</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad12" subtype="trigger">
+          <note>95</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad13" subtype="trigger">
+          <note>96</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad14" subtype="trigger">
+          <note>97</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad15" subtype="trigger">
+          <note>98</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad16" subtype="trigger">
+          <note>99</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad2" subtype="trigger">
+          <note>85</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad3" subtype="trigger">
+          <note>86</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad4" subtype="trigger">
+          <note>87</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad5" subtype="trigger">
+          <note>88</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad6" subtype="trigger">
+          <note>89</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad7" subtype="trigger">
+          <note>90</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad8" subtype="trigger">
+          <note>91</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad9" subtype="trigger">
+          <note>92</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure1" subtype="pressure">
+          <polyat>84</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure10" subtype="pressure">
+          <polyat>93</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure11" subtype="pressure">
+          <polyat>94</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure12" subtype="pressure">
+          <polyat>95</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure13" subtype="pressure">
+          <polyat>96</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure14" subtype="pressure">
+          <polyat>97</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure15" subtype="pressure">
+          <polyat>98</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure16" subtype="pressure">
+          <polyat>99</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure2" subtype="pressure">
+          <polyat>85</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure3" subtype="pressure">
+          <polyat>86</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure4" subtype="pressure">
+          <polyat>87</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure5" subtype="pressure">
+          <polyat>88</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure6" subtype="pressure">
+          <polyat>89</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure7" subtype="pressure">
+          <polyat>90</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure8" subtype="pressure">
+          <polyat>91</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure9" subtype="pressure">
+          <polyat>92</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+      </group>
+      <group name="Pad Page H">
+        <pad id="Pad1" subtype="trigger">
+          <note>96</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad10" subtype="trigger">
+          <note>105</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad11" subtype="trigger">
+          <note>106</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad12" subtype="trigger">
+          <note>107</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad13" subtype="trigger">
+          <note>108</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad14" subtype="trigger">
+          <note>109</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad15" subtype="trigger">
+          <note>110</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad16" subtype="trigger">
+          <note>111</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad2" subtype="trigger">
+          <note>97</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad3" subtype="trigger">
+          <note>98</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad4" subtype="trigger">
+          <note>99</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad5" subtype="trigger">
+          <note>100</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad6" subtype="trigger">
+          <note>101</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad7" subtype="trigger">
+          <note>102</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad8" subtype="trigger">
+          <note>103</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pad9" subtype="trigger">
+          <note>104</note>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>gate</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure1" subtype="pressure">
+          <polyat>96</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure10" subtype="pressure">
+          <polyat>105</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure11" subtype="pressure">
+          <polyat>106</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure12" subtype="pressure">
+          <polyat>107</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure13" subtype="pressure">
+          <polyat>108</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure14" subtype="pressure">
+          <polyat>109</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure15" subtype="pressure">
+          <polyat>110</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure16" subtype="pressure">
+          <polyat>111</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure2" subtype="pressure">
+          <polyat>97</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure3" subtype="pressure">
+          <polyat>98</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure4" subtype="pressure">
+          <polyat>99</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure5" subtype="pressure">
+          <polyat>100</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure6" subtype="pressure">
+          <polyat>101</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure7" subtype="pressure">
+          <polyat>102</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure8" subtype="pressure">
+          <polyat>103</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+        <pad id="Pressure9" subtype="pressure">
+          <polyat>104</polyat>
+          <channel>0</channel>
+          <min>0</min>
+          <max>127</max>
+          <default>0</default>
+          <behavior>toggle</behavior>
+          <reaction>ondown</reaction>
+        </pad>
+      </group>
+    </groups>
+  </midi-map>
+
+</ni-controller-midi-map>

@@ -5,8 +5,9 @@
 Maschine.STUDIO = 0;
 Maschine.MK2 = 1;
 Maschine.MIKROMK2 = 2;
+Maschine.MK1 = 3;
 
-Maschine.INSTANCE;
+Maschine.INSTANCE = -1;
 
 Maschine.MODE_BANK_DEVICE = 0;
 Maschine.MODE_SCALE = 1;
