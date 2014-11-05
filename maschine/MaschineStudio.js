@@ -120,12 +120,13 @@ MaschineStudio.prototype = new Maschine ();
 // Handlers
 //--------------------------------------
 
-MaschineStudio.prototype.handleEvent = function (cc, value) {
+MaschineStudio.prototype.handleEvent = function (cc, value)
+{
     var view = this.getActiveView ();
     if (view == null)
         return;
 
-    var event = this.isButton(cc) ? new ButtonEvent (this.buttonStates[cc]) : null;
+    var event = this.isButton (cc) ? new ButtonEvent (this.buttonStates[cc]) : null;
 
     switch (cc) {
 

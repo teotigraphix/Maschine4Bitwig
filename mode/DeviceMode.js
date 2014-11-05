@@ -17,10 +17,8 @@ DeviceMode.prototype.onValueKnob = function (index, value)
 {
     if(value == 127)
         return;
-    //println(value);
     var param = this.model.getCursorDevice ().getFXParam (index);
     param.value = this.changeValue (value, param.value);
-    //this.surface.setButton(16, param.value);
     this.model.getCursorDevice ().setParameter (index, param.value);
 };
 
