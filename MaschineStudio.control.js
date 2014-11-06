@@ -14,7 +14,7 @@ load ("mode/ClassLoader.js");
 load ("view/ClassLoader.js");
 load ("Controller.js");
 
-host.defineController("Native Instruments", "Maschine Studio", "0.1", "342ED090-C483-11E3-9C1A-0800200C9A66");
+host.defineController("Native Instruments", "Maschine Studio", Maschine.VERSION, "342ED090-C483-11E3-9C1A-0800200C9A66");
 host.defineMidiPorts(1, 1);
 host.addDeviceNameBasedDiscoveryPair(["Maschine Studio Controller"], ["Maschine Studio Controller"]);
 host.addDeviceNameBasedDiscoveryPair(["Maschine Studio Virtual Input"], ["Maschine Studio Virtual Output"]);
