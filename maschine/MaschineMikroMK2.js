@@ -73,7 +73,8 @@ MaschineMikroMK2.prototype.handleEvent = function (cc, value)
         case MaschineMikroMK2Button.F1:
         case MaschineMikroMK2Button.F2:
         case MaschineMikroMK2Button.F3:
-            view.onFirstRow (event, cc - MaschineMikroMK2Button.F1);
+            if (event.isDown())
+                view.onFirstRow (cc - MaschineMikroMK2Button.F1);
             break;
 
         case MaschineMikroMK2Button.CONTROL: // CHANNEL

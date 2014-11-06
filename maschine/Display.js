@@ -55,7 +55,7 @@ Display.SYSEX_HEADER = "F0 00 00 66 17";
 // 17 characters or 2 cells (0-7).
 function Display (output)
 {
-    AbstractDisplay.call (this, output, 2 /* No of rows */, 4 /* No of blocks */, 8 /* No of cells */, 48 /* No of characters */);
+    AbstractDisplay.call (this, output, 2 /* No of rows */, 4 /* No of blocks */, 8 /* No of cells */, 55 /* No of characters */);
 }
 Display.prototype = new AbstractDisplay ();
 Display.FORMAT_RAW = AbstractDisplay.FORMAT_RAW;
@@ -68,39 +68,18 @@ Display.CELL_SIZE = 6;
 Display.prototype.setBlock = function (row, block, value)
 {
     var cell = 2 * block;
-    if (value.length > Display.NUM_CELLS + 1)
+    if (value.length > 7)
     {
-        this.cells[row * Display.NUM_CELLS + cell]     = value.substr (0, Display.CELL_SIZE + 1);
-        this.cells[row * Display.NUM_CELLS + cell + 1] = this.pad (value.substring (Display.CELL_SIZE + 1), Display.CELL_SIZE, ' ');
+        this.cells[row * 8 + cell]     = value.substr (0, 7);
+        this.cells[row * 8 + cell + 1] = this.pad (value.substring (7), 8, ' ');
     }
     else
     {
-        this.cells[row * Display.NUM_CELLS + cell] = this.pad (value, Display.CELL_SIZE + 1, ' ');
+        this.cells[row * 8 + cell] = this.pad (value, 7, ' ');
         this.clearCell (row, cell + 1);
     }
     return this;
 };
-
-var REMOVABLE_CHARS = ['e', 'a', 'u', 'i'];
-function optimizeNameWithSpaces (name, length)
-{
-    if (!name)
-        return '';
-
-    for (var i = 0; i < REMOVABLE_CHARS.length; i++)
-    {
-        if (name.length <= length)
-            return name;
-        var pos = -1;
-        while ((pos = name.indexOf (REMOVABLE_CHARS[i])) != -1)
-        {
-            name = name.substring (0, pos) + name.substring (pos + 1, name.length);
-            if (name.length <= length)
-                return name;
-        }
-    }
-    return name;
-}
 
 Display.prototype.setCell = function (row, cell, value, format)
 {
@@ -114,14 +93,14 @@ Display.prototype.clear = function ()
     for (var i = 0; i < 2; i ++)
     {
         for (var j = 0; j < 8; j ++)
-            this.setCell(i, j, "      ");
+            this.setCell(i, j, '      ');
     }
     return this;
 }
 
 Display.prototype.clearCell = function (row, cell)
 {
-    this.cells[row * 8 + cell] = cell % 2 == 0 ? '         ' : '        ';
+    this.cells[row * 8 + cell] = cell % 2 == 0 ? '       ' : '       ';
     return this;
 };
 

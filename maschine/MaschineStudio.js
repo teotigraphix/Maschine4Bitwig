@@ -171,7 +171,8 @@ MaschineStudio.prototype.handleEvent = function (cc, value)
         case MaschineButton.TOP_ROW_5:
         case MaschineButton.TOP_ROW_6:
         case MaschineButton.TOP_ROW_7:
-            view.onFirstRow (event, cc - MaschineButton.TOP_ROW_0);
+            if (event.isDown())
+                view.onFirstRow (cc - MaschineButton.TOP_ROW_0);
             break;
 
         // Encoders

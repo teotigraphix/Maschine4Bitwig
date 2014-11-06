@@ -23,28 +23,25 @@ ScalesMode.prototype.onValueKnob = function (index, value)
     this.update ();
 };
 
-ScalesMode.prototype.onFirstRow = function (event, index)
+ScalesMode.prototype.onFirstRow = function (index)
 {
-    if (!event.isDown())
-        return;
-    println("onFirstRow" + index);
     if (index == 0)
-        this.scales.prevScale ();
-    else if (index == 1)
-        this.scales.nextScale ();
+    {
+        if (!this.surface.isShiftPressed())
+            this.scales.prevScale();
+        else
+            this.scales.nextScale();
+    }
     else if (index > 0 && index < 7)
-        this.scales.setScaleOffset (index - 1);
-    this.update ();
-};
-
-ScalesMode.prototype.onSecondRow = function (index)
-{
-    if (index == 0)
-        this.scales.nextScale ();
+    {
+        if (!this.surface.isShiftPressed())
+            this.scales.setScaleOffset(index - 1);
+        else
+            this.scales.setScaleOffset (index + 5);
+    }
     else if (index == 7)
         this.scales.toggleChromatic ();
-    else
-        this.scales.setScaleOffset (index + 5);
+
     this.update ();
 };
 
@@ -56,9 +53,17 @@ ScalesMode.prototype.update = function ()
 //    Config.setScaleInScale (!this.scales.isChromatic ());
 };
 
+Scales.prototype.getRangeText = function ()
+{
+    var matrix = this.getActiveMatrix ();
+    var offset = Scales.OFFSETS[this.scaleOffset];
+    return this.formatNote (offset + matrix[0]) + '>' + this.formatNote (offset + matrix[matrix.length - 1]);
+};
+
 ScalesMode.prototype.updateDisplay = function ()
 {
     var d = this.surface.getDisplay ();
+    d.clear ().allDone ();
     var scale = this.scales.getSelectedScale ();
     var offset = this.scales.getScaleOffset ();
     
@@ -73,16 +78,18 @@ ScalesMode.prototype.updateDisplay = function ()
      .clearBlock (1, 2)
      .clearBlock (1, 3)
      .done (1);
-     
-    d.setCell (2, 0, ' ' + this.scales.getName (scale + 2));
+
+    d.setCell (0, 2, ' ' + this.scales.getName (scale + 2));
     for (var i = 0; i < 6; i++)
-        d.setCell (2, i + 1, '  ' + (offset == i ? Display.RIGHT_ARROW : ' ') + Scales.BASES[i]);
-    d.clearCell (2, 7).done (2);
-     
-    d.setCell (3, 0, ' ' + this.scales.getName (scale + 3));
+        d.setCell (0, i + 1, '  ' + (offset == i ? '>' : ' ') + Scales.BASES[i]);
+    d.done (0);
+
+    d.setCell (1, 2, ' ' + this.scales.getName (scale + 3));
     for (var i = 6; i < 12; i++)
-        d.setCell (3, i - 5, '  ' + (offset == i ? Display.RIGHT_ARROW : ' ') + Scales.BASES[i]);
-    d.setCell (3, 7, this.scales.isChromatic () ? 'Chromatc' : 'In Key').done (3);
+        d.setCell (1, i - 5, '  ' + (offset == i ? '>' : ' ') + Scales.BASES[i]);
+    d.done (1);
+
+    d.setCell (0, 7, this.scales.isChromatic () ? ' Chrom' : ' InKey').done (0);
 };
 
 ScalesMode.prototype.updateFirstRow = function ()

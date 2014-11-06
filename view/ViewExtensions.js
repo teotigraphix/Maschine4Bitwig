@@ -205,27 +205,27 @@ AbstractView.prototype.onMute = function (event)
     if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
     {
         this.surface.setPendingMode(Maschine.MODE_TRACK);
-        this.notify ("Mode Select...             Track Mode");
+        this.notify ("Mode Select  Track Mode");
     }
     else if (this.surface.isActiveMode (Maschine.MODE_TRACK))
     {
         this.surface.setPendingMode(Maschine.MODE_SCALE);
-        this.notify ("Mode Select...             Scale Mode");
+        this.notify ("Mode Select  Scale Mode");
     }
     else if (this.surface.isActiveMode (Maschine.MODE_SCALE))
     {
         this.surface.setPendingMode(Maschine.MODE_VOLUME);
-        this.notify ("Mode Select...             Volume Mode");
+        this.notify ("Mode Select  Volume Mode");
     }
     else if (this.surface.isActiveMode (Maschine.MODE_VOLUME))
     {
         this.surface.setPendingMode(Maschine.MODE_PAN);
-        this.notify ("Mode Select...             Pan Mode");
+        this.notify ("Mode Select  Pan Mode");
     }
     else if (this.surface.isActiveMode (Maschine.MODE_PAN))
     {
         this.surface.setPendingMode(Maschine.MODE_BANK_DEVICE);
-        this.notify ("Mode Select...             Device Mode");
+        this.notify ("Mode Select  Device Mode");
     }
 
 };
