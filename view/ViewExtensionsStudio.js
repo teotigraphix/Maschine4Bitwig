@@ -183,7 +183,7 @@ AbstractView.prototype.onJogWheel = function (event, increase)
     if (this.surface.isPressed (MaschineButton.TAP))
         this.model.getTransport ().changeTempo (increase, this.surface.isShiftPressed ());
     else if (this.surface.isPressed (MaschineButton.METRO))
-        this.model.getTransport ().changeMetronomeVolume (increase ? 127 : 1, Config.fractionValue);
+        this.model.getTransport ().changeMetronomeVolume (increase ? 1 : 127, Config.fractionValue);
 };
 
 // TODO AbstractView.prototype.onJogWheelClick = function() {};
