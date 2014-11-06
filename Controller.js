@@ -48,6 +48,7 @@ function Controller (kind)
     this.surface.addMode (Maschine.MODE_BANK_DEVICE, new DeviceMode (this.model));
     this.surface.addMode (Maschine.MODE_SCALE, new ScalesMode (this.model));
     this.surface.addMode (Maschine.MODE_NAVIGATE, new NavigateMode (this.model));
+    this.surface.addMode (Maschine.MODE_TRACK, new TrackMode (this.model));
 
 //    this.surface.addMode (MODE_BANK_DEVICE, new DeviceMode (this.model));
 //    this.surface.addMode (MODE_DEVICE_LAYER, new DeviceLayerMode (this.model));

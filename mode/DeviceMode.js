@@ -12,33 +12,13 @@ function DeviceMode (model)
 }
 DeviceMode.prototype = new BaseMode ();
 
-
 DeviceMode.prototype.onValueKnob = function (index, value)
 {
-    if(value == 127)
-        return;
+    //println(value);
     var param = this.model.getCursorDevice ().getFXParam (index);
-    param.value = this.changeValue (value, param.value);
+    param.value = this.surface.changeValue (value, param.value);
     this.model.getCursorDevice ().setParameter (index, param.value);
 };
-
-DeviceMode.prototype.changeValue = function (control, value)
-{
-    return _changeValue (control, value, this.surface.getFractionValue (), Config.maxParameterValue);
-};
-
-function _changeValue (control, value, fractionValue, maxParameterValue, minParameterValue)
-{
-    minParameterValue = 0;
-    //println(value + ", " + fractionValue + ", " + maxParameterValue + ", " + minParameterValue);
-    if (typeof (minParameterValue) == 'undefined')
-        minParameterValue = 0;
-    var isInc = control <= 64;
-    //var speed = Math.max ((isInc ? control : 65 - control) * fractionValue, fractionValue);
-    var speed = Math.max ((isInc ? control - 65 : 65 - control) * fractionValue, fractionValue);
-    println(speed);
-    return isInc ? Math.min (value + speed, maxParameterValue) : Math.max (value - speed, minParameterValue);
-}
 
 DeviceMode.prototype.onFirstRow = function (event, index)
 {

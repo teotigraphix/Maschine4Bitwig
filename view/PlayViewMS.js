@@ -169,9 +169,8 @@ PlayViewMS.prototype.onLeftArrow = function (event)
         this.onOctaveDown(event);
         return;
     }
-    if (!event.isDown())
-        return;
-    this.scrollLeft (event);
+
+    AbstractView.prototype.onLeftArrow.call (this, event);
 };
 
 PlayViewMS.prototype.onRightArrow = function (event)
@@ -182,9 +181,8 @@ PlayViewMS.prototype.onRightArrow = function (event)
         this.onOctaveUp(event);
         return;
     }
-    if (!event.isDown())
-        return;
-    this.scrollRight (event);
+
+    AbstractView.prototype.onRightArrow.call (this, event);
 };
 
 PlayViewMS.prototype.scrollUp = function (event)
@@ -203,60 +201,6 @@ PlayViewMS.prototype.scrollDown = function (event)
         this.model.getApplication ().arrowKeyDown ();
 };
 
-
-AbstractView.prototype.scrollLeft = function (event)
-{
-    switch (this.surface.getCurrentMode ())
-    {
-//        case MODE_BANK_DEVICE:
-//        case MODE_PRESET:
-//            this.model.getCursorDevice ().selectPrevious ();
-//            break;
-
-        default:
-            var tb = this.model.getCurrentTrackBank ();
-            var sel = tb.getSelectedTrack ();
-            var index = sel == null ? 0 : sel.index - 1;
-            if (index == -1 || this.surface.isShiftPressed ())
-            {
-                if (!tb.canScrollTracksUp ())
-                    return;
-                tb.scrollTracksPageUp ();
-                var newSel = index == -1 || sel == null ? 3 : sel.index;
-                scheduleTask (doObject (this, this.selectTrack), [ newSel ], 75);
-                return;
-            }
-            this.selectTrack (index);
-            break;
-    }
-};
-
-AbstractView.prototype.scrollRight = function (event)
-{
-    switch (this.surface.getCurrentMode ())
-    {
-//        case MODE_BANK_DEVICE:
-//        case MODE_PRESET:
-//            this.model.getCursorDevice ().selectNext ();
-//            break;
-
-        default:
-            var tb = this.model.getCurrentTrackBank ();
-            var sel = tb.getSelectedTrack ();
-            var index = sel == null ? 0 : sel.index + 1;
-            if (index == 4 || this.surface.isShiftPressed ())
-            {
-                if (!tb.canScrollTracksDown ())
-                    return;
-                tb.scrollTracksPageDown ();
-                var newSel = index == 4 || sel == null ? 0 : sel.index;
-                scheduleTask (doObject (this, this.selectTrack), [ newSel ], 75);
-                return;
-            }
-            this.selectTrack (index);
-            break;
-    }
-};
 
 // PlayViewMS.prototype.onAccent = function (event)
 

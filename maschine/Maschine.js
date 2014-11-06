@@ -14,6 +14,7 @@ Maschine.INSTANCE = -1;
 Maschine.MODE_BANK_DEVICE = 0;
 Maschine.MODE_SCALE = 1;
 Maschine.MODE_NAVIGATE = 2;
+Maschine.MODE_TRACK = 3;
 
 Maschine.VIEW_PLAY      = 0;
 Maschine.VIEW_DRUM      = 1;

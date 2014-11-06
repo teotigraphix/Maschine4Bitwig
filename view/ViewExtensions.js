@@ -108,6 +108,20 @@ AbstractView.prototype.onGoupButton = function (event, index)
     }
 };
 
+AbstractView.prototype.onLeftArrow = function (event)
+{
+    if (!event.isDown())
+        return;
+    this.scrollLeft (event);
+};
+
+AbstractView.prototype.onRightArrow = function (event)
+{
+    if (!event.isDown())
+        return;
+    this.scrollRight (event);
+};
+
 //--------------------------------------
 // Pads
 //--------------------------------------
@@ -184,11 +198,98 @@ AbstractView.prototype.onSolo = function (event)
 
 AbstractView.prototype.onMute = function (event)
 {
+    this.refreshButton (MaschineButton.MUTE, event);
+    if (event.isLong ())
+        return;
+
+    if (event.isDown ())
+    {
+        this.surface.setActiveMode (Maschine.MODE_TRACK);
+    }
+    else
+    {
+        this.surface.setActiveMode (Maschine.MODE_BANK_DEVICE);
+    }
 };
 
 //--------------------------------------
 // Protected API
 //--------------------------------------
+
+AbstractView.prototype.onValueKnob = function (index, value)
+{
+    // TODO MCU vpot weirdness, need to research this
+    if (value == 127)
+        return;
+
+    if (value >= 65)
+        value = 127 - (value - 64);
+
+    var m = this.surface.getActiveMode ();
+    if (m != null)
+        m.onValueKnob (index, value);
+};
+
+AbstractView.prototype.onFirstRow = function (index)
+{
+    var m = this.surface.getActiveMode ();
+    if (m != null)
+        m.onFirstRow (index);
+};
+
+AbstractView.prototype.scrollLeft = function (event)
+{
+    switch (this.surface.getCurrentMode ())
+    {
+//        case MODE_BANK_DEVICE:
+//        case MODE_PRESET:
+//            this.model.getCursorDevice ().selectPrevious ();
+//            break;
+
+        default:
+            var tb = this.model.getCurrentTrackBank ();
+            var sel = tb.getSelectedTrack ();
+            var index = sel == null ? 0 : sel.index - 1;
+            if (index == -1 || this.surface.isShiftPressed ())
+            {
+                if (!tb.canScrollTracksUp ())
+                    return;
+                tb.scrollTracksPageUp ();
+                var newSel = index == -1 || sel == null ? 3 : sel.index;
+                scheduleTask (doObject (this, this.selectTrack), [ newSel ], 75);
+                return;
+            }
+            this.selectTrack (index);
+            break;
+    }
+};
+
+AbstractView.prototype.scrollRight = function (event)
+{
+    switch (this.surface.getCurrentMode ())
+    {
+//        case MODE_BANK_DEVICE:
+//        case MODE_PRESET:
+//            this.model.getCursorDevice ().selectNext ();
+//            break;
+
+        default:
+            var tb = this.model.getCurrentTrackBank ();
+            var sel = tb.getSelectedTrack ();
+            var index = sel == null ? 0 : sel.index + 1;
+            if (index == 4 || this.surface.isShiftPressed ())
+            {
+                if (!tb.canScrollTracksDown ())
+                    return;
+                tb.scrollTracksPageDown ();
+                var newSel = index == 4 || sel == null ? 0 : sel.index;
+                scheduleTask (doObject (this, this.selectTrack), [ newSel ], 75);
+                return;
+            }
+            this.selectTrack (index);
+            break;
+    }
+};
 
 AbstractView.prototype.notify = function (message)
 {

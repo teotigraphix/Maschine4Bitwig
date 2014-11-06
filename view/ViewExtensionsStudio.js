@@ -131,13 +131,6 @@ AbstractView.prototype.onErase = function (event)
         this.model.getApplication ().deleteSelection ();
 };
 
-//--------------------------------------
-// Pads
-//--------------------------------------
-
-AbstractView.prototype.onDuplicate = function () {};
-AbstractView.prototype.onSolo = function () {};
-AbstractView.prototype.onMute = function () {}; // choke
 
 // Pads 1..16
 AbstractView.onGrid = function (index) {};
@@ -189,8 +182,4 @@ AbstractView.prototype.onJogWheel = function (event, increase)
 // TODO AbstractView.prototype.onJogWheelClick = function() {};
 AbstractView.prototype.onBack = function() {};
 // TODO AbstractView.prototype.onEnter = function() {}; // Shift Button overrides
-
-AbstractView.prototype.onLeftArrow = function (event) {};
-AbstractView.prototype.onRightArrow = function (event) {};
-
 
