@@ -199,17 +199,35 @@ AbstractView.prototype.onSolo = function (event)
 AbstractView.prototype.onMute = function (event)
 {
     this.refreshButton (MaschineButton.MUTE, event);
-    if (event.isLong ())
+    if (!event.isDown ())
         return;
 
-    if (event.isDown ())
+    if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
     {
-        this.surface.setActiveMode (Maschine.MODE_TRACK);
+        this.surface.setPendingMode(Maschine.MODE_TRACK);
+        this.notify ("Mode Select...             Track Mode");
     }
-    else
+    else if (this.surface.isActiveMode (Maschine.MODE_TRACK))
     {
-        this.surface.setActiveMode (Maschine.MODE_BANK_DEVICE);
+        this.surface.setPendingMode(Maschine.MODE_SCALE);
+        this.notify ("Mode Select...             Scale Mode");
     }
+    else if (this.surface.isActiveMode (Maschine.MODE_SCALE))
+    {
+        this.surface.setPendingMode(Maschine.MODE_VOLUME);
+        this.notify ("Mode Select...             Volume Mode");
+    }
+    else if (this.surface.isActiveMode (Maschine.MODE_VOLUME))
+    {
+        this.surface.setPendingMode(Maschine.MODE_PAN);
+        this.notify ("Mode Select...             Pan Mode");
+    }
+    else if (this.surface.isActiveMode (Maschine.MODE_PAN))
+    {
+        this.surface.setPendingMode(Maschine.MODE_BANK_DEVICE);
+        this.notify ("Mode Select...             Device Mode");
+    }
+
 };
 
 //--------------------------------------
@@ -290,6 +308,8 @@ AbstractView.prototype.scrollRight = function (event)
             break;
     }
 };
+
+AbstractDisplay.NOTIFICATION_TIME = 500; // ms
 
 AbstractView.prototype.notify = function (message)
 {

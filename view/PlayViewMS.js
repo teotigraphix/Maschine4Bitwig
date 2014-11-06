@@ -125,7 +125,7 @@ PlayViewMS.prototype.onNavigate = function (event)
         this.clearPressedKeys ();
         this.clearNoteMapping ();
         //this.surface.pads.turnOff ();
-        this.surface.setActiveMode (Maschine.MODE_NAVIGATE);
+        this.surface.setPendingMode (Maschine.MODE_NAVIGATE);
         if (this.model.hasSelectedDevice ())
         {
             var selectedDevice = this.model.getSelectedDevice();
@@ -136,8 +136,8 @@ PlayViewMS.prototype.onNavigate = function (event)
     }
     else
     {
-        this.updateNoteMapping ();
-        this.surface.setActiveMode (Maschine.MODE_BANK_DEVICE);
+        //this.updateNoteMapping ();
+        //this.surface.setActiveMode (Maschine.MODE_BANK_DEVICE);
     }
 };
 

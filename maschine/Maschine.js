@@ -15,6 +15,13 @@ Maschine.MODE_BANK_DEVICE = 0;
 Maschine.MODE_SCALE = 1;
 Maschine.MODE_NAVIGATE = 2;
 Maschine.MODE_TRACK = 3;
+Maschine.MODE_VOLUME = 4;
+
+Maschine.MODE_SEND1 = 5;
+Maschine.MODE_SEND2 = 6;
+Maschine.MODE_SEND3 = 7;
+Maschine.MODE_SEND4 = 8;
+Maschine.MODE_PAN = 9;
 
 Maschine.VIEW_PLAY      = 0;
 Maschine.VIEW_DRUM      = 1;

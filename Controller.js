@@ -15,7 +15,7 @@ function Controller (kind)
     var scales = new Scales(36, 52, 4, 4);
     scales.setChromatic (true);
 
-    this.model = new Model (21, scales, 4, 4, 4);
+    this.model = new Model (21, scales, 8, 8, 4);
 
     this.model.getTrackBank ().addTrackSelectionListener (doObject (this, function (index, isSelected)
     {
@@ -49,6 +49,8 @@ function Controller (kind)
     this.surface.addMode (Maschine.MODE_SCALE, new ScalesMode (this.model));
     this.surface.addMode (Maschine.MODE_NAVIGATE, new NavigateMode (this.model));
     this.surface.addMode (Maschine.MODE_TRACK, new TrackMode (this.model));
+    this.surface.addMode (Maschine.MODE_VOLUME, new VolumeMode (this.model));
+    this.surface.addMode (Maschine.MODE_PAN, new PanMode (this.model));
 
 //    this.surface.addMode (MODE_BANK_DEVICE, new DeviceMode (this.model));
 //    this.surface.addMode (MODE_DEVICE_LAYER, new DeviceLayerMode (this.model));
@@ -65,9 +67,9 @@ function Controller (kind)
     this.surface.addView (Maschine.VIEW_SESSION, new SessionViewMS (this.model));
     this.surface.addView (Maschine.VIEW_EIDT_TOOLS, new EditToolsView (this.model));
 
-
     this.surface.addModeListener (doObject (this, function (oldMode, newMode)
     {
+        println("addModeListener(updateMode)");
         this.updateMode (-1);
         this.updateMode (newMode);
     }));
@@ -76,7 +78,7 @@ function Controller (kind)
     this.surface.setActiveView (Maschine.VIEW_PLAY);
     this.surface.setActiveMode (Maschine.MODE_BANK_DEVICE);
 
-    this.updateMode (Maschine.MODE_BANK_DEVICE);
+    //this.updateMode (Maschine.MODE_BANK_DEVICE);
 }
 
 Controller.prototype = new AbstractController ();
@@ -99,6 +101,7 @@ Controller.prototype.flush = function ()
 
 Controller.prototype.updateMode = function (mode)
 {
+    //println("updateMode() " + mode);
     this.updateIndication (mode);
 
     // update button lights based on mode
@@ -106,29 +109,29 @@ Controller.prototype.updateMode = function (mode)
 
 Controller.prototype.updateIndication = function (mode)
 {
-//    var isVolume = mode == MODE_VOLUME;
-//    var isPan    = mode == MODE_PAN;
-//
+    var isVolume = mode == Maschine.MODE_VOLUME;
+    var isPan    = mode == Maschine.MODE_PAN;
+
     var tb = this.model.getCurrentTrackBank ();
     var selectedTrack = tb.getSelectedTrack ();
     for (var i = 0; i < 8; i++)
     {
-//        var hasTrackSel = selectedTrack != null && selectedTrack.index == i && mode == MODE_TRACK;
-//        tb.setVolumeIndication (i, isVolume || hasTrackSel);
-//        tb.setPanIndication (i, isPan || hasTrackSel);
-//        for (var j = 0; j < 6; j++)
-//        {
-//            tb.setSendIndication (i, j,
-//                    mode == MODE_SEND1 && j == 0 ||
-//                    mode == MODE_SEND2 && j == 1 ||
-//                    mode == MODE_SEND3 && j == 2 ||
-//                    mode == MODE_SEND4 && j == 3 ||
-//                    mode == MODE_SEND5 && j == 4 ||
-//                    mode == MODE_SEND6 && j == 5 ||
-//                    hasTrackSel
-//            );
-//        }
-//
+        var hasTrackSel = selectedTrack != null && selectedTrack.index == i && mode == Maschine.MODE_TRACK;
+        tb.setVolumeIndication (i, isVolume || hasTrackSel);
+        tb.setPanIndication (i, isPan || hasTrackSel);
+        for (var j = 0; j < 4; j++)
+        {
+            tb.setSendIndication (i, j,
+                    mode == Maschine.MODE_SEND1 && j == 0 ||
+                    mode == Maschine.MODE_SEND2 && j == 1 ||
+                    mode == Maschine.MODE_SEND3 && j == 2 ||
+                    mode == Maschine.MODE_SEND4 && j == 3 ||
+                    //mode == MODE_SEND5 && j == 4 ||
+                    //mode == MODE_SEND6 && j == 5 ||
+                    hasTrackSel
+            );
+        }
+
         var cd = this.model.getCursorDevice ();
         cd.getParameter (i).setIndication (mode == Maschine.MODE_BANK_DEVICE);
 //        cd.getCommonParameter (i).setIndication (mode == MODE_BANK_COMMON);

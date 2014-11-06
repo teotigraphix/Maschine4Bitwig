@@ -6,3 +6,5 @@ load ("DeviceMode.js");
 load ("NavigateMode.js");
 load ("ScalesMode.js");
 load ("TrackMode.js");
+load ("VolumeMode.js");
+load ("PanMode.js");
