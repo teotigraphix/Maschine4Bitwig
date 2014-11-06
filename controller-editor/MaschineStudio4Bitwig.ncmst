@@ -572,7 +572,7 @@
       </button>
       <button id="ButtonPattern">
         <name>Pattern</name>
-        <controller>60</controller>
+        <controller>61</controller>
         <channel>0</channel>
         <off>0</off>
         <on>127</on>
