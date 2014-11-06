@@ -11,7 +11,6 @@ PlayViewMS.prototype = new BaseMaschineView ();
 
 PlayViewMS.prototype.attachTo = function (surface)
 {
-    //println("PlayViewMS.attachTo() " + surface);
     AbstractView.prototype.attachTo.call (this, surface);
 
     this.scales = this.model.getScales ();
@@ -63,21 +62,19 @@ PlayViewMS.prototype.drawGrid = function ()
 {
     if (this.surface.isActiveMode(Maschine.MODE_NAVIGATE))
     {
-
         scheduleTask (doObject (this, function () {
-
-
             var cursorDevice = this.model.getCursorDevice();
             var names = cursorDevice.parameterPageNames;
-            for (var i = 36; i < 52; i++)
+            if (names != null)
             {
-                if (i < 36 + names.length)
-                    this.surface.pads.light (i, COLOR.PLAY);
-                else
-                    this.surface.pads.light (i, COLOR.OFF);
+                for (var i = 36; i < 52; i++)
+                {
+                    if (i < 36 + names.length)
+                        this.surface.pads.light (i, COLOR.PLAY);
+                    else
+                        this.surface.pads.light (i, COLOR.OFF);
+                }
             }
-
-
         }), null, 100);
 
 

@@ -25,7 +25,6 @@ SessionViewMS.prototype.onActivate = function ()
 
 SessionViewMS.prototype.onSelect = function ()
 {
-
 };
 
 SessionViewMS.prototype.onGridNote = function (note, velocity)

@@ -227,7 +227,8 @@ MaschineMK2.prototype.handleEvent = function (cc, value)
             break;
 
         case MaschineButton.ENTER:
-            view.onEnter (event);
+        case MaschineButton.SHIFT:
+            view.onShift (event);
             break;
 
         // Groups

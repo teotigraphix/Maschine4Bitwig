@@ -3,7 +3,12 @@
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 AbstractView.prototype.onEnter = function (event) {};
-AbstractView.prototype.onSelect = function (event) {};
+
+AbstractView.prototype.onShift = function (event)
+{
+    this.refreshButton (MaschineButton.SHIFT, event);
+};
+
 
 AbstractView.prototype.onBrowse = function (event) {};
 AbstractView.prototype.onSampling = function (event) {};
@@ -45,6 +50,8 @@ AbstractView.prototype.onRestart = function (event)
     else
         this.model.getTransport ().restart ();
 }; // loop
+
+// AbstractView.prototype.onPlay = function (event) {}; Controller Specific
 
 AbstractView.prototype.onRec = function (event)
 {
@@ -142,9 +149,9 @@ AbstractView.prototype.onScene = function (event)
     if (!event.isDown ())
         return;
 
-    println("Session View");
     if (!this.surface.isActiveView (Maschine.VIEW_SESSION))
     {
+        println("Session View");
         this.surface.setActiveView (Maschine.VIEW_SESSION);
     }
 };
@@ -161,8 +168,24 @@ AbstractView.prototype.onPattern = function()
 
 AbstractView.prototype.onNavigate = function (event)
 {
-
 };
+
+AbstractView.prototype.onDuplicate = function (event)
+{
+};
+
+AbstractView.prototype.onSelect = function (event)
+{
+};
+
+AbstractView.prototype.onSolo = function (event)
+{
+};
+
+AbstractView.prototype.onMute = function (event)
+{
+};
+
 //--------------------------------------
 // Protected API
 //--------------------------------------
@@ -190,4 +213,10 @@ AbstractView.prototype.clearPressedKeys = function ()
 {
     for (var i = 0; i < 128; i++)
         this.pressedKeys[i] = 0;
+};
+
+AbstractView.prototype.refreshButton = function (buttonId, event)
+{
+    this.surface.setButton (buttonId, event.isDown () || event.isLong ()
+        ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
 };

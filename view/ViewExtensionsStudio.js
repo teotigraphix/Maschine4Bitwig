@@ -70,14 +70,14 @@ AbstractView.prototype.onTap = function (event)
 
 AbstractView.prototype.onStepMode = function()
 {
-    if (!event.isDown ())
-        return;
-
-    println("Step Mode");
-    if (!this.surface.isActiveView (Maschine.VIEW_SEQUENCER))
-    {
-        this.surface.setActiveView (Maschine.VIEW_SEQUENCER);
-    }
+//    if (!event.isDown ())
+//        return;
+//
+//    println("Step Mode");
+//    if (!this.surface.isActiveView (Maschine.VIEW_SEQUENCER))
+//    {
+//        this.surface.setActiveView (Maschine.VIEW_SEQUENCER);
+//    }
 };
 
 AbstractView.prototype.onMacro = function() {};
@@ -129,13 +129,6 @@ AbstractView.prototype.onErase = function (event)
 
     if (event.isDown ())
         this.model.getApplication ().deleteSelection ();
-};
-
-AbstractView.prototype.onShift = function (event)
-{
-    this.refreshButton (MaschineButton.SHIFT, event);
-
-    this.surface.setButton (MaschineButton.SHIFT, event.isUp () ? MaschineButton.STATE_UP : MaschineButton.STATE_DOWN);
 };
 
 //--------------------------------------
@@ -200,8 +193,4 @@ AbstractView.prototype.onBack = function() {};
 AbstractView.prototype.onLeftArrow = function (event) {};
 AbstractView.prototype.onRightArrow = function (event) {};
 
-AbstractView.prototype.onShift = function (event)
-{
-    this.refreshButton (MaschineButton.SHIFT, event);
-};
 

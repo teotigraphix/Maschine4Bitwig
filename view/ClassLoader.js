@@ -13,8 +13,8 @@ else if (Maschine.INSTANCE == Maschine.MIKROMK2)
 else if (Maschine.INSTANCE == Maschine.MK1)
     load ("ViewExtensionsMK1.js");
 
-load ("AbstractSequencerView.js");
 load ("BaseMaschineView.js");
+load ("AbstractSequencerView.js");
 load ("PlayViewMS.js");
 load ("SessionViewMS.js");
 load ("DrumViewMS.js");

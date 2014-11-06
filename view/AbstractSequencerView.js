@@ -7,7 +7,7 @@ function AbstractSequencerView (model, rows, cols)
     if (!model) // Called on first prototype creation
         return;
 
-    AbstractView.call (this, model);
+    BaseMaschineView.call (this, model);
 
     this.resolutions = [ 1, 2/3, 1/2, 1/3, 1/4, 1/6, 1/8, 1/12 ];
     this.selectedIndex = 4;
@@ -19,23 +19,14 @@ function AbstractSequencerView (model, rows, cols)
     this.clip = this.model.createCursorClip (cols, rows);
     this.clip.setStepLength (this.resolutions[this.selectedIndex]);
 }
-AbstractSequencerView.prototype = new AbstractView ();
+AbstractSequencerView.prototype = new BaseMaschineView ();
 
 AbstractSequencerView.prototype.onActivate = function ()
 {
     AbstractView.prototype.onActivate.call (this);
 
-    //this.surface.setButton (PUSH_BUTTON_ACCENT, Config.accentActive ? PUSH_BUTTON_STATE_HI : PUSH_BUTTON_STATE_ON);
-
-    this.surface.setButton (MaschineButton.PAD_MODE, 0);
-    this.surface.setButton (MaschineButton.STEP_MODE, 0);
-    this.surface.setButton (MaschineButton.SCENE, 0);
-    this.surface.setButton (MaschineButton.PATTERN, 0);
-
     this.model.getCurrentTrackBank ().setIndication (false);
     //this.drawSceneButtons ();
-
-    //this.updateRibbonMode ();
 };
 
 AbstractSequencerView.prototype.scrollLeft = function (event)
@@ -56,12 +47,12 @@ AbstractSequencerView.prototype.scrollRight = function (event)
     this.clip.scrollStepsPageForward ();
 };
 
-AbstractSequencerView.prototype.onScene = function (index)
-{
-    this.selectedIndex = 7 - index;
-    this.clip.setStepLength (this.resolutions[this.selectedIndex]);
-    this.drawSceneButtons ();
-};
+//AbstractSequencerView.prototype.onScene = function (index)
+//{
+//    this.selectedIndex = 7 - index;
+//    this.clip.setStepLength (this.resolutions[this.selectedIndex]);
+//    this.drawSceneButtons ();
+//};
 
 AbstractSequencerView.prototype.drawSceneButtons = function ()
 {

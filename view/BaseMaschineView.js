@@ -12,7 +12,7 @@ function BaseMaschineView (model)
 
 BaseMaschineView.prototype = new AbstractView ();
 
-AbstractView.prototype.updateButtons = function ()
+BaseMaschineView.prototype.updateButtons = function ()
 {
     //AbstractView.prototype.updateButtons.call (this);
 
@@ -25,12 +25,4 @@ AbstractView.prototype.updateButtons = function ()
     var master = this.model.getMasterTrack ();
     var v = master.getVolume ();
     this.surface.setButton (MaschineButton.ENCODER_LARGE, v);
-};
-
-///////////////////////////////////////////////
-
-AbstractView.prototype.refreshButton = function (buttonId, event)
-{
-    this.surface.setButton (buttonId, event.isDown () || event.isLong ()
-        ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
 };
