@@ -29,6 +29,29 @@ Maschine.VIEW_SEQUENCER = 2;
 Maschine.VIEW_SESSION   = 3;
 Maschine.VIEW_EIDT_TOOLS   = 4;
 
+Maschine.MODES = [
+    [Maschine.MODE_BANK_DEVICE, "Device"],
+    [Maschine.MODE_NAVIGATE, "Navigate"],
+    [Maschine.MODE_PAN, "Pan"],
+    [Maschine.MODE_SCALE, "Scale"],
+    [Maschine.MODE_SEND1, "Send1"],
+    [Maschine.MODE_SEND2, "Send2"],
+    [Maschine.MODE_SEND3, "Send3"],
+    [Maschine.MODE_SEND4, "Send4"],
+    [Maschine.MODE_TRACK, "Track"],
+    [Maschine.MODE_VOLUME, "Volume"]
+];
+
+// TEMP
+Maschine.getModeName = function (modeId)
+{
+    for (var i = 0; i < Maschine.MODES.length; i++)
+    {
+        if (Maschine.MODES[i][0] == modeId)
+            return Maschine.MODES[i][1];
+    }
+};
+
 function Maschine (output, input, buttons)
 {
     if (output == null)

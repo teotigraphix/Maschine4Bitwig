@@ -128,33 +128,12 @@ AbstractView.prototype.onRightArrow = function (event)
 
 AbstractView.prototype.onPadMode = function (event) // keyboard
 {
-    if (event.isLong ())
-    {
-        this.surface.setActiveMode(Maschine.MODE_SCALE);
-        return;
-    }
-
     if (!event.isDown ())
         return;
 
-    if (this.surface.isPressed(MaschineButton.SHIFT))
+    if (!this.surface.isActiveView (Maschine.VIEW_PLAY))
     {
-        this.scales.toggleChromatic ();
-        this.notify ("Chromatic     " + this.scales.isChromatic ());
-        this.updateScale ();
-        return;
-    }
-    else
-    {
-        if (this.surface.isActiveMode(Maschine.MODE_SCALE))
-        {
-            this.surface.setActiveMode(Maschine.MODE_BANK_DEVICE);
-            return;
-        }
-        if (!this.surface.isActiveView (Maschine.VIEW_PLAY))
-        {
-            this.surface.setActiveView (Maschine.VIEW_PLAY);
-        }
+        this.surface.setActiveView (Maschine.VIEW_PLAY);
     }
 };
 
@@ -202,32 +181,38 @@ AbstractView.prototype.onMute = function (event)
     if (!event.isDown ())
         return;
 
+    if (this.surface.isShiftPressed ())
+    {
+        this.notifyModeChange (this.surface.getActiveMode ().getId ());
+        return;
+    }
+
+    // TODO refactor
     if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
     {
         this.surface.setPendingMode(Maschine.MODE_TRACK);
-        this.notify ("Mode Select  Track Mode");
+        this.notifyModeChange (Maschine.MODE_TRACK);
     }
     else if (this.surface.isActiveMode (Maschine.MODE_TRACK))
     {
         this.surface.setPendingMode(Maschine.MODE_SCALE);
-        this.notify ("Mode Select  Scale Mode");
+        this.notifyModeChange (Maschine.MODE_SCALE);
     }
     else if (this.surface.isActiveMode (Maschine.MODE_SCALE))
     {
         this.surface.setPendingMode(Maschine.MODE_VOLUME);
-        this.notify ("Mode Select  Volume Mode");
+        this.notifyModeChange (Maschine.MODE_VOLUME);
     }
     else if (this.surface.isActiveMode (Maschine.MODE_VOLUME))
     {
         this.surface.setPendingMode(Maschine.MODE_PAN);
-        this.notify ("Mode Select  Pan Mode");
+        this.notifyModeChange (Maschine.MODE_PAN);
     }
     else if (this.surface.isActiveMode (Maschine.MODE_PAN))
     {
         this.surface.setPendingMode(Maschine.MODE_BANK_DEVICE);
-        this.notify ("Mode Select  Device Mode");
+        this.notifyModeChange (Maschine.MODE_BANK_DEVICE);
     }
-
 };
 
 //--------------------------------------
@@ -309,11 +294,16 @@ AbstractView.prototype.scrollRight = function (event)
     }
 };
 
-AbstractDisplay.NOTIFICATION_TIME = 500; // ms
+AbstractDisplay.NOTIFICATION_TIME = 1000; // ms
 
 AbstractView.prototype.notify = function (message)
 {
     this.surface.getDisplay().showNotification (message);
+};
+
+AbstractView.prototype.notifyModeChange = function (modeId)
+{
+    this.notify ("Mode Select  " + Maschine.getModeName (modeId) + " Mode");
 };
 
 AbstractView.prototype.updateScale = function ()
