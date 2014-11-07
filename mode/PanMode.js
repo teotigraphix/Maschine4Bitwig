@@ -29,7 +29,11 @@ PanMode.prototype.updateDisplay = function ()
     for (var i = 0; i < 8; i++)
     {
         var t = tb.getTrack (i);
-        d.setCell (0, i, t.exists ? "Pan" : "", Display.FORMAT_RAW)
+        // TODO Config for Track name vrs Mode name
+        var n = (true) ? optimizeName (t.name, t.selected ? 5 : 6) : "Pan";
+        if (t.selected)
+            n = ">" + n;
+        d.setCell (0, i, t.exists ? n : "", Display.FORMAT_RAW)
          .setCell (1, i, t.panStr, Display.FORMAT_RAW);
     }
     d.done (0).done (1).done (2);

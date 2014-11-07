@@ -46,10 +46,7 @@ TrackMode.prototype.updateDisplay = function ()
             .clearRow (0).clearRow (2).done (0).done (2);
     else
     {
-        println(t.name);
-        var n = optimizeName (t.name, 13);
-        //d.setCell (0, 0, n, Display.FORMAT_RAW);
-        d.setBlock (0, 0, t.name)
+        d.setBlock (0, 0, t.name);
         d.clearBlock (0, 1);
         d.setCell (0, 4, "Volume", Display.FORMAT_RAW)
          .setCell (1, 4, t.volumeStr, Display.FORMAT_RAW)
@@ -83,8 +80,6 @@ TrackMode.prototype.updateDisplay = function ()
 //            }
 //        }
 
-        d.done (0).done (1).done (2);
+        d.done (0).done (1);
     }
-
-   // this.drawRow4 ();
 };

@@ -24,11 +24,12 @@ VolumeMode.prototype.updateDisplay = function ()
     for (var i = 0; i < 8; i++)
     {
         var t = tb.getTrack (i);
-        d.setCell (0, i, t.exists ? "Volume" : "", Display.FORMAT_RAW)
+        // TODO Config for Track name vrs Mode name
+        var n = (true) ? optimizeName (t.name, t.selected ? 5 : 6) : "Volume";
+        if (t.selected)
+            n = ">" + n;
+        d.setCell (0, i, t.exists ? n : "", Display.FORMAT_RAW)
          .setCell (1, i, t.volumeStr, Display.FORMAT_RAW);
-         //.setCell (2, i, t.exists ? (this.surface.showVU ? t.vu : t.volume) : "", t.exists ? Display.FORMAT_VALUE : Display.FORMAT_RAW);
     }
     d.done (0).done (1);
-
-    //this.drawRow4 ();
 };
