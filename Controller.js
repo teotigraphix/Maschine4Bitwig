@@ -48,7 +48,7 @@ function Controller (kind)
     // add Modes
     this.surface.addMode (Maschine.MODE_SELECT, new SelectMode (this.model));
 
-    this.surface.addMode (Maschine.MODE_BANK_DEVICE, new DeviceMode (this.model));
+
     this.surface.addMode (Maschine.MODE_SCALE, new ScalesMode (this.model));
     this.surface.addMode (Maschine.MODE_NAVIGATE, new NavigateMode (this.model));
     this.surface.addMode (Maschine.MODE_TRACK, new TrackMode (this.model));
@@ -67,14 +67,15 @@ function Controller (kind)
     this.surface.addMode (Maschine.MODE_SEND3, new SendMode (this.model, Maschine.MODE_SEND3));
     this.surface.addMode (Maschine.MODE_SEND4, new SendMode (this.model, Maschine.MODE_SEND4));
 
-//    this.surface.addMode (MODE_BANK_DEVICE, new DeviceMode (this.model));
-//    this.surface.addMode (MODE_DEVICE_LAYER, new DeviceLayerMode (this.model));
-//    this.surface.addMode (MODE_BANK_COMMON, new ParamPageMode (this.model, MODE_BANK_COMMON, 'Common'));
-//    this.surface.addMode (MODE_BANK_ENVELOPE, new ParamPageMode (this.model, MODE_BANK_ENVELOPE, 'Envelope'));
-//    this.surface.addMode (MODE_BANK_DIRECT, new DirectParameterMode (this.model, MODE_BANK_DIRECT, 'Direct'));
-//    this.surface.addMode (MODE_BANK_MODULATE, new ParamPageMode (this.model, MODE_BANK_MODULATE, 'Modulate'));
-//    this.surface.addMode (MODE_BANK_MACRO, new ParamPageMode (this.model, MODE_BANK_MACRO, 'Macro'));
-//    this.surface.addMode (MODE_BANK_USER, new ParamPageMode (this.model, MODE_BANK_USER, 'User'));
+    this.surface.addMode (Maschine.MODE_BANK_DEVICE, new DeviceMode (this.model));
+    this.surface.addMode (Maschine.MODE_PARAM_PAGE_SELECT, new ParamPageSelectMode (this.model));
+//    this.surface.addMode (Maschine.MODE_DEVICE_LAYER, new DeviceLayerMode (this.model));
+    this.surface.addMode (Maschine.MODE_BANK_COMMON, new ParamPageMode (this.model, Maschine.MODE_BANK_COMMON, 'Common'));
+    this.surface.addMode (Maschine.MODE_BANK_ENVELOPE, new ParamPageMode (this.model, Maschine.MODE_BANK_ENVELOPE, 'Envelope'));
+    this.surface.addMode (Maschine.MODE_BANK_DIRECT, new DirectParameterMode (this.model, Maschine.MODE_BANK_DIRECT, 'Direct'));
+    this.surface.addMode (Maschine.MODE_BANK_MODULATE, new ParamPageMode (this.model, Maschine.MODE_BANK_MODULATE, 'Modulate'));
+    this.surface.addMode (Maschine.MODE_BANK_MACRO, new ParamPageMode (this.model, Maschine.MODE_BANK_MACRO, 'Macro'));
+    this.surface.addMode (Maschine.MODE_BANK_USER, new ParamPageMode (this.model, Maschine.MODE_BANK_USER, 'User'));
 
     // add Views
     this.surface.addView (Maschine.VIEW_PLAY, new PlayView (this.model));
@@ -93,7 +94,7 @@ function Controller (kind)
 
     // set active view & mode
     this.surface.setActiveView (Maschine.VIEW_PLAY);
-    this.surface.setActiveMode (Maschine.MODE_BANK_DEVICE);
+    this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
 }
 
 Controller.prototype = new AbstractController ();
@@ -147,13 +148,13 @@ Controller.prototype.updateIndication = function (mode)
 
         var cd = this.model.getCursorDevice ();
         cd.getParameter (i).setIndication (mode == Maschine.MODE_BANK_DEVICE);
-//        cd.getCommonParameter (i).setIndication (mode == MODE_BANK_COMMON);
-//        cd.getEnvelopeParameter (i).setIndication (mode == MODE_BANK_ENVELOPE);
-//        cd.getMacro (i).getAmount ().setIndication (mode == MODE_BANK_MACRO);
-//
-//        var uc = this.model.getUserControlBank ();
-//        uc.getControl (i).setIndication (mode == MODE_BANK_USER);
-//
+        cd.getCommonParameter (i).setIndication (mode == Maschine.MODE_BANK_COMMON);
+        cd.getEnvelopeParameter (i).setIndication (mode == Maschine.MODE_BANK_ENVELOPE);
+        cd.getMacro (i).getAmount ().setIndication (mode == Maschine.MODE_BANK_MACRO);
+
+        var uc = this.model.getUserControlBank ();
+        uc.getControl (i).setIndication (mode == Maschine.MODE_BANK_USER);
+
         var mt = this.model.getMasterTrack ();
         mt.setVolumeIndication (mode == Maschine.MODE_MASTER);
         mt.setPanIndication (mode == Maschine.MODE_MASTER);

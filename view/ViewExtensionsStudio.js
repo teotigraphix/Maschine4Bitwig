@@ -173,6 +173,8 @@ AbstractView.prototype.onClear = function() {}; // clr auto
 
 AbstractView.prototype.onJogWheel = function (event, increase)
 {
+    this.onJogWheelInternal (increase);
+
     if (this.surface.isPressed (MaschineButton.TAP))
         this.model.getTransport ().changeTempo (increase, this.surface.isShiftPressed ());
     else if (this.surface.isPressed (MaschineButton.METRO))

@@ -18,3 +18,8 @@ load ("MasterMode.js");
 load ("GrooveMode.js");
 load ("FrameMode.js");
 load ("AccentMode.js");
+
+load ("DirectParameterMode.js");
+load ("ParamPageMode.js");
+load ("ParamPageSelectMode.js");
+

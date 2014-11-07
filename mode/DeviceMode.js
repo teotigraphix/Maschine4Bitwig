@@ -9,36 +9,36 @@ DeviceMode.prototype = new BaseMode ();
 
 DeviceMode.prototype.onValueKnob = function (index, value)
 {
-    //println(value);
     var param = this.model.getCursorDevice ().getFXParam (index);
     param.value = this.surface.changeValue (value, param.value);
     this.model.getCursorDevice ().setParameter (index, param.value);
 };
 
-DeviceMode.prototype.onFirstRow = function (event, index)
+DeviceMode.prototype.onFirstRow = function (index)
 {
-    if (!this.surface.isSelectPressed ())
-        return;
-    if (!event.isDown())
-        return;
+//    println(index);
+//    if (!this.surface.isSelectPressed ())
+//        return;
+//
+//    var device = this.model.getCursorDevice ();
+//    switch (index)
+//    {
+//        case 5:
+//            if (device.hasPreviousParameterPage ())
+//                device.previousParameterPage ();
+//            break;
+//
+//        case 6:
+//            if (device.hasNextParameterPage ())
+//                device.nextParameterPage ();
+//            break;
+//
+//        case 7:
+//            device.toggleEnabledState ();
+//            break;
+//    }
 
-    var device = this.model.getCursorDevice ();
-    switch (index)
-    {
-        case 5:
-            if (device.hasPreviousParameterPage ())
-                device.previousParameterPage ();
-            break;
 
-        case 6:
-            if (device.hasNextParameterPage ())
-                device.nextParameterPage ();
-            break;
-
-        case 7:
-            device.toggleEnabledState ();
-            break;
-    }
 //    switch (index)
 //    {
 //        case 0:
@@ -89,20 +89,17 @@ DeviceMode.prototype.onFirstRow = function (event, index)
 //    }
 };
 
-DeviceMode.prototype.doMacro = function ()
-{
-
-};
-
 DeviceMode.prototype.updateDisplay = function ()
 {
     var d = this.surface.getDisplay ();
+    d.clear ();
+
     if (this.model.hasSelectedDevice ())
     {
         var selectedDevice = this.model.getSelectedDevice ();
         var cursorDevice = this.model.getCursorDevice ();
 
-        if (!this.surface.isPressed(MaschineButton.SELECT))
+        if (!this.surface.isPressed (MaschineButton.SELECT))
         {
             for (var i = 0; i < 8; i++)
             {
@@ -119,20 +116,20 @@ DeviceMode.prototype.updateDisplay = function ()
         }
         else
         {
-            d.clear ();
-            d.setCell (0, 0, '      ')
-             .setCell (0, 1, '      ')
-             .setCell (0, 2, '      ')
-             .setCell (0, 3, '      ')
-             .setCell (0, 4, '      ')
-             .setCell (0, 5, cursorDevice.hasPreviousParameterPage () ? '< Prev' : '', Display.FORMAT_RAW)
-             .setCell (0, 6, cursorDevice.hasNextParameterPage () ? 'Next >' : '', Display.FORMAT_RAW)
-             .setCell (0, 7, selectedDevice.enabled ? 'Disabl' : 'Enable')
-
-            d.setCell (1, 0, 'Selctd', Display.FORMAT_RAW)
-                .setCell (1, 1, 'Dev  >:', Display.FORMAT_RAW);
-            d.setBlock(1, 1, selectedDevice.name);
-            d.setCell (1, 4, cursorDevice.getSelectedParameterPageName (), Display.FORMAT_RAW)
+//            d.clear ();
+//            d.setCell (0, 0, '      ')
+//             .setCell (0, 1, '      ')
+//             .setCell (0, 2, '      ')
+//             .setCell (0, 3, '      ')
+//             .setCell (0, 4, '      ')
+//             .setCell (0, 5, cursorDevice.hasPreviousParameterPage () ? '< Prev' : '', Display.FORMAT_RAW)
+//             .setCell (0, 6, cursorDevice.hasNextParameterPage () ? 'Next >' : '', Display.FORMAT_RAW)
+//             .setCell (0, 7, selectedDevice.enabled ? 'Disabl' : 'Enable')
+//
+//            d.setCell (1, 0, 'Selctd', Display.FORMAT_RAW)
+//                .setCell (1, 1, 'Dev  >:', Display.FORMAT_RAW);
+//            d.setBlock(1, 1, selectedDevice.name);
+//            d.setCell (1, 4, cursorDevice.getSelectedParameterPageName (), Display.FORMAT_RAW)
         }
 
 

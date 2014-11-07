@@ -350,7 +350,7 @@ MaschineStudio.prototype.handleEvent = function (cc, value)
 
         case MaschineButton.JOG_WHEEL:
             if (value != 127)
-                view.onJogWheel (event, value == 2);
+                view.onJogWheel (value == 2);
             break;
 
         case MaschineButton.JOG_WHEEL_PUSH:

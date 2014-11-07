@@ -62,10 +62,8 @@ SelectMode.prototype.updateDisplay = function ()
 
 SelectMode.prototype.getModeName = function (mode, activeModeId)
 {
-
     var modeId = mode[0];
     var name = mode[1];
-    println(modeId + ", " + activeModeId);
     if (modeId == activeModeId)
         name = ">" + name;
     return name;

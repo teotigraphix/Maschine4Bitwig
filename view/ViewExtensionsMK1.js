@@ -37,7 +37,7 @@ AbstractView.prototype.onPlay = function (event)
         this.model.getTransport ().play ();
 };
 
-AbstractView.prototype.onJogWheel = function (event, increase)
+AbstractView.prototype.onJogWheel = function (increase)
 {
     if (this.surface.isPressed (MaschineMK2Button.TEMPO))
         this.model.getTransport ().changeTempo (increase, this.surface.isShiftPressed ());

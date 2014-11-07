@@ -30,8 +30,29 @@ Maschine.MODE_XFADE = 13;
 Maschine.MODE_MASTER = 14;
 Maschine.MODE_GROOVE = 15;
 Maschine.MODE_FRAME = 16;
-Maschine.MODE_ACCENT = 17;
+Maschine.MODE_ACCENT = 17
 
+Maschine.MODE_PARAM_PAGE_SELECT = 20;
+Maschine.MODE_BANK_COMMON = 21;
+Maschine.MODE_BANK_ENVELOPE = 22;
+Maschine.MODE_BANK_DIRECT = 23;
+Maschine.MODE_BANK_MACRO = 24;
+Maschine.MODE_BANK_MODULATE = 25;
+Maschine.MODE_BANK_USER = 26;
+
+Maschine.BANK_MODES = [
+    Maschine.MODE_BANK_COMMON,
+    Maschine.MODE_BANK_ENVELOPE,
+    Maschine.MODE_BANK_DIRECT,
+    Maschine.MODE_BANK_MACRO,
+    Maschine.MODE_BANK_MODULATE,
+    Maschine.MODE_BANK_USER
+];
+
+Maschine.isDeviceBankMode = function (modeId)
+{
+    return Maschine.BANK_MODES.indexOf (modeId) != -1;
+}
 
 Maschine.VIEW_PLAY         = 0;
 Maschine.VIEW_MODE         = 1;
@@ -59,7 +80,7 @@ Maschine.MODES = [
     [Maschine.MODE_MASTER, "Master"],
     [Maschine.MODE_GROOVE, "Groove"],
     [Maschine.MODE_FRAME, "Frame"],
-    [Maschine.MODE_ACCENT, "Accent"],
+    [Maschine.MODE_ACCENT, "Accent"]
 ];
 
 // TEMP

@@ -190,6 +190,28 @@ AbstractView.prototype.onDuplicate = function (event)
 
 AbstractView.prototype.onSelect = function (event)
 {
+    if (event.isLong ())
+        return;
+
+    if (event.isDown ())
+    {
+        if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
+        {
+            this.surface.setPendingMode (Maschine.MODE_PARAM_PAGE_SELECT);
+        }
+        else if (Maschine.isDeviceBankMode (this.surface.getActiveMode ().getId ()) ||
+                 this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
+        {
+            this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+        }
+    }
+    else
+    {
+        if (this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
+        {
+            //this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+        }
+    }
 };
 
 AbstractView.prototype.onSolo = function (event)
@@ -233,6 +255,33 @@ AbstractView.prototype.onMute = function (event)
     {
         this.surface.setPendingMode(Maschine.MODE_BANK_DEVICE);
         this.notifyModeChange (Maschine.MODE_BANK_DEVICE);
+    }
+};
+
+
+
+
+AbstractView.prototype.onJogWheelInternal = function (increase)
+{
+    if (this.surface.isShiftPressed ())
+    {
+        if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE) &&
+            this.model.hasSelectedDevice ())
+        {
+            var cursorDevice = this.model.getCursorDevice ();
+            if (!increase)
+            {
+                if (cursorDevice.hasPreviousParameterPage ())
+                    cursorDevice.previousParameterPage ();
+            }
+            else
+            {
+                if (cursorDevice.hasNextParameterPage ())
+                    cursorDevice.nextParameterPage ();
+            }
+
+            this.notify ("Selected Parameter Bank " + cursorDevice.getSelectedParameterPageName ());
+        }
     }
 };
 
@@ -315,7 +364,7 @@ AbstractView.prototype.scrollRight = function (event)
     }
 };
 
-AbstractDisplay.NOTIFICATION_TIME = 1000; // ms
+AbstractDisplay.NOTIFICATION_TIME = 500; // ms
 
 AbstractView.prototype.notify = function (message)
 {
