@@ -7,3 +7,9 @@ function BaseMode (model)
     AbstractMode.call (this, model);
 }
 BaseMode.prototype = new AbstractMode ();
+
+BaseMode.prototype.clearTopRow = function ()
+{
+    for (var i = MaschineButton.TOP_ROW_0; i <= MaschineButton.TOP_ROW_7; i++)
+        this.surface.setButton (i, MaschineButton.STATE_UP);
+};

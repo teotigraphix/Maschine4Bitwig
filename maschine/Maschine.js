@@ -2,7 +2,7 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-Maschine.VERSION = "0.1.1";
+Maschine.VERSION = "0.1.2";
 
 Maschine.STUDIO = 0;
 Maschine.MK2 = 1;

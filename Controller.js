@@ -102,17 +102,6 @@ Controller.prototype = new AbstractController ();
 Controller.prototype.flush = function ()
 {
     AbstractController.prototype.flush.call (this);
-
-    this.surface.sendColor (MaschineButton.ARROW_LEFT, COLOR.OCEAN);
-    this.surface.sendColor (MaschineButton.ARROW_UP, COLOR.OCEAN);
-    this.surface.sendColor (MaschineButton.ARROW_RIGHT, COLOR.OCEAN);
-    this.surface.sendColor (MaschineButton.ARROW_DOWN, COLOR.OCEAN);
-
-    if (this.model.hasSelectedDevice ())
-    {
-        var selectedDevice = this.model.getSelectedDevice();
-        //this.surface.setButton (MaschineButton.TOP_ROW_7, selectedDevice.enabled ? 127 : 0);
-    }
 };
 
 Controller.prototype.updateMode = function (mode)
@@ -121,6 +110,13 @@ Controller.prototype.updateMode = function (mode)
     this.updateIndication (mode);
 
     // update button lights based on mode
+    for (var i = MaschineButton.TOP_ROW_0; i <= MaschineButton.TOP_ROW_7; i++)
+        this.surface.setButton (i, MaschineButton.STATE_UP);
+
+    this.surface.sendColor (MaschineButton.ARROW_LEFT, COLOR.OCEAN);
+    this.surface.sendColor (MaschineButton.ARROW_UP, COLOR.OCEAN);
+    this.surface.sendColor (MaschineButton.ARROW_RIGHT, COLOR.OCEAN);
+    this.surface.sendColor (MaschineButton.ARROW_DOWN, COLOR.OCEAN);
 };
 
 Controller.prototype.updateIndication = function (mode)
