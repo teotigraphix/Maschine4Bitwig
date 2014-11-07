@@ -173,6 +173,26 @@ AbstractView.prototype.onSelect = function (event)
 
 AbstractView.prototype.onSolo = function (event)
 {
+    if (event.isLong ())
+        return;
+
+    // TODO refactor temp variable
+    if (event.isDown ())
+    {
+        if (!this.surface.isActiveView (Maschine.VIEW_MODE))
+        {
+            this.surface._previousViewId = this.surface.activeViewId;
+            this.surface._previousModeId = this.surface.getActiveMode ().getId ();
+            this.surface.setActiveView (Maschine.VIEW_MODE);
+            this.surface.setPendingMode (Maschine.MODE_SELECT);
+        }
+    }
+    else
+    {
+        this.surface.setActiveView (this.surface._previousViewId);
+        this.surface.setPendingMode (this.surface._previousModeId);
+        this.notifyModeChange (this.surface._previousModeId);
+    }
 };
 
 AbstractView.prototype.onMute = function (event)

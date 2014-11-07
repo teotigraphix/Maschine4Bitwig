@@ -45,12 +45,18 @@ function Controller (kind)
     this.surface.setDefaultMode (Maschine.MODE_BANK_DEVICE);
 
     // add Modes
+    this.surface.addMode (Maschine.MODE_SELECT, new SelectMode (this.model));
     this.surface.addMode (Maschine.MODE_BANK_DEVICE, new DeviceMode (this.model));
     this.surface.addMode (Maschine.MODE_SCALE, new ScalesMode (this.model));
     this.surface.addMode (Maschine.MODE_NAVIGATE, new NavigateMode (this.model));
     this.surface.addMode (Maschine.MODE_TRACK, new TrackMode (this.model));
     this.surface.addMode (Maschine.MODE_VOLUME, new VolumeMode (this.model));
     this.surface.addMode (Maschine.MODE_PAN, new PanMode (this.model));
+
+    this.surface.addMode (Maschine.MODE_SEND1, new SendMode (this.model, Maschine.MODE_SEND1));
+    this.surface.addMode (Maschine.MODE_SEND2, new SendMode (this.model, Maschine.MODE_SEND2));
+    this.surface.addMode (Maschine.MODE_SEND3, new SendMode (this.model, Maschine.MODE_SEND3));
+    this.surface.addMode (Maschine.MODE_SEND4, new SendMode (this.model, Maschine.MODE_SEND4));
 
 //    this.surface.addMode (MODE_BANK_DEVICE, new DeviceMode (this.model));
 //    this.surface.addMode (MODE_DEVICE_LAYER, new DeviceLayerMode (this.model));
@@ -63,13 +69,13 @@ function Controller (kind)
 
     // add Views
     this.surface.addView (Maschine.VIEW_PLAY, new PlayViewMS (this.model));
+    this.surface.addView (Maschine.VIEW_MODE, new ModeView (this.model));
     this.surface.addView (Maschine.VIEW_DRUM, new DrumView (this.model));
     this.surface.addView (Maschine.VIEW_SESSION, new SessionViewMS (this.model));
     this.surface.addView (Maschine.VIEW_EIDT_TOOLS, new EditToolsView (this.model));
 
     this.surface.addModeListener (doObject (this, function (oldMode, newMode)
     {
-        println("addModeListener(updateMode)");
         this.updateMode (-1);
         this.updateMode (newMode);
     }));
@@ -77,8 +83,6 @@ function Controller (kind)
     // set active view & mode
     this.surface.setActiveView (Maschine.VIEW_PLAY);
     this.surface.setActiveMode (Maschine.MODE_BANK_DEVICE);
-
-    //this.updateMode (Maschine.MODE_BANK_DEVICE);
 }
 
 Controller.prototype = new AbstractController ();

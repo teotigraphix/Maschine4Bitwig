@@ -2,9 +2,12 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
+load ("BaseMode.js");
+load ("SelectMode.js");
 load ("DeviceMode.js");
 load ("NavigateMode.js");
 load ("ScalesMode.js");
 load ("TrackMode.js");
 load ("VolumeMode.js");
 load ("PanMode.js");
+load ("SendMode.js");

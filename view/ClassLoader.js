@@ -19,3 +19,4 @@ load ("PlayViewMS.js");
 load ("SessionViewMS.js");
 load ("DrumViewMS.js");
 load ("EditToolsView.js");
+load ("ModeView.js");

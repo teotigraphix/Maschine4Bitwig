@@ -1,9 +1,4 @@
 
-function BaseMode (model)
-{
-    AbstractMode.call (this, model);
-}
-BaseMode.prototype = new AbstractMode ();
 
 function DeviceMode (model)
 {

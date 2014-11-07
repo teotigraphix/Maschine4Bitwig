@@ -16,30 +16,33 @@ Maschine.MODE_SCALE = 1;
 Maschine.MODE_NAVIGATE = 2;
 Maschine.MODE_TRACK = 3;
 Maschine.MODE_VOLUME = 4;
+Maschine.MODE_SELECT = 5;
 
-Maschine.MODE_SEND1 = 5;
-Maschine.MODE_SEND2 = 6;
-Maschine.MODE_SEND3 = 7;
-Maschine.MODE_SEND4 = 8;
-Maschine.MODE_PAN = 9;
+Maschine.MODE_SEND1 = 6;
+Maschine.MODE_SEND2 = 7;
+Maschine.MODE_SEND3 = 8;
+Maschine.MODE_SEND4 = 9;
+Maschine.MODE_PAN = 10;
 
-Maschine.VIEW_PLAY      = 0;
-Maschine.VIEW_DRUM      = 1;
-Maschine.VIEW_SEQUENCER = 2;
-Maschine.VIEW_SESSION   = 3;
-Maschine.VIEW_EIDT_TOOLS   = 4;
+Maschine.VIEW_PLAY         = 0;
+Maschine.VIEW_MODE         = 1;
+Maschine.VIEW_DRUM         = 2;
+Maschine.VIEW_SEQUENCER    = 3;
+Maschine.VIEW_SESSION      = 4;
+Maschine.VIEW_EIDT_TOOLS   = 5;
 
 Maschine.MODES = [
     [Maschine.MODE_BANK_DEVICE, "Device"],
-    [Maschine.MODE_NAVIGATE, "Navigate"],
+    [Maschine.MODE_TRACK, "Track"],
+    [Maschine.MODE_VOLUME, "Volume"],
     [Maschine.MODE_PAN, "Pan"],
-    [Maschine.MODE_SCALE, "Scale"],
     [Maschine.MODE_SEND1, "Send1"],
     [Maschine.MODE_SEND2, "Send2"],
     [Maschine.MODE_SEND3, "Send3"],
     [Maschine.MODE_SEND4, "Send4"],
-    [Maschine.MODE_TRACK, "Track"],
-    [Maschine.MODE_VOLUME, "Volume"]
+
+    [Maschine.MODE_SCALE, "Scale"],
+
 ];
 
 // TEMP
