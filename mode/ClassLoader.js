@@ -13,3 +13,8 @@ load ("PanMode.js");
 load ("SendMode.js");
 load ("ScaleLayoutMode.js");
 load ("ClipMode.js");
+load ("CrossFadeMode.js");
+load ("MasterMode.js");
+load ("GrooveMode.js");
+load ("FrameMode.js");
+load ("AccentMode.js");

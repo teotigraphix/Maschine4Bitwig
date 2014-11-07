@@ -8,13 +8,13 @@ AbstractSessionView.CLIP_COLOR_NO_CONTENT          = { color: COLOR.OFF, blink: 
 AbstractSessionView.CLIP_COLOR_RECORDING_ARMED     = { color: COLOR.ARM, blink: null, fast: false };
 AbstractSessionView.USE_CLIP_COLOR                 = false;
 
-function SessionViewMS (model)
+function SessionView (model)
 {
     AbstractSessionView.call (this, model, 4, 4);
 }
-SessionViewMS.prototype = new AbstractSessionView ();
+SessionView.prototype = new AbstractSessionView ();
 
-SessionViewMS.prototype.onActivate = function ()
+SessionView.prototype.onActivate = function ()
 {
     AbstractSessionView.prototype.onActivate.call (this);
     this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_UP);
@@ -23,11 +23,11 @@ SessionViewMS.prototype.onActivate = function ()
     this.surface.setButton (MaschineButton.SCENE, MaschineButton.STATE_DOWN);
 };
 
-SessionViewMS.prototype.onSelect = function ()
+SessionView.prototype.onSelect = function ()
 {
 };
 
-SessionViewMS.prototype.onGridNote = function (note, velocity)
+SessionView.prototype.onGridNote = function (note, velocity)
 {
     if (!this.surface.isPressed(MaschineButton.SCENE))
     {
@@ -49,7 +49,7 @@ SessionViewMS.prototype.onGridNote = function (note, velocity)
     }
 };
 
-SessionViewMS.prototype.drawSceneButtons = function ()
+SessionView.prototype.drawSceneButtons = function ()
 {
 
 };

@@ -8,19 +8,20 @@ GlobalConfig.CURSOR_DEVICE_TEXT_LENGTH = 6;
 
 function Controller (kind)
 {
+    Config.init ();
+
     var output = new MidiOutput ();
     var input = new MaschineMidiInput ();
     input.init ();
 
-    var scales = new Scales(36, 52, 4, 4);
-    scales.setChromatic (true);
-
-    this.model = new Model (21, scales, 8, 8, 4);
+    this.scales = new Scales(36, 52, 4, 4);
+    this.model = new Model (21, this.scales, 8, 8, 4);
 
     this.model.getTrackBank ().addTrackSelectionListener (doObject (this, function (index, isSelected)
     {
-        //if (isSelected && this.surface.isActiveMode (MODE_MASTER))
-        //    this.surface.setPendingMode (MODE_TRACK);
+        // if in master mode switch to track when a track is selected
+        if (isSelected && this.surface.isActiveMode (Maschine.MODE_MASTER))
+            this.surface.setPendingMode (Maschine.MODE_TRACK);
         if (this.surface.isActiveView (Maschine.VIEW_PLAY))
             this.surface.getActiveView ().updateNoteMapping ();
     }));
@@ -46,6 +47,7 @@ function Controller (kind)
 
     // add Modes
     this.surface.addMode (Maschine.MODE_SELECT, new SelectMode (this.model));
+
     this.surface.addMode (Maschine.MODE_BANK_DEVICE, new DeviceMode (this.model));
     this.surface.addMode (Maschine.MODE_SCALE, new ScalesMode (this.model));
     this.surface.addMode (Maschine.MODE_NAVIGATE, new NavigateMode (this.model));
@@ -54,7 +56,11 @@ function Controller (kind)
     this.surface.addMode (Maschine.MODE_PAN, new PanMode (this.model));
     this.surface.addMode (Maschine.MODE_SCALE_LAYOUT, new ScaleLayoutMode (this.model));
     this.surface.addMode (Maschine.MODE_CLIP, new ClipMode (this.model));
-
+    this.surface.addMode (Maschine.MODE_XFADE, new CrossFadeMode (this.model));
+    this.surface.addMode (Maschine.MODE_MASTER, new MasterMode (this.model));
+    this.surface.addMode (Maschine.MODE_GROOVE, new GrooveMode (this.model));
+    this.surface.addMode (Maschine.MODE_FRAME, new FrameMode (this.model));
+    this.surface.addMode (Maschine.MODE_ACCENT, new AccentMode (this.model));
 
     this.surface.addMode (Maschine.MODE_SEND1, new SendMode (this.model, Maschine.MODE_SEND1));
     this.surface.addMode (Maschine.MODE_SEND2, new SendMode (this.model, Maschine.MODE_SEND2));
@@ -71,10 +77,10 @@ function Controller (kind)
 //    this.surface.addMode (MODE_BANK_USER, new ParamPageMode (this.model, MODE_BANK_USER, 'User'));
 
     // add Views
-    this.surface.addView (Maschine.VIEW_PLAY, new PlayViewMS (this.model));
+    this.surface.addView (Maschine.VIEW_PLAY, new PlayView (this.model));
     this.surface.addView (Maschine.VIEW_MODE, new ModeView (this.model));
     this.surface.addView (Maschine.VIEW_DRUM, new DrumView (this.model));
-    this.surface.addView (Maschine.VIEW_SESSION, new SessionViewMS (this.model));
+    this.surface.addView (Maschine.VIEW_SESSION, new SessionView (this.model));
     this.surface.addView (Maschine.VIEW_EIDT_TOOLS, new EditToolsView (this.model));
 
     this.surface.addModeListener (doObject (this, function (oldMode, newMode)
@@ -82,6 +88,8 @@ function Controller (kind)
         this.updateMode (-1);
         this.updateMode (newMode);
     }));
+
+    this.addConfigListeners ();
 
     // set active view & mode
     this.surface.setActiveView (Maschine.VIEW_PLAY);
@@ -94,15 +102,15 @@ Controller.prototype.flush = function ()
 {
     AbstractController.prototype.flush.call (this);
 
-    this.surface.sendColor(MaschineButton.ARROW_LEFT, COLOR.OCEAN);
-    this.surface.sendColor(MaschineButton.ARROW_UP, COLOR.OCEAN);
-    this.surface.sendColor(MaschineButton.ARROW_RIGHT, COLOR.OCEAN);
-    this.surface.sendColor(MaschineButton.ARROW_DOWN, COLOR.OCEAN);
+    this.surface.sendColor (MaschineButton.ARROW_LEFT, COLOR.OCEAN);
+    this.surface.sendColor (MaschineButton.ARROW_UP, COLOR.OCEAN);
+    this.surface.sendColor (MaschineButton.ARROW_RIGHT, COLOR.OCEAN);
+    this.surface.sendColor (MaschineButton.ARROW_DOWN, COLOR.OCEAN);
 
     if (this.model.hasSelectedDevice ())
     {
         var selectedDevice = this.model.getSelectedDevice();
-        this.surface.setButton (MaschineButton.TOP_ROW_7, selectedDevice.enabled ? 127 : 0);
+        //this.surface.setButton (MaschineButton.TOP_ROW_7, selectedDevice.enabled ? 127 : 0);
     }
 };
 
@@ -133,8 +141,6 @@ Controller.prototype.updateIndication = function (mode)
                     mode == Maschine.MODE_SEND2 && j == 1 ||
                     mode == Maschine.MODE_SEND3 && j == 2 ||
                     mode == Maschine.MODE_SEND4 && j == 3 ||
-                    //mode == MODE_SEND5 && j == 4 ||
-                    //mode == MODE_SEND6 && j == 5 ||
                     hasTrackSel
             );
         }
@@ -148,10 +154,43 @@ Controller.prototype.updateIndication = function (mode)
 //        var uc = this.model.getUserControlBank ();
 //        uc.getControl (i).setIndication (mode == MODE_BANK_USER);
 //
-//        var mt = this.model.getMasterTrack ();
-//        mt.setVolumeIndication (mode == MODE_MASTER);
-//        mt.setPanIndication (mode == MODE_MASTER);
-//
-//        this.model.getGroove ().setIndication (mode == MODE_GROOVE);
+        var mt = this.model.getMasterTrack ();
+        mt.setVolumeIndication (mode == Maschine.MODE_MASTER);
+        mt.setPanIndication (mode == Maschine.MODE_MASTER);
+
+        this.model.getGroove ().setIndication (mode == Maschine.MODE_GROOVE);
     }
 };
+
+Controller.prototype.addConfigListeners = function ()
+{
+    Config.addPropertyListener (Config.SCALES_SCALE, doObject (this, function ()
+    {
+        this.scales.setScaleByName (Config.scale);
+        var view = this.surface.getActiveView ();
+        if (view != null)
+            view.updateNoteMapping ();
+    }));
+    Config.addPropertyListener (Config.SCALES_BASE, doObject (this, function ()
+    {
+        this.scales.setScaleOffsetByName (Config.scaleBase);
+        var view = this.surface.getActiveView ();
+        if (view != null)
+            view.updateNoteMapping ();
+    }));
+    Config.addPropertyListener (Config.SCALES_IN_KEY, doObject (this, function ()
+    {
+        this.scales.setChromatic (!Config.scaleInKey);
+        var view = this.surface.getActiveView ();
+        if (view != null)
+            view.updateNoteMapping ();
+    }));
+    Config.addPropertyListener (Config.SCALES_LAYOUT, doObject (this, function ()
+    {
+        this.scales.setScaleLayoutByName (Config.scaleLayout);
+        var view = this.surface.getActiveView ();
+        if (view != null)
+            view.updateNoteMapping ();
+    }));
+};
+

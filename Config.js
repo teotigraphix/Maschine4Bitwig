@@ -59,28 +59,6 @@ Config.init = function ()
         Config.notifyListeners (Config.FIXED_ACCENT_VALUE);
     });
 
-//    ///////////////////////////
-//    // Ribbon
-//
-//    Config.ribbonModeSetting = prefs.getEnumSetting ("Mode", "Ribbon", [ "Pitch", "CC", "Mixed" ], "Pitch");
-//    Config.ribbonModeSetting.addValueObserver (function (value)
-//    {
-//        switch (value)
-//        {
-//            case "Pitch": Config.ribbonMode = 0; break;
-//            case "CC": Config.ribbonMode = 1; break;
-//            case "Mixed": Config.ribbonMode = 2; break;
-//        }
-//        Config.notifyListeners (Config.RIBBON_MODE);
-//    });
-//
-//    Config.ribbonModeCCSetting = prefs.getNumberSetting ("CC", "Ribbon", 0, 127, 1, "", 1);
-//    Config.ribbonModeCCSetting.addRawValueObserver (function (value)
-//    {
-//        Config.ribbonModeCCVal = Math.floor (value);
-//        Config.notifyListeners (Config.RIBBON_MODE_CC_VAL);
-//    });
-
     ///////////////////////////
     // Scale
 
@@ -123,21 +101,6 @@ Config.setAccentValue = function (value)
 {
     Config.accentValueSetting.setRaw (value);
 };
-
-//Config.setRibbonMode = function (mode)
-//{
-//    switch (mode)
-//    {
-//        case Config.RIBBON_MODE_PITCH: Config.ribbonModeSetting.set ("Pitch"); break;
-//        case Config.RIBBON_MODE_CC: Config.ribbonModeSetting.set ("CC"); break;
-//        case Config.RIBBON_MODE_MIXED: Config.ribbonModeSetting.set ("Mixed"); break;
-//    }
-//};
-//
-//Config.setRibbonModeCC = function (value)
-//{
-//    Config.ribbonModeCCSetting.setRaw (value);
-//};
 
 Config.setScale = function (scale)
 {

@@ -54,12 +54,12 @@ Maschine.MODES = [
     [Maschine.MODE_SCALE, "Scale"],
     [Maschine.MODE_SCALE_LAYOUT, "SclLay"],
     [Maschine.MODE_CLIP, "Clip"],
-    [Maschine.MODE_SCALE, "XFade"],
+    [Maschine.MODE_XFADE, "XFade"],
 
-    [Maschine.MODE_SCALE, "Master"],
-    [Maschine.MODE_SCALE, "Groove"],
-    [Maschine.MODE_SCALE, "Frame"],
-    [Maschine.MODE_SCALE, "Accent"],
+    [Maschine.MODE_MASTER, "Master"],
+    [Maschine.MODE_GROOVE, "Groove"],
+    [Maschine.MODE_FRAME, "Frame"],
+    [Maschine.MODE_ACCENT, "Accent"],
 ];
 
 // TEMP

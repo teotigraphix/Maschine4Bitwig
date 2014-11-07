@@ -144,7 +144,6 @@ AbstractView.prototype.onScene = function (event)
 
     if (!this.surface.isActiveView (Maschine.VIEW_SESSION))
     {
-        println("Session View");
         this.surface.setActiveView (Maschine.VIEW_SESSION);
     }
 };
@@ -331,9 +330,9 @@ AbstractView.prototype.notifyModeChange = function (modeId)
 AbstractView.prototype.updateScale = function ()
 {
     this.surface.getActiveView ().updateNoteMapping ();
-    //Config.setScale (this.scales.getName (this.scales.getSelectedScale ()));
-    //Config.setScaleBase (Scales.BASES[this.scales.getScaleOffset ()]);
-    //Config.setScaleInScale (!this.scales.isChromatic ());
+    Config.setScale (this.scales.getName (this.scales.getSelectedScale ()));
+    Config.setScaleBase (Scales.BASES[this.scales.getScaleOffset ()]);
+    Config.setScaleInScale (!this.scales.isChromatic ());
 };
 
 AbstractView.prototype.canSelectedTrackHoldNotes = function ()

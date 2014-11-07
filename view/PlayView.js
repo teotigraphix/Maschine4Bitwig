@@ -2,14 +2,14 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-function PlayViewMS (model)
+function PlayView (model)
 {
     BaseMaschineView.call (this, model);
 }
 
-PlayViewMS.prototype = new BaseMaschineView ();
+PlayView.prototype = new BaseMaschineView ();
 
-PlayViewMS.prototype.attachTo = function (surface)
+PlayView.prototype.attachTo = function (surface)
 {
     AbstractView.prototype.attachTo.call (this, surface);
 
@@ -21,7 +21,7 @@ PlayViewMS.prototype.attachTo = function (surface)
         this.defaultVelocity.push (i);
 };
 
-PlayViewMS.prototype.updateNoteMapping = function ()
+PlayView.prototype.updateNoteMapping = function ()
 {
     var t = this.model.getTrackBank ().getSelectedTrack ();
     this.noteMap = t != null && t.canHoldNotes ? this.scales.getNoteMatrix () : this.scales.getEmptyMatrix ();
@@ -29,14 +29,14 @@ PlayViewMS.prototype.updateNoteMapping = function ()
     scheduleTask (doObject (this, function () { this.surface.setKeyTranslationTable (this.noteMap); }), null, 100);
 };
 
-PlayViewMS.prototype.clearNoteMapping = function ()
+PlayView.prototype.clearNoteMapping = function ()
 {
     this.noteMap = this.scales.getEmptyMatrix ();
     // Workaround
     scheduleTask (doObject (this, function () { this.surface.setKeyTranslationTable (this.noteMap); }), null, 100);
 };
 
-PlayViewMS.prototype.onActivate = function ()
+PlayView.prototype.onActivate = function ()
 {
     AbstractView.prototype.onActivate.call (this);
     this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_DOWN);
@@ -47,18 +47,18 @@ PlayViewMS.prototype.onActivate = function ()
     this.initMaxVelocity ();
 };
 
-PlayViewMS.prototype.updateSceneButtons = function (buttonID)
+PlayView.prototype.updateSceneButtons = function (buttonID)
 {
     //for (var i = 0; i < 8; i++)
     //    this.push.setButton (PUSH_BUTTON_SCENE1 + i, PUSH_COLOR_BLACK);
 };
 
-PlayViewMS.prototype.usesButton = function (buttonID)
+PlayView.prototype.usesButton = function (buttonID)
 {
     return true;
 };
 
-PlayViewMS.prototype.drawGrid = function ()
+PlayView.prototype.drawGrid = function ()
 {
     if (this.surface.isActiveMode(Maschine.MODE_NAVIGATE))
     {
@@ -91,7 +91,7 @@ PlayViewMS.prototype.drawGrid = function ()
     }
 };
 
-PlayViewMS.prototype.onGridNote = function (note, velocity)
+PlayView.prototype.onGridNote = function (note, velocity)
 {
     if (this.surface.isActiveMode(Maschine.MODE_NAVIGATE))
     {
@@ -113,7 +113,7 @@ PlayViewMS.prototype.onGridNote = function (note, velocity)
 };
 
 
-//PlayViewMS.prototype.onNavigate = function (event)
+//PlayView.prototype.onNavigate = function (event)
 //{
 //    if (event.isLong ())
 //        return;
@@ -141,7 +141,7 @@ PlayViewMS.prototype.onGridNote = function (note, velocity)
 //    }
 //};
 
-PlayViewMS.prototype.onOctaveDown = function (event)
+PlayView.prototype.onOctaveDown = function (event)
 {
     if (!event.isDown ())
         return;
@@ -151,7 +151,7 @@ PlayViewMS.prototype.onOctaveDown = function (event)
     this.surface.getDisplay ().showNotification ('       ' + this.scales.getRangeText ());
 };
 
-PlayViewMS.prototype.onOctaveUp = function (event)
+PlayView.prototype.onOctaveUp = function (event)
 {
     if (!event.isDown ())
         return;
@@ -161,7 +161,7 @@ PlayViewMS.prototype.onOctaveUp = function (event)
     this.surface.getDisplay ().showNotification ('       ' + this.scales.getRangeText ());
 };
 
-PlayViewMS.prototype.onLeftArrow = function (event)
+PlayView.prototype.onLeftArrow = function (event)
 {
     if (this.surface.isPressed(MaschineButton.PAD_MODE))
     {
@@ -173,7 +173,7 @@ PlayViewMS.prototype.onLeftArrow = function (event)
     AbstractView.prototype.onLeftArrow.call (this, event);
 };
 
-PlayViewMS.prototype.onRightArrow = function (event)
+PlayView.prototype.onRightArrow = function (event)
 {
     if (this.surface.isPressed(MaschineButton.PAD_MODE))
     {
@@ -185,7 +185,7 @@ PlayViewMS.prototype.onRightArrow = function (event)
     AbstractView.prototype.onRightArrow.call (this, event);
 };
 
-PlayViewMS.prototype.scrollUp = function (event)
+PlayView.prototype.scrollUp = function (event)
 {
     if (this.surface.isShiftPressed ())
         this.model.getApplication ().arrowKeyLeft ();
@@ -193,7 +193,7 @@ PlayViewMS.prototype.scrollUp = function (event)
         this.model.getApplication ().arrowKeyUp ();
 };
 
-PlayViewMS.prototype.scrollDown = function (event)
+PlayView.prototype.scrollDown = function (event)
 {
     if (this.surface.isShiftPressed ())
         this.model.getApplication ().arrowKeyRight ();
@@ -204,7 +204,7 @@ PlayViewMS.prototype.scrollDown = function (event)
 
 // PlayViewMS.prototype.onAccent = function (event)
 
-PlayViewMS.prototype.initMaxVelocity = function ()
+PlayView.prototype.initMaxVelocity = function ()
 {
     this.maxVelocity = initArray (Config.fixedAccentValue, 128);
     this.maxVelocity[0] = 0;
