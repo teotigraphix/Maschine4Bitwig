@@ -3,7 +3,7 @@
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 GlobalConfig.MASTER_TRACK_TEXT_LENGTH  = 6;
-GlobalConfig.TRACK_BANK_TEXT_LENGTH    = 6;
+GlobalConfig.TRACK_BANK_TEXT_LENGTH    = 13;
 GlobalConfig.CURSOR_DEVICE_TEXT_LENGTH = 6;
 
 function Controller (kind)

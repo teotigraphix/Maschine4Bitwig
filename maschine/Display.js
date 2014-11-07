@@ -71,7 +71,7 @@ Display.prototype.setBlock = function (row, block, value)
     if (value.length > 7)
     {
         this.cells[row * 8 + cell]     = value.substr (0, 7);
-        this.cells[row * 8 + cell + 1] = this.pad (value.substring (7), 8, ' ');
+        this.cells[row * 8 + cell + 1] = this.pad (value.substring (7), 7, ' ');
     }
     else
     {
