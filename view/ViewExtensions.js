@@ -258,9 +258,6 @@ AbstractView.prototype.onMute = function (event)
     }
 };
 
-
-
-
 AbstractView.prototype.onJogWheelInternal = function (increase)
 {
     if (this.surface.isShiftPressed ())

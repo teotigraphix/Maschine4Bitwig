@@ -47,6 +47,22 @@ PlayView.prototype.onActivate = function ()
     this.initMaxVelocity ();
 };
 
+PlayView.prototype.onUp = function (event)
+{
+    if (!this.surface.isShiftPressed ())
+        AbstractView.prototype.onUp.call (this, event);
+    else
+        this.onOctaveUp (event);
+};
+
+PlayView.prototype.onDown = function (event)
+{
+    if (!this.surface.isShiftPressed ())
+        AbstractView.prototype.onDown.call (this, event);
+    else
+        this.onOctaveDown (event);
+};
+
 PlayView.prototype.updateSceneButtons = function (buttonID)
 {
     //for (var i = 0; i < 8; i++)
@@ -148,7 +164,7 @@ PlayView.prototype.onOctaveDown = function (event)
     this.clearPressedKeys ();
     this.scales.decOctave ();
     this.updateNoteMapping ();
-    this.surface.getDisplay ().showNotification ('       ' + this.scales.getRangeText ());
+    this.surface.getDisplay ().showNotification ('                         Octave Range - ' + this.scales.getRangeText ());
 };
 
 PlayView.prototype.onOctaveUp = function (event)
@@ -158,30 +174,16 @@ PlayView.prototype.onOctaveUp = function (event)
     this.clearPressedKeys ();
     this.scales.incOctave ();
     this.updateNoteMapping ();
-    this.surface.getDisplay ().showNotification ('       ' + this.scales.getRangeText ());
+    this.surface.getDisplay ().showNotification ('                         Octave Range - ' + this.scales.getRangeText ());
 };
 
 PlayView.prototype.onLeftArrow = function (event)
 {
-    if (this.surface.isPressed(MaschineButton.PAD_MODE))
-    {
-        this.surface.setButtonConsumed(MaschineButton.PAD_MODE);
-        this.onOctaveDown(event);
-        return;
-    }
-
     AbstractView.prototype.onLeftArrow.call (this, event);
 };
 
 PlayView.prototype.onRightArrow = function (event)
 {
-    if (this.surface.isPressed(MaschineButton.PAD_MODE))
-    {
-        this.surface.setButtonConsumed(MaschineButton.PAD_MODE);
-        this.onOctaveUp(event);
-        return;
-    }
-
     AbstractView.prototype.onRightArrow.call (this, event);
 };
 
