@@ -11,3 +11,5 @@ load ("TrackMode.js");
 load ("VolumeMode.js");
 load ("PanMode.js");
 load ("SendMode.js");
+load ("ScaleLayoutMode.js");
+load ("ClipMode.js");

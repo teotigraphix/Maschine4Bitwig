@@ -52,6 +52,9 @@ function Controller (kind)
     this.surface.addMode (Maschine.MODE_TRACK, new TrackMode (this.model));
     this.surface.addMode (Maschine.MODE_VOLUME, new VolumeMode (this.model));
     this.surface.addMode (Maschine.MODE_PAN, new PanMode (this.model));
+    this.surface.addMode (Maschine.MODE_SCALE_LAYOUT, new ScaleLayoutMode (this.model));
+    this.surface.addMode (Maschine.MODE_CLIP, new ClipMode (this.model));
+
 
     this.surface.addMode (Maschine.MODE_SEND1, new SendMode (this.model, Maschine.MODE_SEND1));
     this.surface.addMode (Maschine.MODE_SEND2, new SendMode (this.model, Maschine.MODE_SEND2));

@@ -161,18 +161,8 @@ AbstractView.prototype.onPattern = function()
 
 AbstractView.prototype.onNavigate = function (event)
 {
-};
+    this.refreshButton (MaschineButton.NAVIGATE, event);
 
-AbstractView.prototype.onDuplicate = function (event)
-{
-};
-
-AbstractView.prototype.onSelect = function (event)
-{
-};
-
-AbstractView.prototype.onSolo = function (event)
-{
     if (event.isLong ())
         return;
 
@@ -193,6 +183,18 @@ AbstractView.prototype.onSolo = function (event)
         this.surface.setPendingMode (this.surface._previousModeId);
         this.notifyModeChange (this.surface._previousModeId);
     }
+};
+
+AbstractView.prototype.onDuplicate = function (event)
+{
+};
+
+AbstractView.prototype.onSelect = function (event)
+{
+};
+
+AbstractView.prototype.onSolo = function (event)
+{
 };
 
 AbstractView.prototype.onMute = function (event)

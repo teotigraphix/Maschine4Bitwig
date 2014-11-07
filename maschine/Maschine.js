@@ -24,6 +24,15 @@ Maschine.MODE_SEND3 = 8;
 Maschine.MODE_SEND4 = 9;
 Maschine.MODE_PAN = 10;
 
+Maschine.MODE_SCALE_LAYOUT = 11;
+Maschine.MODE_CLIP = 12;
+Maschine.MODE_XFADE = 13;
+Maschine.MODE_MASTER = 14;
+Maschine.MODE_GROOVE = 15;
+Maschine.MODE_FRAME = 16;
+Maschine.MODE_ACCENT = 17;
+
+
 Maschine.VIEW_PLAY         = 0;
 Maschine.VIEW_MODE         = 1;
 Maschine.VIEW_DRUM         = 2;
@@ -36,13 +45,21 @@ Maschine.MODES = [
     [Maschine.MODE_TRACK, "Track"],
     [Maschine.MODE_VOLUME, "Volume"],
     [Maschine.MODE_PAN, "Pan"],
+
     [Maschine.MODE_SEND1, "Send1"],
     [Maschine.MODE_SEND2, "Send2"],
     [Maschine.MODE_SEND3, "Send3"],
     [Maschine.MODE_SEND4, "Send4"],
 
     [Maschine.MODE_SCALE, "Scale"],
+    [Maschine.MODE_SCALE_LAYOUT, "SclLay"],
+    [Maschine.MODE_CLIP, "Clip"],
+    [Maschine.MODE_SCALE, "XFade"],
 
+    [Maschine.MODE_SCALE, "Master"],
+    [Maschine.MODE_SCALE, "Groove"],
+    [Maschine.MODE_SCALE, "Frame"],
+    [Maschine.MODE_SCALE, "Accent"],
 ];
 
 // TEMP

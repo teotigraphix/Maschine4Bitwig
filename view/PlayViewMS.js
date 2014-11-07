@@ -113,33 +113,33 @@ PlayViewMS.prototype.onGridNote = function (note, velocity)
 };
 
 
-PlayViewMS.prototype.onNavigate = function (event)
-{
-    if (event.isLong ())
-        return;
-
-    println("onNavigate()");
-
-    if (event.isDown ())
-    {
-        this.clearPressedKeys ();
-        this.clearNoteMapping ();
-        //this.surface.pads.turnOff ();
-        this.surface.setPendingMode (Maschine.MODE_NAVIGATE);
-        if (this.model.hasSelectedDevice ())
-        {
-            var selectedDevice = this.model.getSelectedDevice();
-            var cursorDevice = this.model.getCursorDevice();
-            var names = cursorDevice.parameterPageNames;
-
-        }
-    }
-    else
-    {
-        //this.updateNoteMapping ();
-        //this.surface.setActiveMode (Maschine.MODE_BANK_DEVICE);
-    }
-};
+//PlayViewMS.prototype.onNavigate = function (event)
+//{
+//    if (event.isLong ())
+//        return;
+//
+//    println("onNavigate()");
+//
+//    if (event.isDown ())
+//    {
+//        this.clearPressedKeys ();
+//        this.clearNoteMapping ();
+//        //this.surface.pads.turnOff ();
+//        this.surface.setPendingMode (Maschine.MODE_NAVIGATE);
+//        if (this.model.hasSelectedDevice ())
+//        {
+//            var selectedDevice = this.model.getSelectedDevice();
+//            var cursorDevice = this.model.getCursorDevice();
+//            var names = cursorDevice.parameterPageNames;
+//
+//        }
+//    }
+//    else
+//    {
+//        //this.updateNoteMapping ();
+//        //this.surface.setActiveMode (Maschine.MODE_BANK_DEVICE);
+//    }
+//};
 
 PlayViewMS.prototype.onOctaveDown = function (event)
 {
