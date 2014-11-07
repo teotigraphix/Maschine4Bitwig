@@ -60,6 +60,8 @@ Maschine.VIEW_DRUM         = 2;
 Maschine.VIEW_SEQUENCER    = 3;
 Maschine.VIEW_SESSION      = 4;
 Maschine.VIEW_EIDT_TOOLS   = 5;
+Maschine.VIEW_MUTE         = 6;
+Maschine.VIEW_SOLO         = 7;
 
 Maschine.MODES = [
     [Maschine.MODE_BANK_DEVICE, "Device"],

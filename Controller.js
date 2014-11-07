@@ -83,6 +83,8 @@ function Controller (kind)
     this.surface.addView (Maschine.VIEW_DRUM, new DrumView (this.model));
     this.surface.addView (Maschine.VIEW_SESSION, new SessionView (this.model));
     this.surface.addView (Maschine.VIEW_EIDT_TOOLS, new EditToolsView (this.model));
+    this.surface.addView (Maschine.VIEW_MUTE, new MuteView (this.model));
+    this.surface.addView (Maschine.VIEW_SOLO, new SoloView (this.model));
 
     this.surface.addModeListener (doObject (this, function (oldMode, newMode)
     {

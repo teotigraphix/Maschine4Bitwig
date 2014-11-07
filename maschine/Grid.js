@@ -86,17 +86,23 @@ function Color(hue, saturation, brightness)
 var COLOR =
 {
     OCEAN : new Color(210.0, 1, 1.0),
+
     OFF : new Color(0.0, 0.0, 0.0),
     ON : new Color(180.0, 0.0, 1.0),
     ON_MEDIUM : new Color(180.0, 0.0, 0.5),
     ON_DIM : new Color(180.0, 0.0, 0.25),
 
+    GREEN : new Color(100.0, 1.0, 1.0),
+    GREEN_MEDIUM : new Color(100.0, 1.0, 0.5),
+    GREEN_DIM : new Color(100.0, 1.0, 0.25),
+
+    RED : new Color(0.0, 1.0, 1.0),
+    RED_MEDIUM : new Color(0.0, 1.0, 0.5),
+    RED_DIM : new Color(0.0, 1.0, 0.25),
+
     ARM : new Color(0.0, 1.0, 1.0),
     PLAY : new Color(100.0, 1.0, 1.0),
 
-
-    ON : new Color(180.0, 0.0, 1.0),
-    OFF : new Color(0.0, 0.0, 0.0), // 180.0
     PAD_ARROW_KEY_DISABLED : new Color(220.0, 1.0, 0.1),
     PAD_ARROW_KEY_ENABLED : new Color(220.0, 1.0, 0.5),
     PAD_PAGE_MODIFIER : new Color(220.0, 0.5, 0.8),
@@ -104,10 +110,8 @@ var COLOR =
     PAD_SHIFT_MODIFIER : new Color(65.0, 1.0, 0.4),
     PAD_ALT_MODIFIER : new Color(70.0, 1.0, 0.4),
     RECORD : new Color(0.0, 1.0, 1.0),
-    ARM : new Color(0.0, 1.0, 1.0),
     MUTE : new Color(50.0, 1.0, 1.0),
     SOLO : new Color(200.0, 1.0, 1.0),
-    PLAY : new Color(100.0, 1.0, 1.0),
     PRESSED_NOTE_KEY : new Color(25.0, 1.0, 1.0),
     SCENE_WITH_CONTENT : new Color(30.0, 1.0, 1.0),
     SCENE_WITHOUT_CONTENT : new Color(30.0, 1.0, 0.5),
@@ -125,16 +129,6 @@ var COLOR =
     PLAYED_INACTIVE_NOTE_STEP : new Color(150.0, 1.0, 0.1),
     UNSELECTED_TOGGLE_BRIGHTNESS_FACTOR : 0.1
 };
-
-
-var NOTE_BLACK = COLOR.OFF;
-var NOTE_WHITE = COLOR.ON;
-var NOTE_OCEAN = COLOR.OCEAN;
-
-var PUSH_COLOR2_WHITE = COLOR.ON;
-var PUSH_COLOR_BLACK = COLOR.OFF;
-var PUSH_COLOR2_OCEAN_HI = COLOR.OCEAN;
-
 
 Scales.SCALE_COLOR_OFF          = COLOR.OFF;
 Scales.SCALE_COLOR_OCTAVE       = COLOR.OCEAN;

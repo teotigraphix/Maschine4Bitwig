@@ -190,6 +190,7 @@ AbstractView.prototype.onDuplicate = function (event)
 
 AbstractView.prototype.onSelect = function (event)
 {
+    this.refreshButton (MaschineButton.SELECT, event);
     if (event.isLong ())
         return;
 
@@ -216,45 +217,47 @@ AbstractView.prototype.onSelect = function (event)
 
 AbstractView.prototype.onSolo = function (event)
 {
+    this.refreshButton (MaschineButton.SOLO, event);
+    if (event.isLong ())
+        return;
+
+    if (event.isDown ())
+    {
+        if (!this.surface.isActiveView (Maschine.VIEW_SOLO))
+        {
+            this.surface._previousViewId = this.surface.activeViewId;
+            this.surface._previousModeId = this.surface.getActiveMode ().getId ();
+            this.surface.setActiveView (Maschine.VIEW_SOLO);
+            this.surface.setPendingMode (Maschine.MODE_VOLUME);
+        }
+    }
+    else
+    {
+        this.surface.setActiveView (this.surface._previousViewId);
+        this.surface.setPendingMode (this.surface._previousModeId);
+    }
 };
 
 AbstractView.prototype.onMute = function (event)
 {
     this.refreshButton (MaschineButton.MUTE, event);
-    if (!event.isDown ())
+    if (event.isLong ())
         return;
 
-    if (this.surface.isShiftPressed ())
+    if (event.isDown ())
     {
-        this.notifyModeChange (this.surface.getActiveMode ().getId ());
-        return;
+        if (!this.surface.isActiveView (Maschine.VIEW_MUTE))
+        {
+            this.surface._previousViewId = this.surface.activeViewId;
+            this.surface._previousModeId = this.surface.getActiveMode ().getId ();
+            this.surface.setActiveView (Maschine.VIEW_MUTE);
+            this.surface.setPendingMode (Maschine.MODE_VOLUME);
+        }
     }
-
-    // TODO refactor
-    if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
+    else
     {
-        this.surface.setPendingMode(Maschine.MODE_TRACK);
-        this.notifyModeChange (Maschine.MODE_TRACK);
-    }
-    else if (this.surface.isActiveMode (Maschine.MODE_TRACK))
-    {
-        this.surface.setPendingMode(Maschine.MODE_SCALE);
-        this.notifyModeChange (Maschine.MODE_SCALE);
-    }
-    else if (this.surface.isActiveMode (Maschine.MODE_SCALE))
-    {
-        this.surface.setPendingMode(Maschine.MODE_VOLUME);
-        this.notifyModeChange (Maschine.MODE_VOLUME);
-    }
-    else if (this.surface.isActiveMode (Maschine.MODE_VOLUME))
-    {
-        this.surface.setPendingMode(Maschine.MODE_PAN);
-        this.notifyModeChange (Maschine.MODE_PAN);
-    }
-    else if (this.surface.isActiveMode (Maschine.MODE_PAN))
-    {
-        this.surface.setPendingMode(Maschine.MODE_BANK_DEVICE);
-        this.notifyModeChange (Maschine.MODE_BANK_DEVICE);
+        this.surface.setActiveView (this.surface._previousViewId);
+        this.surface.setPendingMode (this.surface._previousModeId);
     }
 };
 

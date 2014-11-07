@@ -20,3 +20,5 @@ load ("SessionView.js");
 load ("DrumView.js");
 load ("EditToolsView.js");
 load ("ModeView.js");
+load ("MuteView.js");
+load ("SoloView.js");
