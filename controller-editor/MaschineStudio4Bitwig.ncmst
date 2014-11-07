@@ -863,7 +863,6 @@
         <knob id="EncoderKnob1">
           <name>Param 1</name>
           <mcu-vpot>16</mcu-vpot>
-          <inc>0</inc>
           <dec>127</dec>
           <range>3600</range>
           <steps>100</steps>
@@ -872,7 +871,6 @@
         <knob id="EncoderKnob2">
           <name>Param 2</name>
           <mcu-vpot>17</mcu-vpot>
-          <inc>0</inc>
           <dec>127</dec>
           <range>360</range>
           <steps>100</steps>
@@ -938,15 +936,13 @@
       <current_index>0</current_index>
       <group color-index="9" name="Pad Page A">
         <pad id="Pad10_PRESSURE" subtype="pressure">
-          <note>45</note>
-          <channel>1</channel>
+          <polyat>45</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad10_TRIGGER" subtype="trigger">
           <note>45</note>
@@ -988,15 +984,13 @@
           <default>0</default>
         </led>
         <pad id="Pad11_PRESSURE" subtype="pressure">
-          <note>46</note>
-          <channel>1</channel>
+          <polyat>46</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad11_TRIGGER" subtype="trigger">
           <note>46</note>
@@ -1038,15 +1032,13 @@
           <default>0</default>
         </led>
         <pad id="Pad12_PRESSURE" subtype="pressure">
-          <note>47</note>
-          <channel>1</channel>
+          <polyat>47</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad12_TRIGGER" subtype="trigger">
           <note>47</note>
@@ -1088,15 +1080,13 @@
           <default>0</default>
         </led>
         <pad id="Pad13_PRESSURE" subtype="pressure">
-          <note>48</note>
-          <channel>1</channel>
+          <polyat>48</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad13_TRIGGER" subtype="trigger">
           <note>48</note>
@@ -1138,15 +1128,13 @@
           <default>0</default>
         </led>
         <pad id="Pad14_PRESSURE" subtype="pressure">
-          <note>49</note>
-          <channel>1</channel>
+          <polyat>49</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad14_TRIGGER" subtype="trigger">
           <note>49</note>
@@ -1188,15 +1176,13 @@
           <default>0</default>
         </led>
         <pad id="Pad15_PRESSURE" subtype="pressure">
-          <note>50</note>
-          <channel>1</channel>
+          <polyat>50</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad15_TRIGGER" subtype="trigger">
           <note>50</note>
@@ -1238,15 +1224,13 @@
           <default>0</default>
         </led>
         <pad id="Pad16_PRESSURE" subtype="pressure">
-          <note>51</note>
-          <channel>1</channel>
+          <polyat>51</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad16_TRIGGER" subtype="trigger">
           <note>51</note>
@@ -1288,15 +1272,13 @@
           <default>0</default>
         </led>
         <pad id="Pad1_PRESSURE" subtype="pressure">
-          <note>36</note>
-          <channel>1</channel>
+          <polyat>36</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad1_TRIGGER" subtype="trigger">
           <note>36</note>
@@ -1338,15 +1320,13 @@
           <default>0</default>
         </led>
         <pad id="Pad2_PRESSURE" subtype="pressure">
-          <note>37</note>
-          <channel>1</channel>
+          <polyat>37</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad2_TRIGGER" subtype="trigger">
           <note>37</note>
@@ -1388,15 +1368,13 @@
           <default>0</default>
         </led>
         <pad id="Pad3_PRESSURE" subtype="pressure">
-          <note>38</note>
-          <channel>1</channel>
+          <polyat>38</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad3_TRIGGER" subtype="trigger">
           <note>38</note>
@@ -1438,15 +1416,13 @@
           <default>0</default>
         </led>
         <pad id="Pad4_PRESSURE" subtype="pressure">
-          <note>39</note>
-          <channel>1</channel>
+          <polyat>39</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad4_TRIGGER" subtype="trigger">
           <note>39</note>
@@ -1488,15 +1464,13 @@
           <default>0</default>
         </led>
         <pad id="Pad5_PRESSURE" subtype="pressure">
-          <note>40</note>
-          <channel>1</channel>
+          <polyat>40</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad5_TRIGGER" subtype="trigger">
           <note>40</note>
@@ -1538,15 +1512,13 @@
           <default>0</default>
         </led>
         <pad id="Pad6_PRESSURE" subtype="pressure">
-          <note>41</note>
-          <channel>1</channel>
+          <polyat>41</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad6_TRIGGER" subtype="trigger">
           <note>41</note>
@@ -1588,15 +1560,13 @@
           <default>0</default>
         </led>
         <pad id="Pad7_PRESSURE" subtype="pressure">
-          <note>42</note>
-          <channel>1</channel>
+          <polyat>42</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad7_TRIGGER" subtype="trigger">
           <note>42</note>
@@ -1638,15 +1608,13 @@
           <default>0</default>
         </led>
         <pad id="Pad8_PRESSURE" subtype="pressure">
-          <note>43</note>
-          <channel>1</channel>
+          <polyat>43</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad8_TRIGGER" subtype="trigger">
           <note>43</note>
@@ -1688,15 +1656,13 @@
           <default>0</default>
         </led>
         <pad id="Pad9_PRESSURE" subtype="pressure">
-          <note>44</note>
-          <channel>1</channel>
+          <polyat>44</polyat>
+          <channel>0</channel>
           <min>0</min>
           <max>127</max>
           <default>0</default>
           <behavior>toggle</behavior>
           <reaction>ondown</reaction>
-          <note-on-pressure>0</note-on-pressure>
-          <note-off-pressure>0</note-off-pressure>
         </pad>
         <pad id="Pad9_TRIGGER" subtype="trigger">
           <note>44</note>
