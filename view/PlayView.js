@@ -177,16 +177,6 @@ PlayView.prototype.onOctaveUp = function (event)
     this.surface.getDisplay ().showNotification ('                         Octave Range - ' + this.scales.getRangeText ());
 };
 
-PlayView.prototype.onLeftArrow = function (event)
-{
-    AbstractView.prototype.onLeftArrow.call (this, event);
-};
-
-PlayView.prototype.onRightArrow = function (event)
-{
-    AbstractView.prototype.onRightArrow.call (this, event);
-};
-
 PlayView.prototype.scrollUp = function (event)
 {
     if (this.surface.isShiftPressed ())

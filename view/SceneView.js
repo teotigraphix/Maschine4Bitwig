@@ -1,37 +1,37 @@
 
-AbstractSessionView.CLIP_COLOR_IS_RECORDING        = { color: COLOR.RECORD, blink: null, fast: false };
-AbstractSessionView.CLIP_COLOR_IS_RECORDING_QUEUED = { color: COLOR.ARM, blink: null, fast: false };
-AbstractSessionView.CLIP_COLOR_IS_PLAYING          = { color: COLOR.PLAY, blink: null, fast: false };
-AbstractSessionView.CLIP_COLOR_IS_PLAYING_QUEUED   = { color: COLOR.LAUNCHED_SCENE_WITH_CONTENT, blink: null, fast: false };
-AbstractSessionView.CLIP_COLOR_HAS_CONTENT         = { color: COLOR.SCENE_WITH_CONTENT, blink: null, fast: false };
-AbstractSessionView.CLIP_COLOR_NO_CONTENT          = { color: COLOR.OFF, blink: null, fast: false };
-AbstractSessionView.CLIP_COLOR_RECORDING_ARMED     = { color: COLOR.ARM, blink: null, fast: false };
-AbstractSessionView.USE_CLIP_COLOR                 = false;
+AbstractSceneView.CLIP_COLOR_IS_RECORDING        = { color: COLOR.RECORD, blink: null, fast: false };
+AbstractSceneView.CLIP_COLOR_IS_RECORDING_QUEUED = { color: COLOR.ARM, blink: null, fast: false };
+AbstractSceneView.CLIP_COLOR_IS_PLAYING          = { color: COLOR.PLAY, blink: null, fast: false };
+AbstractSceneView.CLIP_COLOR_IS_PLAYING_QUEUED   = { color: COLOR.LAUNCHED_SCENE_WITH_CONTENT, blink: null, fast: false };
+AbstractSceneView.CLIP_COLOR_HAS_CONTENT         = { color: COLOR.SCENE_WITH_CONTENT, blink: null, fast: false };
+AbstractSceneView.CLIP_COLOR_NO_CONTENT          = { color: COLOR.OFF, blink: null, fast: false };
+AbstractSceneView.CLIP_COLOR_RECORDING_ARMED     = { color: COLOR.ARM, blink: null, fast: false };
+AbstractSceneView.USE_CLIP_COLOR                 = false;
 
-function SessionView (model)
+function SceneView (model)
 {
-    AbstractSessionView.call (this, model, 4, 4);
+    AbstractSceneView.call (this, model, 4, 4);
 }
-SessionView.prototype = new AbstractSessionView ();
+SceneView.prototype = new AbstractSceneView ();
 
-SessionView.prototype.onActivate = function ()
+SceneView.prototype.onActivate = function ()
 {
-    AbstractSessionView.prototype.onActivate.call (this);
+    AbstractSceneView.prototype.onActivate.call (this);
     this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_UP);
     this.surface.setButton (MaschineButton.PATTERN, MaschineButton.STATE_UP);
     this.surface.setButton (MaschineButton.STEP_MODE, MaschineButton.STATE_UP);
     this.surface.setButton (MaschineButton.SCENE, MaschineButton.STATE_DOWN);
 };
 
-SessionView.prototype.onSelect = function ()
+SceneView.prototype.onSelect = function (event)
 {
 };
 
-SessionView.prototype.onGridNote = function (note, velocity)
+SceneView.prototype.onGridNote = function (note, velocity)
 {
     if (!this.surface.isPressed(MaschineButton.SCENE))
     {
-        AbstractSessionView.prototype.onGridNote.call (this, note, velocity);
+        AbstractSceneView.prototype.onGridNote.call (this, note, velocity);
     }
     else
     {
@@ -40,70 +40,10 @@ SessionView.prototype.onGridNote = function (note, velocity)
 
         var index = note - 36;
         var t = index % this.columns;
-        var s = (this.rows - 1) - Math.floor (index / this.columns);
-
-        var tb = this.model.getCurrentTrackBank ();
-        var slot = tb.getTrack (t).slots[s];
+        var tb = this.getCurrentTrackBank ();
         var slots = tb.getClipLauncherSlots (t);
         slots.stop ();
     }
-};
-
-SessionView.prototype.drawSceneButtons = function ()
-{
-
-};
-
-AbstractSessionView.prototype.drawPad = function (slot, x, y, isArmed)
-{
-    var color;
-    if (slot.isRecording)
-    {
-        if (slot.isQueued)
-        {
-            if (AbstractSessionView.USE_CLIP_COLOR && slot.color)
-                color = AbstractSessionView.CLIP_COLOR_IS_RECORDING_QUEUED;
-            else
-                color = AbstractSessionView.CLIP_COLOR_IS_RECORDING_QUEUED;
-        }
-        else
-        {
-            if (AbstractSessionView.USE_CLIP_COLOR && slot.color)
-                color = { color: getColor (slot.color), blink: AbstractSessionView.CLIP_COLOR_IS_RECORDING.blink, fast: AbstractSessionView.CLIP_COLOR_IS_RECORDING.fast };
-            else
-                color = AbstractSessionView.CLIP_COLOR_IS_RECORDING;
-        }
-    }
-    else if (slot.isPlaying)
-    {
-        if (slot.isQueued)
-        {
-            if (AbstractSessionView.USE_CLIP_COLOR && slot.color)
-                color = AbstractSessionView.CLIP_COLOR_IS_PLAYING_QUEUED;
-            else
-                color = AbstractSessionView.CLIP_COLOR_IS_PLAYING_QUEUED;
-        }
-        else
-        {
-            if (AbstractSessionView.USE_CLIP_COLOR && slot.color)
-                color = { color: getColor (slot.color), blink: AbstractSessionView.CLIP_COLOR_IS_PLAYING.blink, fast: AbstractSessionView.CLIP_COLOR_IS_PLAYING.fast };
-            else
-                color = AbstractSessionView.CLIP_COLOR_IS_PLAYING;
-        }
-    }
-    else if (slot.hasContent)
-    {
-        if (AbstractSessionView.USE_CLIP_COLOR && slot.color)
-            color = { color: getColor (slot.color), blink: AbstractSessionView.CLIP_COLOR_HAS_CONTENT.blink, fast: AbstractSessionView.CLIP_COLOR_HAS_CONTENT.fast };
-        else
-            color = AbstractSessionView.CLIP_COLOR_HAS_CONTENT;
-    }
-    else if (isArmed)
-        color = AbstractSessionView.CLIP_COLOR_RECORDING_ARMED;
-    else
-        color = AbstractSessionView.CLIP_COLOR_NO_CONTENT;
-
-    this.surface.pads.lightEx (x, y, color.color, color.blink, color.fast);
 };
 
 function getColor (colorId)

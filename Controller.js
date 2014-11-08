@@ -15,7 +15,9 @@ function Controller (kind)
     input.init ();
 
     this.scales = new Scales(36, 52, 4, 4);
-    this.model = new Model (21, this.scales, 8, 8, 4);
+    this.model = new Model (21, this.scales, 8, 4, 4);
+
+    this.model.sessionTrackBank = new TrackBankProxy (4, 4, 4);
 
     this.model.getTrackBank ().addTrackSelectionListener (doObject (this, function (index, isSelected)
     {
@@ -81,10 +83,25 @@ function Controller (kind)
     this.surface.addView (Maschine.VIEW_PLAY, new PlayView (this.model));
     this.surface.addView (Maschine.VIEW_MODE, new ModeView (this.model));
     this.surface.addView (Maschine.VIEW_DRUM, new DrumView (this.model));
-    this.surface.addView (Maschine.VIEW_SESSION, new SessionView (this.model));
+    this.surface.addView (Maschine.VIEW_SESSION, new SceneView (this.model));
     this.surface.addView (Maschine.VIEW_EIDT_TOOLS, new EditToolsView (this.model));
     this.surface.addView (Maschine.VIEW_MUTE, new MuteView (this.model));
     this.surface.addView (Maschine.VIEW_SOLO, new SoloView (this.model));
+
+    this.surface.addViewChangeListener (doObject (this, function (oldViewId, newViewId)
+    {
+
+        if (oldViewId == Maschine.VIEW_SESSION)
+        {
+            //println("Leaving Session");
+           // this.model.currentTrackBank = this.trackBank;
+        }
+        else if (newViewId == Maschine.VIEW_SESSION)
+        {
+            //println("Entering Session");
+           // this.model.currentTrackBank = this.sessionTrackBank;
+        }
+    }));
 
     this.surface.addModeListener (doObject (this, function (oldMode, newMode)
     {

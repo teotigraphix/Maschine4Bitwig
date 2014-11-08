@@ -14,9 +14,10 @@ else if (Maschine.INSTANCE == Maschine.MK1)
     load ("ViewExtensionsMK1.js");
 
 load ("BaseMaschineView.js");
+load ("AbstractSceneView.js");
 load ("AbstractSequencerView.js");
 load ("PlayView.js");
-load ("SessionView.js");
+load ("SceneView.js");
 load ("DrumView.js");
 load ("EditToolsView.js");
 load ("ModeView.js");

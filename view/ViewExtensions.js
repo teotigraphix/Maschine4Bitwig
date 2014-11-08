@@ -11,7 +11,24 @@ AbstractView.prototype.onShift = function (event)
 
 
 AbstractView.prototype.onBrowse = function (event) {};
-AbstractView.prototype.onSampling = function (event) {};
+
+AbstractView.prototype.onSampling = function (event)
+{
+    this.refreshButton (MaschineButton.SAMPLING, event);
+
+    if (!event.isDown ())
+        return;
+
+    var layout = this.model.getApplication ().getPanelLayout ();
+    if (layout == 'ARRANGE')
+        layout = 'MIX';
+    else if (layout == 'MIX')
+        layout = 'EDIT';
+    else if (layout == 'EDIT')
+        layout = 'ARRANGE';
+
+    this.model.getApplication ().setPanelLayout (layout);
+};
 
 // Arrow Left/Right page Knob pages
 
@@ -112,14 +129,32 @@ AbstractView.prototype.onLeftArrow = function (event)
 {
     if (!event.isDown())
         return;
-    this.scrollLeft (event);
+
+    switch (this.surface.getCurrentMode ())
+    {
+        case Maschine.MODE_BANK_DEVICE:
+            //case MODE_PRESET:
+            this.model.getCursorDevice ().selectPrevious ();
+            break;
+        default:
+            this.scrollLeft (event);
+    }
 };
 
 AbstractView.prototype.onRightArrow = function (event)
 {
     if (!event.isDown())
         return;
-    this.scrollRight (event);
+
+    switch (this.surface.getCurrentMode ())
+    {
+        case Maschine.MODE_BANK_DEVICE:
+        //case MODE_PRESET:
+            this.model.getCursorDevice ().selectNext ();
+            break;
+        default:
+            this.scrollRight (event);
+    }
 };
 
 //--------------------------------------
@@ -310,29 +345,63 @@ AbstractView.prototype.onFirstRow = function (index)
         m.onFirstRow (index);
 };
 
+AbstractView.prototype.getCurrentTrackBank = function ()
+{
+    return this.surface.isActiveView (Maschine.VIEW_SESSION) ?
+        this.model.sessionTrackBank : this.model.getCurrentTrackBank ();
+};
+
+AbstractView.prototype.getCurrentTrackBankLength = function ()
+{
+    return this.surface.isActiveView (Maschine.VIEW_SESSION) ?
+        4 : 8;
+};
+
+AbstractView.prototype.selectTrack = function (index)
+{
+    this.getCurrentTrackBank ().select (index);
+};
+
+AbstractView.prototype.scrollTrackLeft = function (event)
+{
+    var tb = this.getCurrentTrackBank ();
+    var sel = tb.getSelectedTrack ();
+    var index = sel == null ? 0 : sel.index - 1;
+    if (index == -1 || this.surface.isShiftPressed ())
+    {
+        if (!tb.canScrollTracksUp ())
+            return;
+        tb.scrollTracksPageUp ();
+        var newSel = index == -1 || sel == null ? this.getCurrentTrackBankLength () - 1 : sel.index;
+        scheduleTask (doObject (this, this.selectTrack), [ newSel ], 150);
+        return;
+    }
+    this.selectTrack (index);
+};
+
+AbstractView.prototype.scrollTrackRight = function (event)
+{
+    var tb = this.getCurrentTrackBank ();
+    var sel = tb.getSelectedTrack ();
+    var index = sel == null ? 0 : sel.index + 1;
+    if (index == this.getCurrentTrackBankLength () || this.surface.isShiftPressed ())
+    {
+        if (!tb.canScrollTracksDown ())
+            return;
+        tb.scrollTracksPageDown ();
+        var newSel = index == this.getCurrentTrackBankLength () || sel == null ? 0 : sel.index;
+        scheduleTask (doObject (this, this.selectTrack), [ newSel ], 150);
+        return;
+    }
+    this.selectTrack (index);
+};
+
 AbstractView.prototype.scrollLeft = function (event)
 {
     switch (this.surface.getCurrentMode ())
     {
-//        case MODE_BANK_DEVICE:
-//        case MODE_PRESET:
-//            this.model.getCursorDevice ().selectPrevious ();
-//            break;
-
         default:
-            var tb = this.model.getCurrentTrackBank ();
-            var sel = tb.getSelectedTrack ();
-            var index = sel == null ? 0 : sel.index - 1;
-            if (index == -1 || this.surface.isShiftPressed ())
-            {
-                if (!tb.canScrollTracksUp ())
-                    return;
-                tb.scrollTracksPageUp ();
-                var newSel = index == -1 || sel == null ? 3 : sel.index;
-                scheduleTask (doObject (this, this.selectTrack), [ newSel ], 75);
-                return;
-            }
-            this.selectTrack (index);
+            this.scrollTrackLeft (event);
             break;
     }
 };
@@ -341,25 +410,8 @@ AbstractView.prototype.scrollRight = function (event)
 {
     switch (this.surface.getCurrentMode ())
     {
-//        case MODE_BANK_DEVICE:
-//        case MODE_PRESET:
-//            this.model.getCursorDevice ().selectNext ();
-//            break;
-
         default:
-            var tb = this.model.getCurrentTrackBank ();
-            var sel = tb.getSelectedTrack ();
-            var index = sel == null ? 0 : sel.index + 1;
-            if (index == 4 || this.surface.isShiftPressed ())
-            {
-                if (!tb.canScrollTracksDown ())
-                    return;
-                tb.scrollTracksPageDown ();
-                var newSel = index == 4 || sel == null ? 0 : sel.index;
-                scheduleTask (doObject (this, this.selectTrack), [ newSel ], 75);
-                return;
-            }
-            this.selectTrack (index);
+            this.scrollTrackRight (event);
             break;
     }
 };
