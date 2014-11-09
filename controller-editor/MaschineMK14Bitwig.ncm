@@ -401,7 +401,7 @@
         </knob>
         <knob id="Knob3">
           <name>Param 3</name>
-          <mcu-vpot>17</mcu-vpot>
+          <mcu-vpot>18</mcu-vpot>
           <range>360</range>
           <steps>20</steps>
           <bipolar>off</bipolar>
