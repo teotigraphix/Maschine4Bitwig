@@ -165,14 +165,28 @@ AbstractView.prototype.onLeftArrow = function (event)
     if (!event.isDown())
         return;
 
-    switch (this.surface.getCurrentMode ())
+    if (this.surface.isSelectPressed ())
     {
-        case Maschine.MODE_BANK_DEVICE:
-        case Maschine.MODE_PRESET:
-            this.model.getCursorDevice ().selectPrevious ();
-            break;
-        default:
-            this.scrollLeft (event);
+        var device = this.model.getCursorDevice ();
+        switch (this.surface.getCurrentMode ())
+        {
+            case Maschine.MODE_BANK_DEVICE:
+                if (device.hasPreviousParameterPage ())
+                    device.previousParameterPage ();
+                break;
+        }
+    }
+    else
+    {
+        switch (this.surface.getCurrentMode ())
+        {
+            case Maschine.MODE_BANK_DEVICE:
+            case Maschine.MODE_PRESET:
+                this.model.getCursorDevice ().selectPrevious ();
+                break;
+            default:
+                this.scrollLeft (event);
+        }
     }
 };
 
@@ -181,14 +195,28 @@ AbstractView.prototype.onRightArrow = function (event)
     if (!event.isDown())
         return;
 
-    switch (this.surface.getCurrentMode ())
+    if (this.surface.isSelectPressed ())
     {
-        case Maschine.MODE_BANK_DEVICE:
-        case Maschine.MODE_PRESET:
-            this.model.getCursorDevice ().selectNext ();
-            break;
-        default:
-            this.scrollRight (event);
+        var device = this.model.getCursorDevice ();
+        switch (this.surface.getCurrentMode ())
+        {
+            case Maschine.MODE_BANK_DEVICE:
+                if (device.hasNextParameterPage ())
+                    device.nextParameterPage ();
+                break;
+        }
+    }
+    else
+    {
+        switch (this.surface.getCurrentMode ())
+        {
+            case Maschine.MODE_BANK_DEVICE:
+            case Maschine.MODE_PRESET:
+                this.model.getCursorDevice ().selectNext ();
+                break;
+            default:
+                this.scrollRight (event);
+        }
     }
 };
 
