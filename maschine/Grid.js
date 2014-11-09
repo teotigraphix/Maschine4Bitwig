@@ -100,6 +100,10 @@ var COLOR =
     RED_MEDIUM : new Color(0.0, 1.0, 0.5),
     RED_DIM : new Color(0.0, 1.0, 0.25),
 
+    YELLOW : new Color(60.0, 1.0, 1.0),
+    YELLOW_MEDIUM : new Color(60.0, 1.0, 0.5),
+    YELLOW_DIM : new Color(60.0, 1.0, 0.25),
+
     ARM : new Color(0.0, 1.0, 1.0),
     PLAY : new Color(100.0, 1.0, 1.0),
 

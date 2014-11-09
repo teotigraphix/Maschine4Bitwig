@@ -91,10 +91,6 @@ MuteView.prototype.onGridNote = function (note, velocity)
         else if (this.isMute (note))
             this.onMuteGridNote (note);
     }
-    else
-    {
-
-    }
 };
 
 MuteView.prototype.onRecarmGridNote = function (note)
@@ -114,4 +110,3 @@ MuteView.prototype.onMuteGridNote = function (note)
     if (t != null)
         tb.toggleMute (index);
 };
-
