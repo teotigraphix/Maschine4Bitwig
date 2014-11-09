@@ -977,7 +977,7 @@
           <min>0</min>
           <max>127</max>
           <default>0</default>
-          <behavior>toggle</behavior>
+          <behavior>gate</behavior>
           <reaction>ondown</reaction>
         </pad>
         <led id="Pad16B">
