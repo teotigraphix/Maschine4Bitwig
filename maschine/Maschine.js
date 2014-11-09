@@ -39,6 +39,7 @@ Maschine.MODE_BANK_DIRECT = 23;
 Maschine.MODE_BANK_MACRO = 24;
 Maschine.MODE_BANK_MODULATE = 25;
 Maschine.MODE_BANK_USER = 26;
+Maschine.MODE_PRESET = 27;
 
 Maschine.BANK_MODES = [
     Maschine.MODE_BANK_COMMON,

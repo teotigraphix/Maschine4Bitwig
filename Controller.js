@@ -49,7 +49,7 @@ function Controller (kind)
 
     // add Modes
     this.surface.addMode (Maschine.MODE_SELECT, new SelectMode (this.model));
-
+    this.surface.addMode (Maschine.MODE_PRESET, new PresetMode (this.model));
 
     this.surface.addMode (Maschine.MODE_SCALE, new ScalesMode (this.model));
     this.surface.addMode (Maschine.MODE_NAVIGATE, new NavigateMode (this.model));

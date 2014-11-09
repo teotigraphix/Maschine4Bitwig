@@ -9,8 +9,25 @@ AbstractView.prototype.onShift = function (event)
     this.refreshButton (MaschineButton.SHIFT, event);
 };
 
+AbstractView.prototype.onBrowse = function (event)
+{
+    this.refreshButton (MaschineButton.BROWSE, event);
 
-AbstractView.prototype.onBrowse = function (event) {};
+    if (!event.isDown ())
+        return;
+
+    if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
+    {
+        if (!this.surface.isActiveMode (Maschine.MODE_PRESET))
+        {
+            this.surface.setPendingMode (Maschine.MODE_PRESET);
+        }
+    }
+    else if (this.surface.isActiveMode (Maschine.MODE_PRESET))
+    {
+        this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+    }
+};
 
 AbstractView.prototype.onSampling = function (event)
 {
@@ -133,7 +150,7 @@ AbstractView.prototype.onLeftArrow = function (event)
     switch (this.surface.getCurrentMode ())
     {
         case Maschine.MODE_BANK_DEVICE:
-            //case MODE_PRESET:
+        case Maschine.MODE_PRESET:
             this.model.getCursorDevice ().selectPrevious ();
             break;
         default:
@@ -149,7 +166,7 @@ AbstractView.prototype.onRightArrow = function (event)
     switch (this.surface.getCurrentMode ())
     {
         case Maschine.MODE_BANK_DEVICE:
-        //case MODE_PRESET:
+        case Maschine.MODE_PRESET:
             this.model.getCursorDevice ().selectNext ();
             break;
         default:
