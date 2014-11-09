@@ -173,6 +173,8 @@ AbstractView.prototype.onLeftArrow = function (event)
             case Maschine.MODE_BANK_DEVICE:
                 if (device.hasPreviousParameterPage ())
                     device.previousParameterPage ();
+
+                this.notifyBankChange ();
                 break;
         }
     }
@@ -203,6 +205,8 @@ AbstractView.prototype.onRightArrow = function (event)
             case Maschine.MODE_BANK_DEVICE:
                 if (device.hasNextParameterPage ())
                     device.nextParameterPage ();
+
+                this.notifyBankChange ();
                 break;
         }
     }
@@ -289,6 +293,16 @@ AbstractView.prototype.onDuplicate = function (event)
 AbstractView.prototype.onSelect = function (event)
 {
     this.refreshButton (MaschineButton.SELECT, event);
+
+    if (!event.isDown ())
+        return;
+
+    if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
+    {
+        this.notifyBankChange ();
+    }
+
+
 //    if (event.isLong ())
 //        return;
 //
@@ -361,26 +375,45 @@ AbstractView.prototype.onMute = function (event)
 
 AbstractView.prototype.onJogWheelInternal = function (increase)
 {
-    if (this.surface.isShiftPressed ())
+    if (this.surface.isSelectPressed ())
     {
-        if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE) &&
-            this.model.hasSelectedDevice ())
+        if (this.model.hasSelectedDevice ())
         {
             var cursorDevice = this.model.getCursorDevice ();
-            if (!increase)
+            if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
             {
-                if (cursorDevice.hasPreviousParameterPage ())
-                    cursorDevice.previousParameterPage ();
-            }
-            else
-            {
-                if (cursorDevice.hasNextParameterPage ())
-                    cursorDevice.nextParameterPage ();
-            }
+                if (!increase)
+                {
+                    if (cursorDevice.hasPreviousParameterPage ())
+                        cursorDevice.previousParameterPage ();
+                }
+                else
+                {
+                    if (cursorDevice.hasNextParameterPage ())
+                        cursorDevice.nextParameterPage ();
+                }
 
-            this.notify ("Selected Parameter Bank " + cursorDevice.getSelectedParameterPageName ());
+                this.notifyBankChange ();
+            }
+            else if (this.surface.isActiveMode (Maschine.MODE_PRESET))
+            {
+                if (!increase)
+                {
+                    cursorDevice.switchToPreviousPreset ();
+                }
+                else
+                {
+                    cursorDevice.switchToNextPreset ();
+                }
+            }
         }
     }
+};
+
+AbstractView.prototype.notifyBankChange = function ()
+{
+    this.surface.getDisplay().showNotificationLeft ("Selected Parameter Bank:",
+        this.model.getCursorDevice ().getSelectedParameterPageName (), 1000);
 };
 
 //--------------------------------------
@@ -483,12 +516,12 @@ AbstractDisplay.NOTIFICATION_TIME = 500; // ms
 
 AbstractView.prototype.notify = function (message)
 {
-    this.surface.getDisplay().showNotification (message);
+    this.surface.getDisplay().showNotificationLeft (message, "", 750);
 };
 
 AbstractView.prototype.notifyModeChange = function (modeId)
 {
-    this.notify ("Mode Select  " + Maschine.getModeName (modeId) + " Mode");
+    this.surface.getDisplay().showNotificationLeft ("Mode Selected:", Maschine.getModeName (modeId) + " Mode", 1000);
 };
 
 AbstractView.prototype.updateScale = function ()

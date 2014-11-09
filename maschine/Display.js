@@ -56,7 +56,11 @@ Display.SYSEX_HEADER = "F0 00 00 66 17";
 function Display (output)
 {
     AbstractDisplay.call (this, output, 2 /* No of rows */, 4 /* No of blocks */, 8 /* No of cells */, 55 /* No of characters */);
+
+    this.notificationMessage1 = null;
+    this.notificationMessage2 = null;
 }
+
 Display.prototype = new AbstractDisplay ();
 Display.FORMAT_RAW = AbstractDisplay.FORMAT_RAW;
 Display.FORMAT_VALUE = AbstractDisplay.FORMAT_VALUE;
@@ -64,6 +68,64 @@ Display.FORMAT_PAN = AbstractDisplay.FORMAT_PAN;
 
 Display.NUM_CELLS = 8;
 Display.CELL_SIZE = 6;
+
+Display.prototype.showNotificationLeft = function (message1, message2, duration)
+{
+    if (duration == null)
+        duration = AbstractDisplay.NOTIFICATION_TIME;
+
+    var padding1 = this.emptyLine.substr (0, Math.round (this.noOfCharacters - message1.length));
+    var padding2 = this.emptyLine.substr (0, Math.round (this.noOfCharacters - message2.length));
+
+    this.notificationMessage1 = message1 + padding1;
+    this.notificationMessage2 = message2 + padding2;
+
+    this.isNotificationLeftActive = true;
+    this.flush ();
+    scheduleTask (function (object)
+    {
+        object.isNotificationLeftActive = false;
+        object.forceFlush ();
+    }, [this], duration);
+};
+
+Display.prototype.flush = function (row)
+{
+    if (this.isNotificationLeftActive)
+    {
+        this.writeLine (0, this.notificationMessage1);
+        this.writeLine (1, this.notificationMessage2 != null ? this.notificationMessage2 : this.emptyLine);
+        return;
+    }
+    else
+    {
+        AbstractDisplay.prototype.flush.call (this);
+    }
+
+    for (var row = 0; row < this.noOfLines; row++)
+    {
+        // Has anything changed?
+        if (this.currentMessage[row] == this.message[row])
+            continue;
+        this.currentMessage[row] = this.message[row];
+        if (this.currentMessage[row] != null)
+            this.writeLine (row, this.currentMessage[row]);
+    }
+};
+
+
+AbstractDisplay.prototype.showNotification = function (message)
+{
+    var padding = this.emptyLine.substr (0, Math.round ((this.noOfCharacters - message.length) / 2));
+    this.notificationMessage = (padding + message + padding).substr (0, this.noOfCharacters);
+    this.isNotificationActive = true;
+    this.flush ();
+    scheduleTask (function (object)
+    {
+        object.isNotificationActive = false;
+        object.forceFlush ();
+    }, [this], AbstractDisplay.NOTIFICATION_TIME);
+};
 
 Display.prototype.setBlock = function (row, block, value)
 {

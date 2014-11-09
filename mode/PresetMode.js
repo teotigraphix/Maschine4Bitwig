@@ -156,8 +156,7 @@ PresetMode.optimizeName = function (clip, name)
 
 PresetMode.prototype.updateFirstRow = function ()
 {
-    //for (var i = 20; i < 28; i++)
-    //    this.surface.setButton (i, this.firstRowButtons[i] != null ? PresetMode.firstRowButtonColor : COLOR.OFF);
+    this.surface.setButton (MaschineButton.BROWSE, MaschineButton.STATE_DOWN);
     this.surface.setButton (MaschineButton.TOP_ROW_2, MaschineButton.STATE_DOWN);
     this.surface.setButton (MaschineButton.TOP_ROW_3, MaschineButton.STATE_DOWN);
     this.surface.setButton (MaschineButton.TOP_ROW_4, MaschineButton.STATE_DOWN);

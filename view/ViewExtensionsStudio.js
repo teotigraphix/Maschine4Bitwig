@@ -171,7 +171,7 @@ AbstractView.prototype.onClear = function() {}; // clr auto
 // Navigate
 //--------------------------------------
 
-AbstractView.prototype.onJogWheel = function (event, increase)
+AbstractView.prototype.onJogWheel = function (increase)
 {
     this.onJogWheelInternal (increase);
 
