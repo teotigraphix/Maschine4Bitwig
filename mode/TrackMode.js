@@ -78,27 +78,27 @@ TrackMode.prototype.updateDisplay = function ()
          .setCell (0, 3, "  Pan", Display.FORMAT_RAW)
          .setCell (1, 3, t.panStr, Display.FORMAT_RAW)
 
-         .setCell (0, 4, "Crsfdr", Display.FORMAT_RAW)
-         .setCell (1, 4, t.crossfadeMode == 'A' ? 'A' : (t.crossfadeMode == 'B' ? '     B' : '  <> '), Display.FORMAT_RAW);
+//         .setCell (0, 4, "Crsfdr", Display.FORMAT_RAW)
+//         .setCell (1, 4, t.crossfadeMode == 'A' ? 'A' : (t.crossfadeMode == 'B' ? '     B' : '  <> '), Display.FORMAT_RAW);
 
         var fxTrackBank = this.model.getEffectTrackBank ();
         if (fxTrackBank != null)
         {
             var isFX = currentTrackBank === fxTrackBank;
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < 4; i++)
             {
                 var fxTrack = fxTrackBank.getTrack (i);
                 var isEmpty = isFX || !fxTrack.exists;
-                d.setCell (0, 5 + i, isEmpty ? "" : fxTrack.name, Display.FORMAT_RAW)
-                    .setCell (1, 5 + i, isEmpty ? "" : t.sends[i].volumeStr, Display.FORMAT_RAW);
+                d.setCell (0, 4 + i, isEmpty ? "" : fxTrack.name, Display.FORMAT_RAW)
+                    .setCell (1, 4 + i, isEmpty ? "" : t.sends[i].volumeStr, Display.FORMAT_RAW);
             }
         }
         else
         {
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < 4; i++)
             {
-                d.setCell (0, 5 + i, t.sends[i].name, Display.FORMAT_RAW)
-                    .setCell (1, 5 + i, t.sends[i].volumeStr, Display.FORMAT_RAW);
+                d.setCell (0, 4 + i, t.sends[i].name, Display.FORMAT_RAW)
+                    .setCell (1, 4 + i, t.sends[i].volumeStr, Display.FORMAT_RAW);
             }
         }
 
