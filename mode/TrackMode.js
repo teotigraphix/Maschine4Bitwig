@@ -50,6 +50,9 @@ TrackMode.prototype.onFirstRow = function (index)
         case 1:
             tb.toggleSolo (selectedTrack.index);
             break;
+        case 2:
+            tb.toggleArm (selectedTrack.index);
+            break;
     }
 };
 
@@ -113,4 +116,5 @@ TrackMode.prototype.updateFirstRow = function ()
 
     this.surface.setButton (MaschineButton.TOP_ROW_0, t.mute ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
     this.surface.setButton (MaschineButton.TOP_ROW_1, t.solo ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+    this.surface.setButton (MaschineButton.TOP_ROW_2, t.recarm ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
 };
