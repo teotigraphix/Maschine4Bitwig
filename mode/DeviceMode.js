@@ -99,8 +99,8 @@ DeviceMode.prototype.updateDisplay = function ()
         var selectedDevice = this.model.getSelectedDevice ();
         var cursorDevice = this.model.getCursorDevice ();
 
-        if (!this.surface.isPressed (MaschineButton.SELECT))
-        {
+//        if (!this.surface.isPressed (MaschineButton.SELECT))
+//        {
             for (var i = 0; i < 8; i++)
             {
                 var param = cursorDevice.getFXParam (i);
@@ -113,9 +113,9 @@ DeviceMode.prototype.updateDisplay = function ()
                 else
                     d.setCell (2, i, param.value, Display.FORMAT_VALUE);
             }
-        }
-        else
-        {
+//        }
+//        else
+//        {
 //            d.clear ();
 //            d.setCell (0, 0, '      ')
 //             .setCell (0, 1, '      ')
@@ -130,7 +130,7 @@ DeviceMode.prototype.updateDisplay = function ()
 //                .setCell (1, 1, 'Dev  >:', Display.FORMAT_RAW);
 //            d.setBlock(1, 1, selectedDevice.name);
 //            d.setCell (1, 4, cursorDevice.getSelectedParameterPageName (), Display.FORMAT_RAW)
-        }
+//        }
 
 
     }

@@ -53,8 +53,26 @@ AbstractView.prototype.onSampling = function (event)
 // Center Display
 //--------------------------------------
 
-AbstractView.prototype.onAll = function () {};
-AbstractView.prototype.onAuto = function () {};
+AbstractView.prototype.onAll = function (event)
+{
+};
+
+AbstractView.prototype.onAuto = function (event)
+{
+    if (!event.isDown ())
+        return;
+
+    if (this.surface.isSelectPressed ())
+        this.model.getTransport ().resetAutomationOverrides ();
+    else if (this.surface.isShiftPressed ())
+        this.model.getTransport ().toggleWriteClipLauncherAutomation ();
+    else
+    {
+        var selectedTrack = this.model.getCurrentTrackBank ().getSelectedTrack ();
+        if (selectedTrack != null)
+            this.model.getTransport ().toggleWriteArrangerAutomation ();
+    }
+};
 
 //AbstractView.prototype.onFirstRow = function (event, index) {};
 //AbstractView.prototype.onValueKnob = function (index, value) {};
@@ -243,28 +261,28 @@ AbstractView.prototype.onDuplicate = function (event)
 AbstractView.prototype.onSelect = function (event)
 {
     this.refreshButton (MaschineButton.SELECT, event);
-    if (event.isLong ())
-        return;
-
-    if (event.isDown ())
-    {
-        if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
-        {
-            this.surface.setPendingMode (Maschine.MODE_PARAM_PAGE_SELECT);
-        }
-        else if (Maschine.isDeviceBankMode (this.surface.getActiveMode ().getId ()) ||
-                 this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
-        {
-            this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
-        }
-    }
-    else
-    {
-        if (this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
-        {
-            //this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
-        }
-    }
+//    if (event.isLong ())
+//        return;
+//
+//    if (event.isDown ())
+//    {
+//        if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
+//        {
+//            this.surface.setPendingMode (Maschine.MODE_PARAM_PAGE_SELECT);
+//        }
+//        else if (Maschine.isDeviceBankMode (this.surface.getActiveMode ().getId ()) ||
+//                 this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
+//        {
+//            this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+//        }
+//    }
+//    else
+//    {
+//        if (this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
+//        {
+//            //this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+//        }
+//    }
 };
 
 AbstractView.prototype.onSolo = function (event)
