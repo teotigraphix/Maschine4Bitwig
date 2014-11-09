@@ -74,7 +74,7 @@ function MaschineMK1 (output, input)
 {
     Maschine.call (this, output, input, MASCHINE_MK1_BUTTONS);
 
-    this.shiftButtonId = MaschineButton.SHIFT;
+    this.shiftButtonId = MaschineButton.GROUP_A;
     this.selectButtonId = MaschineButton.SELECT;
 
     this.pads = new Grid (output);
