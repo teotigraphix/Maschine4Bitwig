@@ -32,7 +32,7 @@ EditToolsView.prototype.onActivate = function ()
     this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_UP);
     this.surface.setButton (MaschineButton.NAVIGATE, MaschineButton.STATE_UP);
 
-    this.surface.sendColor(MaschineButton.GROUP_D, COLOR.MUTE);
+    //this.surface.sendColor(MaschineButton.GROUP_D, COLOR.MUTE);
 
     //this.model.getTrackBank ().setIndication (false);
     //this.updateSceneButtons ();

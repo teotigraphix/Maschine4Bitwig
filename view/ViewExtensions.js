@@ -137,10 +137,6 @@ AbstractView.prototype.onGoupButton = function (event, index)
             break;
 
         case 3:
-            if (!this.surface.isActiveView (MaschineStudio.VIEW_EIDT_TOOLS))
-            {
-                this.surface.setActiveView (MaschineStudio.VIEW_EIDT_TOOLS);
-            }
             break;
 
         case 4:
