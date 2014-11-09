@@ -31,7 +31,7 @@
         <channel>0</channel>
         <off>0</off>
         <on>127</on>
-        <behavior>toggle</behavior>
+        <behavior>gate</behavior>
         <reaction>ondown</reaction>
       </button>
       <button id="C">
@@ -49,7 +49,7 @@
         <channel>0</channel>
         <off>0</off>
         <on>127</on>
-        <behavior>toggle</behavior>
+        <behavior>gate</behavior>
         <reaction>ondown</reaction>
       </button>
       <button id="D">
@@ -103,7 +103,7 @@
         <channel>0</channel>
         <off>0</off>
         <on>127</on>
-        <behavior>toggle</behavior>
+        <behavior>gate</behavior>
         <reaction>ondown</reaction>
       </button>
       <button id="F2">
@@ -112,7 +112,7 @@
         <channel>0</channel>
         <off>0</off>
         <on>127</on>
-        <behavior>toggle</behavior>
+        <behavior>gate</behavior>
         <reaction>ondown</reaction>
       </button>
       <button id="G">
@@ -238,7 +238,7 @@
         <channel>0</channel>
         <off>0</off>
         <on>127</on>
-        <behavior>toggle</behavior>
+        <behavior>gate</behavior>
         <reaction>ondown</reaction>
       </button>
       <button id="Scene">
@@ -274,7 +274,7 @@
         <channel>0</channel>
         <off>0</off>
         <on>127</on>
-        <behavior>toggle</behavior>
+        <behavior>gate</behavior>
         <reaction>ondown</reaction>
       </button>
       <knob id="Swing">
@@ -298,13 +298,15 @@
         <bipolar>off</bipolar>
       </knob>
       <knob id="Volume">
-        <controller>7</controller>
+        <name>Jog</name>
+        <controller mode="comp">80</controller>
         <channel>0</channel>
         <min>0</min>
         <max>127</max>
         <default>0</default>
+        <inc>2</inc>
         <range>360</range>
-        <steps>20</steps>
+        <steps>100</steps>
         <bipolar>off</bipolar>
       </knob>
     </controls>
