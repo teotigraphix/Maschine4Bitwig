@@ -74,18 +74,61 @@ Grid.prototype.turnOff = function ()
     this.flush ();
 };
 
-function Color(hue, saturation, brightness)
+function Color(hue, saturation, brightness, id)
 {
     this.hue = hue;
     this.saturation = saturation;
     this.brightness = brightness;
+    this.id = id;
 };
 
+function BitwigColor ()
+{
+}
 
+BitwigColor.getColor = function (id)
+{
+    for (var name in COLOR_BITWIG)
+    {
+        if (COLOR_BITWIG[name].id == id)
+            return COLOR_BITWIG[name];
+    }
+    return null;
+}
+
+var COLOR_BITWIG =
+{
+    GRAY_DARK: new Color(0, 0.0, 0.1, 1), // DarkGray
+    GRAY: new Color(60, 0.2, 0.48, 2), // Gray
+    GRAY_LIGHT: new Color(180, 0.0, 0.95, 3), // LightGray
+    SILVER: new Color(235, 0.21, 0.67, 40), // LightSlateGray
+    BROWN_DARK: new Color(35, 0.58, 0.64, 11), // PeruBrown
+    BROWN: new Color(30, 0.40, 0.78, 12), // DarkKhakiBrown
+    BLUE_DARK: new Color(235, 0.57, 0.8, 42), // SlateBlue
+    BLUE_LIGHT: new Color(237, 0.45, 0.93, 44), // MediumSlateBlue
+    PURPLE: new Color(275, 0.64, 0.8, 58), // DarkOrchid
+    PINK: new Color(339, 0.74, 0.85, 57), // IndianRed
+    RED: new Color(3, 0.83, 0.85, 6), // Crimson
+    ORANGE: new Color(20, 0.98, 1, 60), // OrangeRed
+    ORANGE_LIGHT: new Color(42, 0.93, 0.85, 62), // Goldenrod
+    GREEN: new Color(77, 0.87, 0.60, 18), // OliveDrab
+    GREEN_COLD: new Color(147, 1, 0.62, 26), // SeaGreen
+    GREEN_BLUISH: new Color(173, 1, 0.65, 30), // DarkCyan
+    TURQUOISE: new Color(198, 1, 0.85, 37), // DarkTurquoise
+    PURPLE_LIGHT: new Color(274, 0.51, 0.94, 48), // Orchid
+    PINK_LIGHT: new Color(339, 0.55, 0.88, 56), // PaleVioletRed
+    SKIN: new Color(4, 0.63, 0.93, 4), // Tomato
+    BROWN_REDISH: new Color(21, 0.76, 1, 10), // Coral
+    BROWN_LIGHT: new Color(42, 0.66, 0.89, 61), // SandyBrown
+    GREEN_LIGHT: new Color(77, 0.60, 0.75, 18), // YellowGreen
+    GREEN_MEDIUM: new Color(137, 0.67, 0.73, 25), // MediumSeaGreen
+    TURQUOISE_MEDIUM: new Color(170, 0.68, 0.82, 32), // MediumTurquoise
+    CYAN: new Color(198, 0.73, 1, 41) // Cyan
+};
 
 var COLOR =
 {
-    OCEAN : new Color(210.0, 1, 1.0),
+    OCEAN : new Color(198.0, 0.73, 1.0),
 
     OFF : new Color(0.0, 0.0, 0.0),
     ON : new Color(180.0, 0.0, 1.0),

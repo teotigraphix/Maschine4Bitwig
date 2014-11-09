@@ -8,9 +8,10 @@ AbstractSceneView.CLIP_COLOR_IS_RECORDING        = { color: 0, blink: null, fast
 AbstractSceneView.CLIP_COLOR_IS_RECORDING_QUEUED = { color: 1, blink: null, fast: false };
 AbstractSceneView.CLIP_COLOR_IS_PLAYING          = { color: 2, blink: null, fast: false };
 AbstractSceneView.CLIP_COLOR_IS_PLAYING_QUEUED   = { color: 3, blink: null, fast: false };
-AbstractSceneView.CLIP_COLOR_HAS_CONTENT         = { color: 4, blink: null, fast: false };
-AbstractSceneView.CLIP_COLOR_NO_CONTENT          = { color: 5, blink: null, fast: false };
-AbstractSceneView.CLIP_COLOR_RECORDING_ARMED     = { color: 6, blink: null, fast: false };
+AbstractSceneView.CLIP_COLOR_IS_STOPPING_QUEUED  = { color: 4, blink: null, fast: false };
+AbstractSceneView.CLIP_COLOR_HAS_CONTENT         = { color: 5, blink: null, fast: false };
+AbstractSceneView.CLIP_COLOR_NO_CONTENT          = { color: 6, blink: null, fast: false };
+AbstractSceneView.CLIP_COLOR_RECORDING_ARMED     = { color: 7, blink: null, fast: false };
 AbstractSceneView.USE_CLIP_COLOR                 = true;
 
 
@@ -155,9 +156,9 @@ AbstractSceneView.prototype.drawPad = function (slot, x, y, isArmed)
         }
         else
         {
-            if (AbstractSceneView.USE_CLIP_COLOR && slot.color)
-                color = { color: slot.color, blink: AbstractSceneView.CLIP_COLOR_IS_RECORDING.blink, fast: AbstractSceneView.CLIP_COLOR_IS_RECORDING.fast };
-            else
+            // if (AbstractSceneView.USE_CLIP_COLOR && slot.color)
+            //    color = { color: BitwigColor.getColor(slot.color), blink: AbstractSceneView.CLIP_COLOR_IS_RECORDING.blink, fast: AbstractSceneView.CLIP_COLOR_IS_RECORDING.fast };
+            //else
                 color = AbstractSceneView.CLIP_COLOR_IS_RECORDING;
         }
     }
@@ -172,16 +173,20 @@ AbstractSceneView.prototype.drawPad = function (slot, x, y, isArmed)
         }
         else
         {
-            if (AbstractSceneView.USE_CLIP_COLOR && slot.color)
-                color = { color: slot.color, blink: AbstractSceneView.CLIP_COLOR_IS_PLAYING.blink, fast: AbstractSceneView.CLIP_COLOR_IS_PLAYING.fast };
-            else
+            //if (AbstractSceneView.USE_CLIP_COLOR && slot.color)
+            //    color = { color: BitwigColor.getColor (slot.color), blink: AbstractSceneView.CLIP_COLOR_IS_PLAYING.blink, fast: AbstractSceneView.CLIP_COLOR_IS_PLAYING.fast };
+            //else
                 color = AbstractSceneView.CLIP_COLOR_IS_PLAYING;
         }
     }
+//    else if (!slot.isPlaying && slot.isQueued)
+//    {
+//        color = AbstractSceneView.CLIP_COLOR_IS_STOPPING_QUEUED;
+//    }
     else if (slot.hasContent)
     {
         if (AbstractSceneView.USE_CLIP_COLOR && slot.color)
-            color = { color: slot.color, blink: AbstractSceneView.CLIP_COLOR_HAS_CONTENT.blink, fast: AbstractSceneView.CLIP_COLOR_HAS_CONTENT.fast };
+            color = { color: BitwigColor.getColor (slot.color), blink: AbstractSceneView.CLIP_COLOR_HAS_CONTENT.blink, fast: AbstractSceneView.CLIP_COLOR_HAS_CONTENT.fast };
         else
             color = AbstractSceneView.CLIP_COLOR_HAS_CONTENT;
     }
