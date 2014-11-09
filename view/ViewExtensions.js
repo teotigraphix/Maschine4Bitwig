@@ -297,34 +297,34 @@ AbstractView.prototype.onSelect = function (event)
     if (!event.isDown ())
         return;
 
-    if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
-    {
-        this.notifyBankChange ();
-    }
+//    if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
+//    {
+//        this.notifyBankChange ();
+//    }
 
 
 //    if (event.isLong ())
 //        return;
 //
-//    if (event.isDown ())
-//    {
-//        if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
-//        {
-//            this.surface.setPendingMode (Maschine.MODE_PARAM_PAGE_SELECT);
-//        }
-//        else if (Maschine.isDeviceBankMode (this.surface.getActiveMode ().getId ()) ||
-//                 this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
-//        {
-//            this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
-//        }
-//    }
-//    else
-//    {
-//        if (this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
-//        {
-//            //this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
-//        }
-//    }
+    if (event.isDown ())
+    {
+        if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
+        {
+            this.surface.setPendingMode (Maschine.MODE_PARAM_PAGE_SELECT);
+        }
+        else if (Maschine.isDeviceBankMode (this.surface.getActiveMode ().getId ()) ||
+                 this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
+        {
+            this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+        }
+    }
+    else
+    {
+        if (this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
+        {
+            //this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+        }
+    }
 };
 
 AbstractView.prototype.onSolo = function (event)
