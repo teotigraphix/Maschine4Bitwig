@@ -82,9 +82,14 @@ DrumView.prototype.drawGrid = function ()
             var index = 4 * y + x;
             var p = this.pads[index]; // mute, exists, solo
 
+            var padColorId = this.model.getCursorDevice ().drumPadLayers[index].color;
+            var padColor = BitwigColor.getColor (padColorId);
+            if (padColor == null)
+                padColor = BitwigColor.getColor (selectedTrack.color);
+
             var c = this.pressedKeys[this.offsetY + index] > 0 ?
                 (isRecording ? COLOR.RED : COLOR.GREEN) : (this.selectedPad == index ? COLOR.BLUE : (p.exists ?
-                (p.mute ? COLOR.BLUE_DIM : (p.solo ? COLOR.YELLOW : Config.padTrackColor ? BitwigColor.getColor (selectedTrack.color)
+                (p.mute ? COLOR.BLUE_DIM : (p.solo ? COLOR.YELLOW : Config.padTrackColor ? padColor
                     : COLOR.ON)) : COLOR.YELLOW_DIM));
 
             this.surface.pads.lightEx (x, 3 - y, c, null, false);
@@ -134,7 +139,7 @@ DrumView.prototype.onUp = function (event)
     //else
         this.onOctaveUp (event);
     //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
-    //this.model.getCursorDevice().drumPadBank.scrollChannelsUp ();
+    this.model.getCursorDevice().drumPadBank.scrollChannelsUp ();
 
 };
 
@@ -145,5 +150,5 @@ DrumView.prototype.onDown = function (event)
     //else
         this.onOctaveDown (event);
     //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
-    //this.model.getCursorDevice().drumPadBank.scrollChannelsDown ();
+    this.model.getCursorDevice().drumPadBank.scrollChannelsDown ();
 };
