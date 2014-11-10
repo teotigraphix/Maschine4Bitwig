@@ -36,11 +36,14 @@ function DrumView (model)
 }
 DrumView.prototype = new AbstractSequencerView ();
 
+DrumView.prototype.onActivate = function ()
+{
+    AbstractSequencerView.prototype.onActivate.call(this);
+};
+
 DrumView.prototype.onGridNote = function (note, velocity) {
     if (!this.canSelectedTrackHoldNotes())
         return;
-    println("DrumView.onGridNote() " + note);
-
     var index = note - 36;
     var x = index % 4;
     // y is bottom
@@ -70,6 +73,8 @@ DrumView.prototype.drawGrid = function ()
 
     var isRecording = this.model.hasRecordingState();
 
+    var tb = this.model.getTrackBank ();
+    var selectedTrack = tb.getSelectedTrack ();
     for (var y = 0; y < 4; y++)
     {
         for (var x = 0; x < 4; x++)
@@ -79,7 +84,8 @@ DrumView.prototype.drawGrid = function ()
 
             var c = this.pressedKeys[this.offsetY + index] > 0 ?
                 (isRecording ? COLOR.RED : COLOR.GREEN) : (this.selectedPad == index ? COLOR.BLUE : (p.exists ?
-                (p.mute ? COLOR.BLUE_DIM : (p.solo ? COLOR.YELLOW : COLOR.YELLOW)) : COLOR.YELLOW_DIM));
+                (p.mute ? COLOR.BLUE_DIM : (p.solo ? COLOR.YELLOW : Config.padTrackColor ? BitwigColor.getColor (selectedTrack.color)
+                    : COLOR.ON)) : COLOR.YELLOW_DIM));
 
             this.surface.pads.lightEx (x, 3 - y, c, null, false);
         }
@@ -91,17 +97,6 @@ function dump(object) {
         println (name + " : " + object[name]);
     }
 }
-
-DrumView.prototype.onActivate = function ()
-{
-    AbstractSequencerView.prototype.onActivate.call(this);
-    AbstractView.prototype.onActivate.call (this);
-
-    this.surface.setButton (MaschineButton.SCENE, MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.PATTERN, MaschineButton.STATE_DOWN);
-    this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.NAVIGATE, MaschineButton.STATE_UP);
-};
 
 DrumView.prototype.updateNoteMapping = function ()
 {

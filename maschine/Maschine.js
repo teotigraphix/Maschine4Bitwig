@@ -41,14 +41,6 @@ Maschine.MODE_BANK_MODULATE = 25;
 Maschine.MODE_BANK_USER = 26;
 Maschine.MODE_PRESET = 27;
 
-Maschine.BANK_MODES = [
-    Maschine.MODE_BANK_COMMON,
-    Maschine.MODE_BANK_ENVELOPE,
-    Maschine.MODE_BANK_DIRECT,
-    Maschine.MODE_BANK_MACRO,
-    Maschine.MODE_BANK_MODULATE,
-    Maschine.MODE_BANK_USER
-];
 
 Maschine.isDeviceBankMode = function (modeId)
 {
@@ -63,6 +55,12 @@ Maschine.VIEW_SESSION      = 4;
 Maschine.VIEW_EIDT_TOOLS   = 5;
 Maschine.VIEW_MUTE         = 6;
 Maschine.VIEW_SOLO         = 7;
+
+Maschine.VIEW_BUTTONS = [
+    [Maschine.VIEW_SESSION, MaschineButton.SCENE],
+    [Maschine.VIEW_DRUM, MaschineButton.PATTERN],
+    [Maschine.VIEW_PLAY, MaschineButton.PAD_MODE],
+];
 
 Maschine.MODES = [
     [Maschine.MODE_BANK_DEVICE, "Device"],
@@ -85,6 +83,16 @@ Maschine.MODES = [
     [Maschine.MODE_FRAME, "Frame"],
     [Maschine.MODE_ACCENT, "Accent"]
 ];
+
+Maschine.BANK_MODES = [
+    Maschine.MODE_BANK_COMMON,
+    Maschine.MODE_BANK_ENVELOPE,
+    Maschine.MODE_BANK_DIRECT,
+    Maschine.MODE_BANK_MACRO,
+    Maschine.MODE_BANK_MODULATE,
+    Maschine.MODE_BANK_USER
+];
+
 
 // TEMP
 Maschine.getModeName = function (modeId)

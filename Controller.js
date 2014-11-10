@@ -90,17 +90,6 @@ function Controller (kind)
 
     this.surface.addViewChangeListener (doObject (this, function (oldViewId, newViewId)
     {
-
-        if (oldViewId == Maschine.VIEW_SESSION)
-        {
-            //println("Leaving Session");
-           // this.model.currentTrackBank = this.trackBank;
-        }
-        else if (newViewId == Maschine.VIEW_SESSION)
-        {
-            //println("Entering Session");
-           // this.model.currentTrackBank = this.sessionTrackBank;
-        }
     }));
 
     this.surface.addModeListener (doObject (this, function (oldMode, newMode)
@@ -121,6 +110,17 @@ Controller.prototype = new AbstractController ();
 Controller.prototype.flush = function ()
 {
     AbstractController.prototype.flush.call (this);
+    this.validateViews ();
+};
+
+Controller.prototype.validateViews = function ()
+{
+    for (var i = 0; i < Maschine.VIEW_BUTTONS.length; i++)
+    {
+        var info = Maschine.VIEW_BUTTONS[i];
+        this.surface.setButton (info[1], this.surface.isActiveView (info[0]) ?
+            MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+    }
 };
 
 Controller.prototype.updateMode = function (mode)

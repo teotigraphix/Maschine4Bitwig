@@ -18,12 +18,6 @@ SceneView.prototype = new AbstractSceneView ();
 SceneView.prototype.onActivate = function ()
 {
     AbstractSceneView.prototype.onActivate.call (this);
-
-    this.surface.setButton (MaschineButton.SCENE, MaschineButton.STATE_DOWN);
-    this.surface.setButton (MaschineButton.PATTERN, MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.NAVIGATE, MaschineButton.STATE_UP);
-
 };
 
 SceneView.prototype.onSelect = function (event)

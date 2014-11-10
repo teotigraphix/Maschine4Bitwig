@@ -32,6 +32,8 @@ Config.scaleBase         = 'C';
 Config.scaleInKey        = true;
 Config.scaleLayout       = '4th ^';
 
+Config.padTrackColor    = true;
+
 
 // label, category, options, initialValue
 function Configurator () {}
@@ -64,7 +66,6 @@ Configurator.addEnumSetting = function (scopes, id, property, label, category, o
     }
 };
 
-
 Configurator.getNumberSetting = function(scopes, id, property, label, category, minValue, maxValue,
                                          stepResolution, unit, initialValue, callback)
 {
@@ -85,6 +86,15 @@ Config.init = function ()
 {
     var prefs = host.getPreferences ();
     //var prefs = host.getDocumentState ();
+
+    ///////////////////////////
+    // Pads
+
+    Configurator.addEnumSetting ("project", Config.ACTIVATE_FIXED_ACCENT, "padTrackColorSetting",
+        "Pad Track Coloring", "Pads", [ "Off", "On" ], "Off",
+        function (value) {
+            Config.padTrackColor = value == "On";
+        });
 
     ///////////////////////////
     // Accent
@@ -128,6 +138,11 @@ Config.init = function ()
         function (value) {
             Config.scaleLayout = value;
         });
+};
+
+Config.setPadTrackColor = function (enabled)
+{
+    Config.padTrackColorSetting.set (enabled ? "On" : "Off");
 };
 
 Config.setAccentEnabled = function (enabled)

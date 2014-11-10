@@ -74,12 +74,17 @@ Grid.prototype.turnOff = function ()
     this.flush ();
 };
 
-function Color(hue, saturation, brightness, id)
+function Color (hue, saturation, brightness, id)
 {
     this.hue = hue;
     this.saturation = saturation;
     this.brightness = brightness;
     this.id = id;
+};
+
+Color.dim = function (color, percent)
+{
+    return new Color (color.hue, color.saturation, color.brightness * percent, color.id);
 };
 
 function BitwigColor ()

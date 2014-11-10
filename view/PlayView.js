@@ -64,12 +64,6 @@ PlayView.prototype.clearNoteMapping = function ()
 PlayView.prototype.onActivate = function ()
 {
     AbstractView.prototype.onActivate.call (this);
-
-    this.surface.setButton (MaschineButton.SCENE, MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.PATTERN, MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_DOWN);
-    this.surface.setButton (MaschineButton.NAVIGATE, MaschineButton.STATE_UP);
-
     this.model.getTrackBank ().setIndication (false);
     this.initMaxVelocity ();
 };
@@ -100,12 +94,36 @@ PlayView.prototype.drawGrid = function ()
     var isKeyboardEnabled = this.canSelectedTrackHoldNotes ();
     var isRecording = this.model.hasRecordingState ();
 
+    var tb = this.model.getTrackBank ();
+    var selectedTrack = tb.getSelectedTrack ();
     for (var i = 36; i < 52; i++)
     {
         this.surface.pads.light (i, isKeyboardEnabled ? (this.pressedKeys[i] > 0 ?
             (isRecording ? COLOR.ARM : COLOR.PLAY) :
-            this.scales.getColor (this.noteMap, i)) : COLOR.OFF, null, false);
+            this.getColor (this.noteMap, i, Config.padTrackColor ? BitwigColor.getColor (selectedTrack.color)
+                : COLOR.ON, Config.padTrackColor ? COLOR.ON : COLOR.OCEAN)) : COLOR.OFF, null, false);
     }
+};
+
+PlayView.prototype.getColor = function (noteMap, note, trackColor, octaveColor)
+{
+    var midiNote = noteMap[note];
+    if (midiNote == -1)
+        return Scales.SCALE_COLOR_OFF;
+    var n = (midiNote - Scales.OFFSETS[this.scales.scaleOffset]) % 12;
+    if (n == 0)
+        return octaveColor;
+    if (this.scales.isChromatic ())
+    {
+        var notes = Scales.INTERVALS[this.scales.selectedScale].notes;
+        for (var i = 0; i < notes.length; i++)
+        {
+            if (notes[i] == n)
+                return trackColor;
+        }
+        return Scales.SCALE_COLOR_OUT_OF_SCALE;
+    }
+    return trackColor;
 };
 
 PlayView.prototype.onGridNote = function (note, velocity)
