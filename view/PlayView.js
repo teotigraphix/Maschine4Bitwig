@@ -5,6 +5,37 @@
 function PlayView (model)
 {
     BaseMaschineView.call (this, model);
+
+    this.scales = this.model.getScales ();
+    this.noteMap = this.scales.getEmptyMatrix ();
+    this.pressedKeys = initArray (0, 128);
+    this.defaultVelocity = [];
+    for (var i = 0; i < 128; i++)
+        this.defaultVelocity.push (i);
+
+    Config.addPropertyListener (Config.ACTIVATE_FIXED_ACCENT, doObject (this, function ()
+    {
+        this.initMaxVelocity ();
+    }));
+    Config.addPropertyListener (Config.FIXED_ACCENT_VALUE, doObject (this, function ()
+    {
+        this.initMaxVelocity ();
+    }));
+
+    var tb = model.getTrackBank ();
+    tb.addNoteListener (doObject (this, function (pressed, note, velocity)
+    {
+        // Light notes send from the sequencer
+        for (var i = 0; i < 128; i++)
+        {
+            if (this.noteMap[i] == note)
+                this.pressedKeys[i] = pressed ? velocity : 0;
+        }
+    }));
+    tb.addTrackSelectionListener (doObject (this, function (index, isSelected)
+    {
+        this.clearPressedKeys ();
+    }));
 }
 
 PlayView.prototype = new BaseMaschineView ();
@@ -13,12 +44,7 @@ PlayView.prototype.attachTo = function (surface)
 {
     AbstractView.prototype.attachTo.call (this, surface);
 
-    this.scales = this.model.getScales ();
-    this.noteMap = this.scales.getEmptyMatrix ();
-    this.pressedKeys = initArray (0, 128);
-    this.defaultVelocity = [];
-    for (var i = 0; i < 128; i++)
-        this.defaultVelocity.push (i);
+
 };
 
 PlayView.prototype.updateNoteMapping = function ()
@@ -38,11 +64,13 @@ PlayView.prototype.clearNoteMapping = function ()
 PlayView.prototype.onActivate = function ()
 {
     AbstractView.prototype.onActivate.call (this);
-    this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_DOWN);
-    this.surface.setButton (MaschineButton.STEP_MODE, MaschineButton.STATE_UP);
+
     this.surface.setButton (MaschineButton.SCENE, MaschineButton.STATE_UP);
+    this.surface.setButton (MaschineButton.PATTERN, MaschineButton.STATE_UP);
+    this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_DOWN);
+    this.surface.setButton (MaschineButton.NAVIGATE, MaschineButton.STATE_UP);
+
     this.model.getTrackBank ().setIndication (false);
-    this.updateSceneButtons ();
     this.initMaxVelocity ();
 };
 

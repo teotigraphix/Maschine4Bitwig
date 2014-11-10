@@ -29,23 +29,23 @@ AbstractSequencerView.prototype.onActivate = function ()
     //this.drawSceneButtons ();
 };
 
-AbstractSequencerView.prototype.scrollLeft = function (event)
-{
-    var newOffset = this.offsetX - this.clip.getStepSize ();
-    if (newOffset < 0)
-        this.offsetX = 0;
-    else
-    {
-        this.offsetX = newOffset;
-        this.clip.scrollStepsPageBackwards ();
-    }
-};
-
-AbstractSequencerView.prototype.scrollRight = function (event)
-{
-    this.offsetX = this.offsetX + this.clip.getStepSize ();
-    this.clip.scrollStepsPageForward ();
-};
+//AbstractSequencerView.prototype.scrollLeft = function (event)
+//{
+//    var newOffset = this.offsetX - this.clip.getStepSize ();
+//    if (newOffset < 0)
+//        this.offsetX = 0;
+//    else
+//    {
+//        this.offsetX = newOffset;
+//        this.clip.scrollStepsPageBackwards ();
+//    }
+//};
+//
+//AbstractSequencerView.prototype.scrollRight = function (event)
+//{
+//    this.offsetX = this.offsetX + this.clip.getStepSize ();
+//    this.clip.scrollStepsPageForward ();
+//};
 
 //AbstractSequencerView.prototype.onScene = function (index)
 //{

@@ -135,13 +135,17 @@ var COLOR =
     ON_MEDIUM : new Color(180.0, 0.0, 0.5),
     ON_DIM : new Color(180.0, 0.0, 0.25),
 
-    GREEN : new Color(100.0, 1.0, 1.0),
-    GREEN_MEDIUM : new Color(100.0, 1.0, 0.5),
-    GREEN_DIM : new Color(100.0, 1.0, 0.25),
-
     RED : new Color(0.0, 1.0, 1.0),
     RED_MEDIUM : new Color(0.0, 1.0, 0.5),
     RED_DIM : new Color(0.0, 1.0, 0.25),
+
+    GREEN : new Color(120, 1.0, 1.0),
+    GREEN_MEDIUM : new Color(120.0, 1.0, 0.5),
+    GREEN_DIM : new Color(120.0, 1.0, 0.25),
+
+    BLUE : new Color(240.0, 1.0, 1.0),
+    BLUE_MEDIUM : new Color(240.0, 1.0, 0.5),
+    BLUE_DIM : new Color(240.0, 1.0, 0.25),
 
     YELLOW : new Color(60.0, 1.0, 1.0),
     YELLOW_MEDIUM : new Color(60.0, 1.0, 0.5),

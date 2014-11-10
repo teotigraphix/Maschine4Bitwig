@@ -10,6 +10,16 @@ Scales.DRUM_MATRIX =
         12, 13, 14, 15,
     ];
 
+
+
+DrumView.MAP =
+    [
+        48,   49,  50,  51,
+        44,   45,  46,  47,
+        40,   41, 42, 43,
+        36, 37, 38, 39,
+    ];
+
 function DrumView (model)
 {
     AbstractSequencerView.call (this, model, 128, DrumView.NUM_DISPLAY_COLS);
@@ -27,10 +37,12 @@ function DrumView (model)
     {
         // Light notes send from the sequencer
         this.pressedKeys[note] = pressed ? velocity : 0;
+        println("Note listener");
     }));
     tb.addTrackSelectionListener (doObject (this, function (index, isSelected)
     {
         this.clearPressedKeys ();
+        //println("Track change listener");
     }));
 }
 DrumView.prototype = new AbstractSequencerView ();
@@ -42,26 +54,21 @@ DrumView.prototype.onGridNote = function (note, velocity) {
 
     var index = note - 36;
     var x = index % 4;
+    // y is bottom
     var y = Math.floor (index / 4);
 
-    if (x < 4)
-    {
-        // 4x4 Drum Pad Grid
+    this.selectedPad = 4 * y + x;   // 0-15
+    var playedPad = velocity == 0 ? -1 : this.selectedPad;
 
-        this.selectedPad = 4 * y + x;   // 0-16
-        var playedPad = velocity == 0 ? -1 : this.selectedPad;
+    // Mark selected note
+    this.pressedKeys[this.offsetY + this.selectedPad] = velocity;
 
-        // Mark selected note
-        this.pressedKeys[this.offsetY + this.selectedPad] = velocity;
-
-        // Delete all of the notes on that 'pad'
-//        if (playedPad >= 0 && this.surface.isDeletePressed ())
-//        {
-//            this.surface.setButtonConsumed (PUSH_BUTTON_DELETE);
-//            this.clip.clearRow (this.offsetY + this.selectedPad);
-//        }
-        return;
-    }
+//    // Delete all of the notes on that 'pad'
+//    if (playedPad >= 0 && this.surface.isDeletePressed ())
+//    {
+//        this.surface.setButtonConsumed (MaschineButton.ERASE);
+//        this.clip.clearRow (this.offsetY + this.selectedPad);
+//    }
 };
 
 DrumView.prototype.drawGrid = function ()
@@ -74,27 +81,37 @@ DrumView.prototype.drawGrid = function ()
 
     var isRecording = this.model.hasRecordingState();
 
-    // 4x4 Drum Pad Grid
     for (var y = 0; y < 4; y++)
     {
-        //println("f");
         for (var x = 0; x < 4; x++)
         {
             var index = 4 * y + x;
-            var p = this.pads[index];
+            var p = this.pads[index]; // mute, exists, solo
+
             var c = this.pressedKeys[this.offsetY + index] > 0 ?
-                (isRecording ? COLOR.ARM : COLOR.PLAY) : (this.selectedPad == index ? COLOR.ODD_CURSOR_DRUM_PAD : (p.exists ?
-                (p.mute ? COLOR.EVEN_CURSOR_DRUM_PAD : (p.solo ? COLOR.ODD_CURSOR_DRUM_PAD : COLOR.DRUM_PAD_NOTE_ON)) : COLOR.ODD_CURSOR_DRUM_PAD));
-            this.surface.pads.lightEx(x, 7 - y, c, null, false);
+                (isRecording ? COLOR.RED : COLOR.GREEN) : (this.selectedPad == index ? COLOR.BLUE : (p.exists ?
+                (p.mute ? COLOR.BLUE_DIM : (p.solo ? COLOR.YELLOW : COLOR.YELLOW)) : COLOR.YELLOW_DIM));
+
+            this.surface.pads.lightEx (x, 3 - y, c, null, false);
         }
     }
-
 };
+
+function dump(object) {
+    for (var name in object) {
+        println (name + " : " + object[name]);
+    }
+}
 
 DrumView.prototype.onActivate = function ()
 {
     AbstractSequencerView.prototype.onActivate.call(this);
-    this.surface.setButton (MaschineButton.PATTERN, 127);
+    AbstractView.prototype.onActivate.call (this);
+
+    this.surface.setButton (MaschineButton.SCENE, MaschineButton.STATE_UP);
+    this.surface.setButton (MaschineButton.PATTERN, MaschineButton.STATE_DOWN);
+    this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_UP);
+    this.surface.setButton (MaschineButton.NAVIGATE, MaschineButton.STATE_UP);
 };
 
 DrumView.prototype.updateNoteMapping = function ()

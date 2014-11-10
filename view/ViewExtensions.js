@@ -226,6 +226,8 @@ AbstractView.prototype.onRightArrow = function (event)
 
 AbstractView.prototype.onPadMode = function (event) // keyboard
 {
+    this.refreshButton (MaschineButton.PAD_MODE, event);
+
     if (!event.isDown ())
         return;
 
@@ -237,6 +239,8 @@ AbstractView.prototype.onPadMode = function (event) // keyboard
 
 AbstractView.prototype.onScene = function (event)
 {
+    this.refreshButton (MaschineButton.SCENE, event);
+
     if (!event.isDown ())
         return;
 
@@ -248,12 +252,15 @@ AbstractView.prototype.onScene = function (event)
 
 AbstractView.prototype.onPattern = function()
 {
-//    println("Drum View");
-//    if (!this.surface.isActiveView (Maschine.VIEW_DRUM))
-//    {
-//        this.surface.setActiveView (Maschine.VIEW_DRUM);
-//    }
+    this.refreshButton (MaschineButton.PATTERN, event);
 
+    if (!event.isDown ())
+        return;
+
+    if (!this.surface.isActiveView (Maschine.VIEW_DRUM))
+    {
+        this.surface.setActiveView (Maschine.VIEW_DRUM);
+    }
 };
 
 AbstractView.prototype.onNavigate = function (event)
