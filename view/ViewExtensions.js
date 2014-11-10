@@ -63,13 +63,28 @@ AbstractView.prototype.onAuto = function (event)
         return;
 
     if (this.surface.isSelectPressed ())
-        this.model.getTransport ().resetAutomationOverrides ();
-    else if (this.surface.isShiftPressed ())
-        this.model.getTransport ().toggleWriteClipLauncherAutomation ();
-    else
     {
-        var selectedTrack = this.model.getCurrentTrackBank ().getSelectedTrack ();
-        if (selectedTrack != null)
+        this.model.getTransport ().resetAutomationOverrides ();
+        return;
+    }
+
+    var selectedTrack = this.model.getCurrentTrackBank ().getSelectedTrack ();
+
+    var layout = this.model.getApplication ().getPanelLayout ()
+    var shiftPressed = this.surface.isShiftPressed ();
+
+    if (layout == 'ARRANGE')
+    {
+        if (shiftPressed)
+            this.model.getTransport ().toggleWriteClipLauncherAutomation ();
+        else if (selectedTrack != null)
+            this.model.getTransport ().toggleWriteArrangerAutomation ();
+    }
+    else  if (layout == 'MIX' || layout == 'EDIT')
+    {
+        if (!shiftPressed)
+            this.model.getTransport ().toggleWriteClipLauncherAutomation ();
+        else
             this.model.getTransport ().toggleWriteArrangerAutomation ();
     }
 };
