@@ -25,6 +25,9 @@ Config.SCALES_BASE           = 5;
 Config.SCALES_IN_KEY         = 6;
 Config.SCALES_LAYOUT         = 7;
 
+Config.TRACK_PAD_COLOR       = 8;
+Config.MODE_NOTIFY           = 9;
+
 Config.accentActive      = false;                       // Accent button active
 Config.fixedAccentValue  = 127;                         // Fixed velocity value for accent
 Config.scale             = 'Major';
@@ -33,7 +36,7 @@ Config.scaleInKey        = true;
 Config.scaleLayout       = '4th ^';
 
 Config.padTrackColor    = true;
-
+Config.modeNotify       = false;
 
 // label, category, options, initialValue
 function Configurator () {}
@@ -88,10 +91,19 @@ Config.init = function ()
     //var prefs = host.getDocumentState ();
 
     ///////////////////////////
+    // Notifications
+
+    Configurator.addEnumSetting ("project", Config.MODE_NOTIFY, "modeNotifySetting",
+        "Mode Change", "Notifications", [ "Off", "On" ], "Off",
+        function (value) {
+            Config.modeNotify = value == "On";
+        });
+
+    ///////////////////////////
     // Pads
 
-    Configurator.addEnumSetting ("project", Config.ACTIVATE_FIXED_ACCENT, "padTrackColorSetting",
-        "Pad Track Coloring", "Pads", [ "Off", "On" ], "Off",
+    Configurator.addEnumSetting ("project", Config.TRACK_PAD_COLOR, "padTrackColorSetting",
+        "Pad Track Coloring", "Pads", [ "Off", "On" ], "On",
         function (value) {
             Config.padTrackColor = value == "On";
         });
@@ -138,6 +150,11 @@ Config.init = function ()
         function (value) {
             Config.scaleLayout = value;
         });
+};
+
+Config.setModeNotify = function (enabled)
+{
+    Config.modeNotifySetting.set (enabled ? "On" : "Off");
 };
 
 Config.setPadTrackColor = function (enabled)
@@ -191,6 +208,8 @@ Config.addPropertyListener = function (property, listener)
 Config.notifyListeners = function (property)
 {
     var ls = Config.listeners[property];
+    if (ls == null)
+        return;
     for (var i = 0; i < ls.length; i++)
         ls[i].call (null);
 };

@@ -341,6 +341,7 @@ AbstractView.prototype.onSelect = function (event)
             this.surface.setPendingMode (this.surface._previousDeviceBankModeId);
             this.surface._previousDeviceBankModeId = null;
         }
+        this.notifyModeChange ();
     }
 
 //    if (event.isDown ())
@@ -447,11 +448,7 @@ AbstractView.prototype.onJogWheelInternal = function (increase)
     }
 };
 
-AbstractView.prototype.notifyBankChange = function ()
-{
-    this.surface.getDisplay().showNotificationLeft ("Selected Parameter Bank:",
-        this.model.getCursorDevice ().getSelectedParameterPageName (), 1000);
-};
+
 
 //--------------------------------------
 // Protected API
@@ -556,8 +553,18 @@ AbstractView.prototype.notify = function (message)
     this.surface.getDisplay().showNotificationLeft (message, "", 750);
 };
 
+AbstractView.prototype.notifyBankChange = function ()
+{
+    if (!Config.modeNotify)
+        return;
+    this.surface.getDisplay().showNotificationLeft ("Selected Parameter Bank:",
+        this.model.getCursorDevice ().getSelectedParameterPageName (), 1000);
+};
+
 AbstractView.prototype.notifyModeChange = function (modeId)
 {
+    if (!Config.modeNotify)
+        return;
     this.surface.getDisplay().showNotificationLeft ("Mode Selected:", Maschine.getModeName (modeId) + " Mode", 1000);
 };
 
