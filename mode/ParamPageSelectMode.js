@@ -3,10 +3,6 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-ParamPageSelectMode.firstRowButtonColorUp = COLOR.PLAY;
-ParamPageSelectMode.firstRowButtonColorSelected = COLOR.ARM;
-
-
 function ParamPageSelectMode (model)
 {
     BaseMode.call (this, model);
@@ -26,7 +22,10 @@ ParamPageSelectMode.prototype.setCurrentMode = function (mode)
 {
     this.currentMode = mode;
     this.currentModeChanged ();
-    this.surface.setPendingMode (this.currentMode);
+    this.clearTopRow ();
+    this.updateFirstRow ();
+    //this.surface.setPendingMode (this.currentMode);
+    this.surface._previousDeviceBankModeId = this.currentMode;
 };
 
 ParamPageSelectMode.prototype.isPageMode = function (modeId)
@@ -92,17 +91,16 @@ ParamPageSelectMode.prototype.updateDisplay = function ()
     d.allDone ();
 };
 
-//ParamPageSelectMode.prototype.updateFirstRow = function ()
-//{
-//    for (var i = 20; i < 28; i++)
-//        this.surface.setButton (i, i == 20 + this.selectedIndex ? ParamPageSelectMode.firstRowButtonColorSelected : ParamPageSelectMode.firstRowButtonColorUp);
-//};
-//
-//ParamPageSelectMode.prototype.updateSecondRow = function ()
-//{
-//    for (var i = 102; i < 110; i++)
-//        this.surface.setButton (i, PUSH_COLOR2_BLACK);
-//};
+ParamPageSelectMode.prototype.updateFirstRow = function ()
+{
+    this.surface.setButton (MaschineButton.TOP_ROW_0 + this.selectedIndex, MaschineButton.STATE_DOWN);
+    var cd = this.model.getCursorDevice ();
+    if (cd.hasSelectedDevice ())
+    {
+        this.surface.setButton (MaschineButton.TOP_ROW_7,
+            cd.getSelectedDevice ().enabled ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+    }
+};
 
 ParamPageSelectMode.knobDuration = 350;
 

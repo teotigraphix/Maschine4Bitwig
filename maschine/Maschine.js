@@ -45,7 +45,12 @@ Maschine.MODE_PRESET = 27;
 Maschine.isDeviceBankMode = function (modeId)
 {
     return Maschine.BANK_MODES.indexOf (modeId) != -1;
-}
+};
+
+Maschine.isDeviceMode = function (modeId)
+{
+    return Maschine.isDeviceBankMode (modeId) || modeId == Maschine.MODE_BANK_DEVICE;
+};
 
 Maschine.VIEW_PLAY         = 0;
 Maschine.VIEW_MODE         = 1;

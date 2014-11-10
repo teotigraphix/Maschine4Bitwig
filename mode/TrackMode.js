@@ -108,7 +108,6 @@ TrackMode.prototype.updateDisplay = function ()
 
 TrackMode.prototype.updateFirstRow = function ()
 {
-    this.clearTopRow ();
     var currentTrackBank = this.model.getCurrentTrackBank ();
     var t = currentTrackBank.getSelectedTrack ();
     if (t == null)

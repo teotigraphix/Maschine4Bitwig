@@ -144,12 +144,6 @@ AbstractView.prototype.onRec = function (event)
     }
 };
 
-AbstractView.prototype.showTempo = function ()
-{
-    var bpm = parseFloat (Math.round (this.model.getTransport ().getTempo () * 100) / 100).toFixed (2);
-    this.surface.getDisplay ().showNotification ("Current Tempo:     " + bpm + " BPM");
-};
-
 AbstractView.prototype.onGoupButton = function (event, index)
 {
     switch (index)
@@ -325,37 +319,49 @@ AbstractView.prototype.onSelect = function (event)
 {
     this.refreshButton (MaschineButton.SELECT, event);
 
-    if (!event.isDown ())
+    if (event.isLong ())
         return;
 
-//    if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
-//    {
-//        this.notifyBankChange ();
-//    }
-
-
-//    if (event.isLong ())
-//        return;
-//
     if (event.isDown ())
     {
-        if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
+        if (Maschine.isDeviceMode (this.surface.getActiveMode ().getId ()))
         {
-            this.surface.setPendingMode (Maschine.MODE_PARAM_PAGE_SELECT);
-        }
-        else if (Maschine.isDeviceBankMode (this.surface.getActiveMode ().getId ()) ||
-                 this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
-        {
-            this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+            this.surface._previousModeId = this.surface.getActiveMode().getId();
+            this.surface.setPendingMode(Maschine.MODE_PARAM_PAGE_SELECT);
         }
     }
     else
     {
-        if (this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
+        if (this.surface._previousDeviceBankModeId == null)
         {
-            //this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+            this.surface.setPendingMode (this.surface._previousModeId);
+        }
+        else
+        {
+            this.surface.setPendingMode (this.surface._previousDeviceBankModeId);
+            this.surface._previousDeviceBankModeId = null;
         }
     }
+
+//    if (event.isDown ())
+//    {
+//        if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
+//        {
+//            this.surface.setPendingMode (Maschine.MODE_PARAM_PAGE_SELECT);
+//        }
+//        else if (Maschine.isDeviceBankMode (this.surface.getActiveMode ().getId ()) ||
+//                 this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
+//        {
+//            this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+//        }
+//    }
+//    else
+//    {
+//        if (this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
+//        {
+//            //this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+//        }
+//    }
 };
 
 AbstractView.prototype.onSolo = function (event)
@@ -579,4 +585,10 @@ AbstractView.prototype.refreshButton = function (buttonId, event)
 {
     this.surface.setButton (buttonId, event.isDown () || event.isLong ()
         ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+};
+
+AbstractView.prototype.showTempo = function ()
+{
+    var bpm = parseFloat (Math.round (this.model.getTransport ().getTempo () * 100) / 100).toFixed (2);
+    this.surface.getDisplay ().showNotification ("Current Tempo:     " + bpm + " BPM");
 };
