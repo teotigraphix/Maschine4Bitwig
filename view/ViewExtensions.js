@@ -110,10 +110,23 @@ AbstractView.prototype.onRec = function (event)
     if (!event.isDown ())
         return;
 
-    if (this.surface.isShiftPressed ())
-        this.model.getTransport ().toggleLauncherOverdub ();
-    else
-        this.model.getTransport ().record ();
+    var layout = this.model.getApplication ().getPanelLayout ()
+    var shiftPressed = this.surface.isShiftPressed ();
+
+    if (layout == 'ARRANGE')
+    {
+        if (shiftPressed)
+            this.model.getTransport ().toggleLauncherOverdub ();
+        else
+            this.model.getTransport ().record ();
+    }
+    else  if (layout == 'MIX' || layout == 'EDIT')
+    {
+        if (!shiftPressed)
+            this.model.getTransport ().toggleLauncherOverdub ();
+        else
+            this.model.getTransport ().record ();
+    }
 };
 
 AbstractView.prototype.showTempo = function ()
@@ -250,7 +263,7 @@ AbstractView.prototype.onScene = function (event)
     }
 };
 
-AbstractView.prototype.onPattern = function()
+AbstractView.prototype.onPattern = function(event)
 {
     this.refreshButton (MaschineButton.PATTERN, event);
 

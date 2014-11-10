@@ -10,22 +10,13 @@ Scales.DRUM_MATRIX =
         12, 13, 14, 15,
     ];
 
-
-
-DrumView.MAP =
-    [
-        48,   49,  50,  51,
-        44,   45,  46,  47,
-        40,   41, 42, 43,
-        36, 37, 38, 39,
-    ];
-
 function DrumView (model)
 {
     AbstractSequencerView.call (this, model, 128, DrumView.NUM_DISPLAY_COLS);
     this.offsetY = DrumView.DRUM_START_KEY;
     this.canScrollUp = false;
     this.canScrollDown = false;
+
     // TODO: Read the information in Bitwig 1.1
     this.pads = initArray ({ exists: true, solo: false, mute: false }, 16);
     this.selectedPad = 0;
@@ -37,12 +28,10 @@ function DrumView (model)
     {
         // Light notes send from the sequencer
         this.pressedKeys[note] = pressed ? velocity : 0;
-        println("Note listener");
     }));
     tb.addTrackSelectionListener (doObject (this, function (index, isSelected)
     {
         this.clearPressedKeys ();
-        //println("Track change listener");
     }));
 }
 DrumView.prototype = new AbstractSequencerView ();
