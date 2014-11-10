@@ -135,7 +135,7 @@ DeviceMode.prototype.updateDisplay = function ()
 
     }
     else
-        d.clear ().setBlock (1, 1, 'Please select').setBlock (1, 2, ' a Device...    ').clearRow (3);
+        d.clear ().setBlock (0, 0, 'Please select').setBlock (0, 1, 'a Device...    ');
     d.allDone ();
 
 };

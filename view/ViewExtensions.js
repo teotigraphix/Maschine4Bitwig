@@ -183,7 +183,7 @@ AbstractView.prototype.onLeftArrow = function (event)
     if (!event.isDown())
         return;
 
-    if (this.surface.isSelectPressed ())
+    if (this.surface.isShiftPressed ())
     {
         var device = this.model.getCursorDevice ();
         switch (this.surface.getCurrentMode ())
@@ -198,14 +198,13 @@ AbstractView.prototype.onLeftArrow = function (event)
     }
     else
     {
-        switch (this.surface.getCurrentMode ())
+        if (Maschine.isDeviceMode (this.surface.getCurrentMode ()))
         {
-            case Maschine.MODE_BANK_DEVICE:
-            case Maschine.MODE_PRESET:
-                this.model.getCursorDevice ().selectPrevious ();
-                break;
-            default:
-                this.scrollLeft (event);
+            this.model.getCursorDevice ().selectPrevious ();
+        }
+        else
+        {
+            this.scrollLeft (event);
         }
     }
 };
@@ -215,7 +214,7 @@ AbstractView.prototype.onRightArrow = function (event)
     if (!event.isDown())
         return;
 
-    if (this.surface.isSelectPressed ())
+    if (this.surface.isShiftPressed ())
     {
         var device = this.model.getCursorDevice ();
         switch (this.surface.getCurrentMode ())
@@ -230,14 +229,13 @@ AbstractView.prototype.onRightArrow = function (event)
     }
     else
     {
-        switch (this.surface.getCurrentMode ())
+        if (Maschine.isDeviceMode (this.surface.getCurrentMode ()))
         {
-            case Maschine.MODE_BANK_DEVICE:
-            case Maschine.MODE_PRESET:
-                this.model.getCursorDevice ().selectNext ();
-                break;
-            default:
-                this.scrollRight (event);
+            this.model.getCursorDevice ().selectNext ();
+        }
+        else
+        {
+            this.scrollRight (event);
         }
     }
 };
@@ -413,7 +411,7 @@ AbstractView.prototype.onMute = function (event)
 
 AbstractView.prototype.onJogWheelInternal = function (increase)
 {
-    if (this.surface.isSelectPressed ())
+    if (this.surface.isShiftPressed ())
     {
         if (this.model.hasSelectedDevice ())
         {
@@ -555,8 +553,8 @@ AbstractView.prototype.notify = function (message)
 
 AbstractView.prototype.notifyBankChange = function ()
 {
-    if (!Config.modeNotify)
-        return;
+    //if (!Config.modeNotify)
+    //    return;
     this.surface.getDisplay().showNotificationLeft ("Selected Parameter Bank:",
         this.model.getCursorDevice ().getSelectedParameterPageName (), 1000);
 };

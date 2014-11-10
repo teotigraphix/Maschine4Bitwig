@@ -132,6 +132,9 @@ Controller.prototype.updateMode = function (mode)
     for (var i = MaschineButton.TOP_ROW_0; i <= MaschineButton.TOP_ROW_7; i++)
         this.surface.setButton (i, MaschineButton.STATE_UP);
 
+    this.surface.setButton (MaschineButton.BROWSE,
+        this.surface.isActiveMode(Maschine.MODE_PRESET) ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+
     this.surface.sendColor (MaschineButton.ARROW_LEFT, COLOR.OCEAN);
     this.surface.sendColor (MaschineButton.ARROW_UP, COLOR.OCEAN);
     this.surface.sendColor (MaschineButton.ARROW_RIGHT, COLOR.OCEAN);

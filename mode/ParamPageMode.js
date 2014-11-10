@@ -132,30 +132,19 @@ ParamPageMode.prototype.updateDisplay = function ()
             else
             {
                 d.setCell (0, i, this.params[i].name, Display.FORMAT_RAW)
-                 .setCell (1, i, this.params[i].valueStr, Display.FORMAT_RAW)
-                 .setCell (2, i, this.params[i].value, Display.FORMAT_VALUE);
+                 .setCell (1, i, this.params[i].valueStr, Display.FORMAT_RAW);
             }
         }
-        if (this.id == Maschine.MODE_BANK_MODULATE)
-            d.clearRow (2);
     }
     else
     {
         d.clearRow (0).clearRow (1).clearRow (2);
         if (this.model.hasSelectedDevice ())
-            d.setBlock (1, 1, d.padLeft ('No ' + this.name, 17, ' ')).setCell (1, 4, 'Assigned');
+            d.setBlock (0, 0,'No ' + this.name).setBlock (0, 1, 'Assigned');
         else
-            d.setBlock (1, 1, '    Please select').setBlock (1, 2, 'a Device...    ');
+            d.setBlock (0, 0, 'Please select').setBlock (0, 1, 'a Device...    ');
     }
-    if (this.model.hasSelectedDevice ())
-    {
-        d.setCell (3, 0, 'Selected', Display.FORMAT_RAW).setCell (3, 1, 'Device: ', Display.FORMAT_RAW)
-         .setBlock (3, 1, this.model.getSelectedDevice ().name)
-         .setBlock (3, 2, this.name, Display.FORMAT_RAW)
-         .clearBlock (3, 3);
-    }
-    else
-        d.clearRow (3);
+
     d.allDone ();
 };
 
