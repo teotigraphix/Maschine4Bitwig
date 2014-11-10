@@ -126,3 +126,24 @@ DrumView.prototype.onOctaveUp = function (event)
     this.updateNoteMapping ();
     this.surface.getDisplay ().showNotification ('          ' + this.scales.getDrumRangeText ());
 };
+
+DrumView.prototype.onUp = function (event)
+{
+    //if (!this.surface.isShiftPressed ())
+    //    AbstractView.prototype.onUp.call (this, event);
+    //else
+        this.onOctaveUp (event);
+    //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
+    //this.model.getCursorDevice().drumPadBank.scrollChannelsUp ();
+
+};
+
+DrumView.prototype.onDown = function (event)
+{
+    //if (!this.surface.isShiftPressed ())
+    //    AbstractView.prototype.onDown.call (this, event);
+    //else
+        this.onOctaveDown (event);
+    //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
+    //this.model.getCursorDevice().drumPadBank.scrollChannelsDown ();
+};
