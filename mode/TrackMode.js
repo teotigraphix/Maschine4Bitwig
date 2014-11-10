@@ -25,12 +25,10 @@ TrackMode.prototype.onValueKnob = function (index, value)
             tb.changePan (selectedTrack.index, value, this.surface.getFractionValue ());
             break;
         case 4:
-            tb.setCrossfadeModeAsNumber (selectedTrack.index, changeValue (value, tb.getCrossfadeModeAsNumber (selectedTrack.index), 1, 2));
-            break;
         case 5:
         case 6:
         case 7:
-            tb.changeSend (selectedTrack.index, index - 5, value, this.surface.getFractionValue ());
+            tb.changeSend (selectedTrack.index, index - 4, value, this.surface.getFractionValue ());
             break;
     }
 };
