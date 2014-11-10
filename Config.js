@@ -25,71 +25,109 @@ Config.SCALES_BASE           = 5;
 Config.SCALES_IN_KEY         = 6;
 Config.SCALES_LAYOUT         = 7;
 
-Config.RIBBON_MODE_PITCH = 0;
-Config.RIBBON_MODE_CC    = 1;
-Config.RIBBON_MODE_MIXED = 2;
-
 Config.accentActive      = false;                       // Accent button active
 Config.fixedAccentValue  = 127;                         // Fixed velocity value for accent
-Config.ribbonMode        = Config.RIBBON_MODE_PITCH;    // What does the ribbon send?
-Config.ribbonModeCCVal   = 1;
 Config.scale             = 'Major';
 Config.scaleBase         = 'C';
 Config.scaleInKey        = true;
 Config.scaleLayout       = '4th ^';
 
+
+// label, category, options, initialValue
+function Configurator () {}
+
+Configurator.getSettingScopes = function (scopes)
+{
+    var global = host.getPreferences ();
+    var project = host.getDocumentState ();
+    if (scopes == "all")
+        return [global, project];
+    else if (scopes == "global")
+        return [global];
+    if (scopes == "project")
+        return [project];
+    return null;
+};
+
+Configurator.addEnumSetting = function (scopes, id, property, label, category, options, initialValue, callback)
+{
+    var settings = Configurator.getSettingScopes (scopes);
+    for (var i = 0; i < settings.length; i++)
+    {
+        Config[property] = settings[i].getEnumSetting (label, category, options, initialValue);
+        Config[property].addValueObserver (function (value)
+        {
+            if (callback != null)
+                callback.apply (null, [value]);
+            Config.notifyListeners (id);
+        });
+    }
+};
+
+
+Configurator.getNumberSetting = function(scopes, id, property, label, category, minValue, maxValue,
+                                         stepResolution, unit, initialValue, callback)
+{
+    var settings = Configurator.getSettingScopes (scopes);
+    for (var i = 0; i < settings.length; i++)
+    {
+        Config[property] = settings[i].getNumberSetting (label, category, minValue, maxValue, stepResolution, unit, initialValue);
+        Config[property].addRawValueObserver (function (value)
+        {
+            if (callback != null)
+                callback.apply (null, [value]);
+            Config.notifyListeners (id);
+        });
+    }
+};
+
 Config.init = function ()
 {
     var prefs = host.getPreferences ();
+    //var prefs = host.getDocumentState ();
 
     ///////////////////////////
     // Accent
 
-    Config.accentActiveSetting = prefs.getEnumSetting ("Activate Fixed Accent", "Fixed Accent", [ "Off", "On" ], "Off");
-    Config.accentActiveSetting.addValueObserver (function (value)
-    {
-        Config.accentActive = value == "On";
-        Config.notifyListeners (Config.ACTIVATE_FIXED_ACCENT);
-    });
+    Configurator.addEnumSetting ("project", Config.ACTIVATE_FIXED_ACCENT, "accentActiveSetting",
+        "Activate Fixed Accent", "Fixed Accent", [ "Off", "On" ], "Off",
+        function (value) {
+            Config.accentActive = value == "On";
+        });
 
-    Config.accentValueSetting = prefs.getNumberSetting ("Fixed Accent Value", "Fixed Accent", 1, 127, 1, "", 127);
-    Config.accentValueSetting.addRawValueObserver (function (value)
-    {
-        Config.fixedAccentValue = value;
-        Config.notifyListeners (Config.FIXED_ACCENT_VALUE);
-    });
+    Configurator.getNumberSetting ("project", Config.FIXED_ACCENT_VALUE, "accentValueSetting",
+        "Fixed Accent Value", "Fixed Accent", 1, 127, 1, "", 127,
+        function (value) {
+            Config.fixedAccentValue = value;
+        });
 
     ///////////////////////////
     // Scale
 
     var scaleNames = Scales.getNames ();
-    Config.scaleSetting = prefs.getEnumSetting ("Scale", "Scales", scaleNames, scaleNames[0]);
-    Config.scaleSetting.addValueObserver (function (value)
-    {
-        Config.scale = value;
-        Config.notifyListeners (Config.SCALES_SCALE);
-    });
+    Configurator.addEnumSetting ("project", Config.SCALES_SCALE, "scaleSetting",
+        "Scale", "Scales", scaleNames, scaleNames[0],
+        function (value) {
+            Config.scale = value;
+        });
 
-    Config.scaleBaseSetting = prefs.getEnumSetting ("Base", "Scales", Scales.BASES, Scales.BASES[0]);
-    Config.scaleBaseSetting.addValueObserver (function (value)
-    {
-        Config.scaleBase = value;
-        Config.notifyListeners (Config.SCALES_BASE);
-    });
+    Configurator.addEnumSetting ("project", Config.SCALES_BASE, "scaleBaseSetting",
+        "Base", "Scales", Scales.BASES, Scales.BASES[0],
+        function (value) {
+            Config.scaleBase = value;
+        });
 
-    Config.scaleInScaleSetting = prefs.getEnumSetting ("In Key", "Scales", [ "In Key", "Chromatic" ], "In Key");
-    Config.scaleInScaleSetting.addValueObserver (function (value)
-    {
-        Config.scaleInKey = value == "In Key";
-        Config.notifyListeners (Config.SCALES_IN_KEY);
-    });
+    Configurator.addEnumSetting ("project", Config.SCALES_IN_KEY, "scaleInScaleSetting",
+        "In Key", "Scales", [ "In Key", "Chromatic" ], "In Key",
+        function (value) {
+            Config.scaleInKey = value;
+        });
 
-    Config.scaleLayoutSetting = prefs.getEnumSetting ("Layout", "Scales", Scales.LAYOUT_NAMES, Scales.LAYOUT_NAMES[0]);
-    Config.scaleLayoutSetting.addValueObserver (function (value)
-    {
-        Config.scaleLayout = value;
-        Config.notifyListeners (Config.SCALES_LAYOUT);
-    });
+    Configurator.addEnumSetting ("project", Config.SCALES_LAYOUT, "scaleLayoutSetting",
+        "Layout", "Scales", Scales.LAYOUT_NAMES, Scales.LAYOUT_NAMES[0],
+        function (value) {
+            Config.scaleLayout = value;
+        });
 };
 
 Config.setAccentEnabled = function (enabled)

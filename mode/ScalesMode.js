@@ -48,9 +48,9 @@ ScalesMode.prototype.onFirstRow = function (index)
 ScalesMode.prototype.update = function ()
 {
     this.surface.getActiveView ().updateNoteMapping ();
-//    Config.setScale (this.scales.getName (this.scales.getSelectedScale ()));
-//    Config.setScaleBase (Scales.BASES[this.scales.getScaleOffset ()]);
-//    Config.setScaleInScale (!this.scales.isChromatic ());
+    Config.setScale (this.scales.getName (this.scales.getSelectedScale ()));
+    Config.setScaleBase (Scales.BASES[this.scales.getScaleOffset ()]);
+    Config.setScaleInScale (!this.scales.isChromatic ());
 };
 
 Scales.prototype.getRangeText = function ()

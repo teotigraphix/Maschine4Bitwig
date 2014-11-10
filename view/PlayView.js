@@ -23,8 +23,7 @@ PlayView.prototype.attachTo = function (surface)
 
 PlayView.prototype.updateNoteMapping = function ()
 {
-    var t = this.model.getTrackBank ().getSelectedTrack ();
-    this.noteMap = t != null && t.canHoldNotes ? this.scales.getNoteMatrix () : this.scales.getEmptyMatrix ();
+    this.noteMap = this.canSelectedTrackHoldNotes () ? this.scales.getNoteMatrix () : this.scales.getEmptyMatrix ();
     // Workaround
     scheduleTask (doObject (this, function () { this.surface.setKeyTranslationTable (this.noteMap); }), null, 100);
 };
@@ -63,12 +62,6 @@ PlayView.prototype.onDown = function (event)
         this.onOctaveDown (event);
 };
 
-PlayView.prototype.updateSceneButtons = function (buttonID)
-{
-    //for (var i = 0; i < 8; i++)
-    //    this.push.setButton (PUSH_BUTTON_SCENE1 + i, PUSH_COLOR_BLACK);
-};
-
 PlayView.prototype.usesButton = function (buttonID)
 {
     return true;
@@ -76,26 +69,6 @@ PlayView.prototype.usesButton = function (buttonID)
 
 PlayView.prototype.drawGrid = function ()
 {
-    if (this.surface.isActiveMode(Maschine.MODE_NAVIGATE))
-    {
-        scheduleTask (doObject (this, function () {
-            var cursorDevice = this.model.getCursorDevice();
-            var names = cursorDevice.parameterPageNames;
-            if (names != null)
-            {
-                for (var i = 36; i < 52; i++)
-                {
-                    if (i < 36 + names.length)
-                        this.surface.pads.light (i, COLOR.PLAY);
-                    else
-                        this.surface.pads.light (i, COLOR.OFF);
-                }
-            }
-        }), null, 100);
-
-
-        return;
-    }
     var isKeyboardEnabled = this.canSelectedTrackHoldNotes ();
     var isRecording = this.model.hasRecordingState ();
 
@@ -127,35 +100,6 @@ PlayView.prototype.onGridNote = function (note, velocity)
             this.pressedKeys[i] = velocity;
     }
 };
-
-
-//PlayView.prototype.onNavigate = function (event)
-//{
-//    if (event.isLong ())
-//        return;
-//
-//    println("onNavigate()");
-//
-//    if (event.isDown ())
-//    {
-//        this.clearPressedKeys ();
-//        this.clearNoteMapping ();
-//        //this.surface.pads.turnOff ();
-//        this.surface.setPendingMode (Maschine.MODE_NAVIGATE);
-//        if (this.model.hasSelectedDevice ())
-//        {
-//            var selectedDevice = this.model.getSelectedDevice();
-//            var cursorDevice = this.model.getCursorDevice();
-//            var names = cursorDevice.parameterPageNames;
-//
-//        }
-//    }
-//    else
-//    {
-//        //this.updateNoteMapping ();
-//        //this.surface.setActiveMode (Maschine.MODE_BANK_DEVICE);
-//    }
-//};
 
 PlayView.prototype.onOctaveDown = function (event)
 {
