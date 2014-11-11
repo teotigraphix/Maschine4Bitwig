@@ -5,6 +5,9 @@
 // array of cc numbers that are used in the
 var MASCHINE_MK1_BUTTONS = [
 
+    MaschineButton.JOG_WHEEL,
+    MaschineButton.JOG_WHEEL_PUSH,
+
     // Controller
     MaschineMK2Button.CONTROL, // CHANNEL (MIDI)
     MaschineMK2Button.STEP,  // PLUGIN (INSTANCE)
