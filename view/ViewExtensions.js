@@ -631,8 +631,7 @@ AbstractView.prototype.clearPressedKeys = function ()
 
 AbstractView.prototype.refreshButton = function (buttonId, event)
 {
-    this.surface.setButton (buttonId, event.isDown () || event.isLong ()
-        ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+    this.surface.lightButton (buttonId, event.isDown () || event.isLong ());
 };
 
 AbstractView.prototype.showTempo = function ()

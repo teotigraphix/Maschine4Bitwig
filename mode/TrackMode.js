@@ -111,7 +111,7 @@ TrackMode.prototype.updateFirstRow = function ()
     if (t == null)
         return;
 
-    this.surface.setButton (MaschineButton.TOP_ROW_0, t.mute ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.TOP_ROW_1, t.solo ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.TOP_ROW_2, t.recarm ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+    this.surface.lightButton (MaschineButton.TOP_ROW_0, t.mute);
+    this.surface.lightButton (MaschineButton.TOP_ROW_1, t.solo);
+    this.surface.lightButton (MaschineButton.TOP_ROW_2, t.recarm);
 };

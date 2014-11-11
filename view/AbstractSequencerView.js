@@ -54,21 +54,6 @@ AbstractSequencerView.prototype.onActivate = function ()
 //    this.drawSceneButtons ();
 //};
 
-AbstractSequencerView.prototype.drawSceneButtons = function ()
-{
-    var t = this.model.getCurrentTrackBank ().getSelectedTrack ();
-    var isKeyboardEnabled = t != null && t.canHoldNotes;
-    if (!isKeyboardEnabled)
-    {
-        for (var i = PUSH_BUTTON_SCENE1; i <= PUSH_BUTTON_SCENE8; i++)
-            this.surface.setButton (i, PUSH_BUTTON_STATE_OFF);
-        return;
-    }
-
-    for (var i = PUSH_BUTTON_SCENE1; i <= PUSH_BUTTON_SCENE8; i++)
-        this.surface.setButton (i, i == PUSH_BUTTON_SCENE1 + this.selectedIndex ? PUSH_COLOR_SCENE_YELLOW : PUSH_COLOR_SCENE_GREEN);
-};
-
 AbstractSequencerView.prototype.isInXRange = function (x)
 {
     return x >= this.offsetX && x < this.offsetX + this.clip.getStepSize ();

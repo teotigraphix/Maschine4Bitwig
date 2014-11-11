@@ -128,9 +128,14 @@ Maschine.prototype = new AbstractControlSurface ();
 // Display
 //--------------------------------------
 
-Maschine.prototype.setButton = function (button, state)
+Maschine.prototype.lightButton = function (buttonId, isOn)
 {
-    this.output.sendCC (button, state);
+    this.output.sendCC (buttonId, isOn ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+};
+
+Maschine.prototype.setButton = function (buttonId, state)
+{
+    this.output.sendCC (buttonId, state);
 };
 
 Maschine.prototype.sendColor = function (channel, color)
@@ -157,11 +162,11 @@ Maschine.prototype.shutdown = function ()
 
     // Turn off all buttons
     for (var i = 0; i < this.buttons.length; i++)
-        this.setButton (this.buttons[i], MaschineButton.STATE_UP);
+        this.lightButton (this.buttons[i], false);
 
     // Turn off row buttons
     for (var i = MaschineButton.TOP_ROW_0; i <= MaschineButton.TOP_ROW_7; i++)
-        this.setButton (i, MaschineButton.STATE_UP);
+        this.lightButton (i, false);
 
     // Turn off group buttons
     for (var i = MaschineButton.GROUP_A; i <= MaschineButton.GROUP_H; i++)

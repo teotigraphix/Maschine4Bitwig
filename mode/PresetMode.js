@@ -156,12 +156,12 @@ PresetMode.optimizeName = function (clip, name)
 
 PresetMode.prototype.updateFirstRow = function ()
 {
-    this.surface.setButton (MaschineButton.BROWSE, MaschineButton.STATE_DOWN);
-    this.surface.setButton (MaschineButton.TOP_ROW_2, MaschineButton.STATE_DOWN);
-    this.surface.setButton (MaschineButton.TOP_ROW_3, MaschineButton.STATE_DOWN);
-    this.surface.setButton (MaschineButton.TOP_ROW_4, MaschineButton.STATE_DOWN);
-    this.surface.setButton (MaschineButton.TOP_ROW_5, MaschineButton.STATE_DOWN);
-    this.surface.setButton (MaschineButton.TOP_ROW_6, MaschineButton.STATE_DOWN);
-    this.surface.setButton (MaschineButton.TOP_ROW_7, MaschineButton.STATE_DOWN);
+    this.surface.lightButton (MaschineButton.BROWSE, true);
+    this.surface.lightButton (MaschineButton.TOP_ROW_2, true);
+    this.surface.lightButton (MaschineButton.TOP_ROW_3, true);
+    this.surface.lightButton (MaschineButton.TOP_ROW_4, true);
+    this.surface.lightButton (MaschineButton.TOP_ROW_5, true);
+    this.surface.lightButton (MaschineButton.TOP_ROW_6, true);
+    this.surface.lightButton (MaschineButton.TOP_ROW_7, true);
 };
 

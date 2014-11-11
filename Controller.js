@@ -118,8 +118,7 @@ Controller.prototype.validateViews = function ()
     for (var i = 0; i < Maschine.VIEW_BUTTONS.length; i++)
     {
         var info = Maschine.VIEW_BUTTONS[i];
-        this.surface.setButton (info[1], this.surface.isActiveView (info[0]) ?
-            MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+        this.surface.lightButton (info[1], this.surface.isActiveView (info[0]));
     }
 };
 
@@ -130,10 +129,9 @@ Controller.prototype.updateMode = function (mode)
 
     // update button lights based on mode
     for (var i = MaschineButton.TOP_ROW_0; i <= MaschineButton.TOP_ROW_7; i++)
-        this.surface.setButton (i, MaschineButton.STATE_UP);
+        this.surface.lightButton (i, false);
 
-    this.surface.setButton (MaschineButton.BROWSE,
-        this.surface.isActiveMode(Maschine.MODE_PRESET) ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+    this.surface.lightButton (MaschineButton.BROWSE, this.surface.isActiveMode(Maschine.MODE_PRESET));
 
     this.surface.sendColor (MaschineButton.ARROW_LEFT, COLOR.OCEAN);
     this.surface.sendColor (MaschineButton.ARROW_UP, COLOR.OCEAN);

@@ -1,4 +1,12 @@
 
+AbstractView.prototype.updateButtons = function ()
+{
+    var layout = this.model.getApplication ().getPanelLayout ();
+    this.surface.lightButton (MaschineButton.ARRANGE, (layout == 'ARRANGE'));
+    this.surface.lightButton (MaschineButton.MIX, (layout == 'MIX'));
+    this.surface.lightButton (MaschineButton.SAMPLING, (layout == 'EDIT'));
+};
+
 AbstractView.prototype.onChannel = function () {};
 AbstractView.prototype.onPlugin = function () {};
 

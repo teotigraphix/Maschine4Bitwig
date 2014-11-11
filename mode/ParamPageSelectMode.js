@@ -93,12 +93,11 @@ ParamPageSelectMode.prototype.updateDisplay = function ()
 
 ParamPageSelectMode.prototype.updateFirstRow = function ()
 {
-    this.surface.setButton (MaschineButton.TOP_ROW_0 + this.selectedIndex, MaschineButton.STATE_DOWN);
+    this.surface.lightButton (MaschineButton.TOP_ROW_0 + this.selectedIndex, true);
     var cd = this.model.getCursorDevice ();
     if (cd.hasSelectedDevice ())
     {
-        this.surface.setButton (MaschineButton.TOP_ROW_7,
-            cd.getSelectedDevice ().enabled ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+        this.surface.lightButton (MaschineButton.TOP_ROW_7, cd.getSelectedDevice ().enabled);
     }
 };
 

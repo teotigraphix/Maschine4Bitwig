@@ -14,13 +14,13 @@ BaseMaschineView.prototype = new AbstractView ();
 
 BaseMaschineView.prototype.updateButtons = function ()
 {
-    //AbstractView.prototype.updateButtons.call (this);
+   AbstractView.prototype.updateButtons.call (this);
 
     var t = this.model.getTransport ();
 
-    this.surface.setButton (MaschineButton.METRO, t.isClickOn ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.PLAY, t.isPlaying ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.REC, t.isRecording ? MaschineButton.STATE_DOWN : MaschineButton.STATE_UP);
+    this.surface.lightButton (MaschineButton.METRO, t.isClickOn);
+    this.surface.lightButton (MaschineButton.PLAY, t.isPlaying);
+    this.surface.lightButton (MaschineButton.REC, t.isRecording);
 
     var master = this.model.getMasterTrack ();
     var v = master.getVolume ();

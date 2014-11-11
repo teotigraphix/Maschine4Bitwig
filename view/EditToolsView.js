@@ -27,10 +27,10 @@ EditToolsView.prototype.onActivate = function ()
 {
     AbstractView.prototype.onActivate.call (this);
     //println("EditToolsView.onActivate() ");
-    this.surface.setButton (MaschineButton.SCENE, MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.PATTERN, MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.PAD_MODE, MaschineButton.STATE_UP);
-    this.surface.setButton (MaschineButton.NAVIGATE, MaschineButton.STATE_UP);
+    this.surface.lightButton (MaschineButton.SCENE, false);
+    this.surface.lightButton (MaschineButton.PATTERN, false);
+    this.surface.lightButton (MaschineButton.PAD_MODE, false);
+    this.surface.lightButton (MaschineButton.NAVIGATE, false);
 
     //this.surface.sendColor(MaschineButton.GROUP_D, COLOR.MUTE);
 
