@@ -138,16 +138,27 @@ Maschine.prototype.setButton = function (buttonId, state)
     this.output.sendCC (buttonId, state);
 };
 
-Maschine.prototype.sendColor = function (channel, color)
+Maschine.prototype.lightColor = function (cc, color)
+{
+    var hue = Math.floor (color.hue * 127.0 / 360.0);
+    var saturation = Math.floor ((1 - Math.pow (1 - color.saturation, 2)) * 127.0);
+    var brightness = Math.floor (color.brightness * 127.0);
+
+    this.sendCCEx (0, cc, hue);
+    this.sendCCEx (1, cc, saturation);
+    this.sendCCEx (2, cc, brightness);
+};
+
+Maschine.prototype.sendColor = function (cc, color)
 {
     var hue = Math.floor (color.hue * 127.0 / 360.0);
     var saturation = Math.floor ((1 - Math.pow (1 - color.saturation, 2)) * 127.0);
     var brightness = Math.floor (color.brightness * 127.0);
     //println("send " + i + ", " + hue + ", " + saturation + ", " + brightness);
 
-    this.sendCCEx (0, channel, hue);
-    this.sendCCEx (1, channel, saturation);
-    this.sendCCEx (2, channel, brightness);
+    this.sendCCEx (0, cc, hue);
+    this.sendCCEx (1, cc, saturation);
+    this.sendCCEx (2, cc, brightness);
 };
 
 Maschine.prototype.sendCCEx = function (channel, cc, value)

@@ -152,6 +152,11 @@ var COLOR =
     BLUE_MEDIUM : new Color(240.0, 1.0, 0.5),
     BLUE_DIM : new Color(240.0, 1.0, 0.25),
 
+    AQUA : new Color(180.0, 0.6, 1.0),
+    AQUA_MEDIUM : new Color(180.0, 0.6, 0.5),
+    AQUA_DIM : new Color(180.0, 0.6, 0.25),
+    AQUA_OFF : new Color(180.0, 0.6, 0.05),
+
     YELLOW : new Color(60.0, 1.0, 1.0),
     YELLOW_MEDIUM : new Color(60.0, 1.0, 0.5),
     YELLOW_DIM : new Color(60.0, 1.0, 0.25),

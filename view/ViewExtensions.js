@@ -639,3 +639,30 @@ AbstractView.prototype.showTempo = function ()
     var bpm = parseFloat (Math.round (this.model.getTransport ().getTempo () * 100) / 100).toFixed (2);
     this.surface.getDisplay ().showNotification ("Current Tempo:     " + bpm + " BPM");
 };
+
+AbstractView.prototype.updateArrowStates = function ()
+{
+    var tb = this.model.getCurrentTrackBank ();
+    var isDevice = Maschine.isDeviceMode (this.surface.getCurrentMode ());
+
+    var sel = tb.getSelectedTrack ();
+    // var cd = this.model.getCursorDevice ();
+    this.canScrollLeft = isDevice ? true /* TODO: Bitwig bug cd.canSelectPreviousFX () */ :
+        sel != null && sel.index > 0 || tb.canScrollTracksUp ();
+    this.canScrollRight = isDevice ? true /* TODO: Bitwig bug cd.canSelectNextFX () */ :
+        sel != null && sel.index < this.getCurrentTrackBankLength() - 1 || tb.canScrollTracksDown ();
+};
+
+AbstractView.prototype.updateArrows = function ()
+{
+    this.updateArrowStates ();
+    this.surface.lightColor (MaschineButton.ARROW_LEFT, this.getColorArrowState (this.canScrollLeft));
+    this.surface.lightColor (MaschineButton.ARROW_RIGHT, this.getColorArrowState (this.canScrollRight));
+    this.surface.lightColor (MaschineButton.ARROW_UP, this.getColorArrowState (this.canScrollUp));
+    this.surface.lightColor (MaschineButton.ARROW_DOWN, this.getColorArrowState (this.canScrollDown));
+};
+
+AbstractView.prototype.getColorArrowState = function (isOn)
+{
+    return isOn ? COLOR.AQUA : COLOR.AQUA_OFF;
+}

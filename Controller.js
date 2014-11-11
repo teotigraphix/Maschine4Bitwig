@@ -132,11 +132,6 @@ Controller.prototype.updateMode = function (mode)
         this.surface.lightButton (i, false);
 
     this.surface.lightButton (MaschineButton.BROWSE, this.surface.isActiveMode(Maschine.MODE_PRESET));
-
-    this.surface.sendColor (MaschineButton.ARROW_LEFT, COLOR.OCEAN);
-    this.surface.sendColor (MaschineButton.ARROW_UP, COLOR.OCEAN);
-    this.surface.sendColor (MaschineButton.ARROW_RIGHT, COLOR.OCEAN);
-    this.surface.sendColor (MaschineButton.ARROW_DOWN, COLOR.OCEAN);
 };
 
 Controller.prototype.updateIndication = function (mode)
