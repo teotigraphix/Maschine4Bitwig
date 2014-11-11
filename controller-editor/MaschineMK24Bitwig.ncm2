@@ -81,7 +81,7 @@
       </button>
       <button id="Grid">
         <name>Grid</name>
-        <controller>107</controller>
+        <controller>55</controller>
         <channel>0</channel>
         <off>0</off>
         <on>127</on>
