@@ -142,7 +142,7 @@ Config.init = function ()
     Configurator.addEnumSetting ("project", Config.SCALES_IN_KEY, "scaleInScaleSetting",
         "In Key", "Scales", [ "In Key", "Chromatic" ], "In Key",
         function (value) {
-            Config.scaleInKey = value;
+            Config.scaleInKey = value == "In Key";
         });
 
     Configurator.addEnumSetting ("project", Config.SCALES_LAYOUT, "scaleLayoutSetting",
