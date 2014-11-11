@@ -178,6 +178,7 @@ Controller.prototype.addConfigListeners = function ()
     Config.addPropertyListener (Config.MODE_BANK_DEFAULT, doObject (this, function ()
     {
         this.surface.setDefaultMode (Maschine.getDefaultModeBankId ());
+        this.surface.setPendingMode (Maschine.getDefaultModeBankId ());
         this.surface.getMode (Maschine.MODE_PARAM_PAGE_SELECT).setCurrentMode (Maschine.getDefaultModeBankId (), true);
     }));
     Config.addPropertyListener (Config.SCALES_SCALE, doObject (this, function ()
