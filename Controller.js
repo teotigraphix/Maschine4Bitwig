@@ -82,6 +82,7 @@ function Controller (kind)
     this.surface.addView (Maschine.VIEW_PLAY, new PlayView (this.model));
     this.surface.addView (Maschine.VIEW_MODE, new ModeView (this.model));
     this.surface.addView (Maschine.VIEW_DRUM, new DrumView (this.model));
+    this.surface.addView (Maschine.VIEW_SEQUENCER, new StepSequencerView (this.model));
     this.surface.addView (Maschine.VIEW_SESSION, new SceneView (this.model));
     this.surface.addView (Maschine.VIEW_EIDT_TOOLS, new EditToolsView (this.model));
     this.surface.addView (Maschine.VIEW_MUTE, new MuteView (this.model));

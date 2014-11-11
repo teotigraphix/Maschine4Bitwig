@@ -148,7 +148,7 @@ MaschineMK2.prototype.handleEvent = function (cc, value)
             break;
 
         case MaschineMK2Button.STEP: // PLUGIN-IN
-            view.onPlugin (event);
+            view.onStepMode (event);
             break;
 
         case MaschineButton.BROWSE:

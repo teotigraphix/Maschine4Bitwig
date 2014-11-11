@@ -19,6 +19,7 @@ load ("AbstractSequencerView.js");
 load ("PlayView.js");
 load ("SceneView.js");
 load ("DrumView.js");
+load ("StepSequencerView.js");
 load ("EditToolsView.js");
 load ("ModeView.js");
 load ("MuteView.js");

@@ -106,7 +106,7 @@ MaschineMK1.prototype.handleEvent = function (cc, value)
             break;
 
         case MaschineMK2Button.STEP: // PLUGIN-IN
-            view.onPlugin (event);
+            view.onStepMode (event);
             break;
 
         case MaschineButton.BROWSE:
@@ -123,6 +123,11 @@ MaschineMK1.prototype.handleEvent = function (cc, value)
 
         case MaschineButton.AUTO:
             view.onAuto (event);
+            break;
+
+        case MaschineButton.JOG_WHEEL:
+            if (value != 127)
+                view.onJogWheel (value == 2);
             break;
 
         // First Row Buttons
@@ -149,8 +154,6 @@ MaschineMK1.prototype.handleEvent = function (cc, value)
         case MaschineButton.ENCODER_8:
             view.onValueKnob (cc - MaschineButton.ENCODER_1, value);
             break;
-
-        // Master TODO
 
         case MaschineButton.NOTE_REPEAT: // TAP
             view.onNoteRepeat (event);

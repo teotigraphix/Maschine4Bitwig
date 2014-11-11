@@ -183,6 +183,19 @@ AbstractView.prototype.onGoupButton = function (event, index)
     }
 };
 
+AbstractView.prototype.onStepMode = function (event)
+{
+    this.refreshButton(MaschineButton.DUPLICATE, event);
+
+    if (!event.isDown())
+        return;
+
+    if (!this.surface.isActiveView(Maschine.VIEW_SEQUENCER))
+    {
+        this.surface.setActiveView(Maschine.VIEW_SEQUENCER);
+    }
+};
+
 AbstractView.prototype.onDeviceLeft = function (event)
 {
     if (!event.isDown ())

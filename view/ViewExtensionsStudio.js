@@ -76,18 +76,6 @@ AbstractView.prototype.onTap = function (event)
     }
 };
 
-AbstractView.prototype.onStepMode = function()
-{
-//    if (!event.isDown ())
-//        return;
-//
-//    println("Step Mode");
-//    if (!this.surface.isActiveView (Maschine.VIEW_SEQUENCER))
-//    {
-//        this.surface.setActiveView (Maschine.VIEW_SEQUENCER);
-//    }
-};
-
 AbstractView.prototype.onMacro = function() {};
 
 //--------------------------------------

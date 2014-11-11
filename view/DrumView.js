@@ -38,11 +38,11 @@ DrumView.prototype = new AbstractSequencerView ();
 
 DrumView.prototype.onActivate = function ()
 {
-    AbstractSequencerView.prototype.onActivate.call(this);
+    AbstractSequencerView.prototype.onActivate.call (this);
 };
 
 DrumView.prototype.onGridNote = function (note, velocity) {
-    if (!this.canSelectedTrackHoldNotes())
+    if (!this.canSelectedTrackHoldNotes ())
         return;
     var index = note - 36;
     var x = index % 4;
