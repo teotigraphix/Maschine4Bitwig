@@ -5,6 +5,7 @@
 load ("MaschineButton.js");
 load ("MaschineMidiInput.js");
 load ("Maschine.js");
+load ("MaschineModeExtensions.js");
 load ("Grid.js");
 load ("Display.js");
 load ("MaschineStudio.js");

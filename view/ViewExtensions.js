@@ -339,7 +339,7 @@ AbstractView.prototype.onNavigate = function (event)
         if (!this.surface.isActiveView (Maschine.VIEW_MODE))
         {
             this.surface._previousViewId = this.surface.activeViewId;
-            this.surface._previousModeId = this.surface.getActiveMode ().getId ();
+            this.surface.setPreviousModeId (this.surface.getActiveMode ().getId ());
             this.surface.setActiveView (Maschine.VIEW_MODE);
             this.surface.setPendingMode (Maschine.MODE_SELECT);
         }
@@ -347,10 +347,10 @@ AbstractView.prototype.onNavigate = function (event)
     else
     {
         this.surface.setActiveView (this.surface._previousViewId);
-        if (Maschine.isDeviceMode (this.surface._previousModeId))
-            this.surface.getMode (Maschine.MODE_PARAM_PAGE_SELECT).setCurrentMode (this.surface._previousModeId);
-        this.surface.setPendingMode (this.surface._previousModeId);
-        this.notifyModeChange (this.surface._previousModeId);
+        if (Maschine.isDeviceMode (this.surface.getPreviousModeId ()))
+            this.surface.getMode (Maschine.MODE_PARAM_PAGE_SELECT).setCurrentMode (this.surface.getPreviousModeId ());
+        this.surface.setPendingMode (this.surface.getPreviousModeId ());
+        this.notifyModeChange (this.surface.getPreviousModeId ());
     }
 };
 
@@ -369,7 +369,7 @@ AbstractView.prototype.onSelect = function (event)
     {
         if (Maschine.isDeviceMode (this.surface.getActiveMode ().getId ()))
         {
-            this.surface._previousModeId = this.surface.getActiveMode().getId();
+            this.surface.setPreviousModeId (this.surface.getActiveMode().getId());
             this.surface.setPendingMode(Maschine.MODE_PARAM_PAGE_SELECT);
         }
     }
@@ -377,7 +377,7 @@ AbstractView.prototype.onSelect = function (event)
     {
         if (this.surface._previousDeviceBankModeId == null)
         {
-            this.surface.setPendingMode (this.surface._previousModeId);
+            this.surface.setPendingMode (this.surface.getPreviousModeId ());
         }
         else
         {
@@ -419,7 +419,7 @@ AbstractView.prototype.onSolo = function (event)
         if (!this.surface.isActiveView (Maschine.VIEW_SOLO))
         {
             this.surface._previousViewId = this.surface.activeViewId;
-            this.surface._previousModeId = this.surface.getActiveMode ().getId ();
+            this.surface.setPreviousModeId (this.surface.getActiveMode ().getId ());
             this.surface.setActiveView (Maschine.VIEW_SOLO);
             this.surface.setPendingMode (Maschine.MODE_VOLUME);
         }
@@ -427,7 +427,7 @@ AbstractView.prototype.onSolo = function (event)
     else
     {
         this.surface.setActiveView (this.surface._previousViewId);
-        this.surface.setPendingMode (this.surface._previousModeId);
+        this.surface.setPendingMode (this.surface.getPreviousModeId ());
     }
 };
 
@@ -442,7 +442,7 @@ AbstractView.prototype.onMute = function (event)
         if (!this.surface.isActiveView (Maschine.VIEW_MUTE))
         {
             this.surface._previousViewId = this.surface.activeViewId;
-            this.surface._previousModeId = this.surface.getActiveMode ().getId ();
+            this.surface.setPreviousModeId (this.surface.getActiveMode ().getId ());
             this.surface.setActiveView (Maschine.VIEW_MUTE);
             this.surface.setPendingMode (Maschine.MODE_VOLUME);
         }
@@ -450,7 +450,7 @@ AbstractView.prototype.onMute = function (event)
     else
     {
         this.surface.setActiveView (this.surface._previousViewId);
-        this.surface.setPendingMode (this.surface._previousModeId);
+        this.surface.setPendingMode (this.surface.getPreviousModeId ());
     }
 };
 

@@ -34,12 +34,12 @@ ModeView.prototype.drawGrid = function ()
         var mode = Maschine.MODES[index];
         if (index == 0)
         {
-            if (this.surface._previousModeId == Maschine.getDefaultModeBankId ())
+            if (this.surface.getPreviousModeId () == Maschine.getDefaultModeBankId ())
                 this.surface.pads.light (i,  COLOR.OCEAN);
             else
                 this.surface.pads.light (i,  COLOR.ON_DIM);
         }
-        else if (mode != null && mode[0] == this.surface._previousModeId)
+        else if (mode != null && mode[0] == this.surface.getPreviousModeId ())
         {
             this.surface.pads.light (i,  COLOR.OCEAN);
         }
@@ -65,9 +65,9 @@ ModeView.prototype.onGridNote = function (note, velocity)
         {
             // will select the mode when the Select button is released
             if (index == 0)
-                this.surface._previousModeId = Maschine.getDefaultModeBankId ();
+                this.surface.setPreviousModeId (Maschine.getDefaultModeBankId ());
             else
-                this.surface._previousModeId = this.selectedMode[0]
+                this.surface.setPreviousModeId (this.selectedMode[0]);
         }
     }
 };

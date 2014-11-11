@@ -19,7 +19,7 @@ SelectMode.prototype.onFirstRow = function (event, index)
 
 SelectMode.prototype.updateDisplay = function ()
 {
-    var modeId = this.surface._previousModeId;
+    var modeId = this.surface.getPreviousModeId ();
     var d = this.surface.getDisplay ();
     d.clear ();
 

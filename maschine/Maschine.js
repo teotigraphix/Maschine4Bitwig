@@ -54,7 +54,7 @@ Maschine.VIEW_SOLO         = 7;
 Maschine.VIEW_BUTTONS = [
     [Maschine.VIEW_SESSION, MaschineButton.SCENE],
     [Maschine.VIEW_DRUM, MaschineButton.PATTERN],
-    [Maschine.VIEW_PLAY, MaschineButton.PAD_MODE],
+    [Maschine.VIEW_PLAY, MaschineButton.PAD_MODE]
 ];
 
 Maschine.MODES = [
@@ -93,72 +93,8 @@ Maschine.MODE_BANKS = [
     new ModeBank (Maschine.MODE_BANK_DIRECT, 'Direct'),
     new ModeBank (Maschine.MODE_BANK_MODULATE, 'Modulate'),
     new ModeBank (Maschine.MODE_BANK_MACRO, 'Macro'),
-    new ModeBank (Maschine.MODE_BANK_USER, 'User'),
+    new ModeBank (Maschine.MODE_BANK_USER, 'User')
 ];
-
-Maschine.isDeviceBankMode = function (modeId)
-{
-    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
-        if (Maschine.MODE_BANKS[i].id == modeId)
-            return true;
-    return false;
-};
-
-Maschine.isDeviceMode = function (modeId)
-{
-    return Maschine.isDeviceBankMode (modeId) || modeId == Maschine.MODE_BANK_DEVICE;
-};
-
-Maschine.getModeBankNames = function ()
-{
-    var result = [];
-    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
-        result.push (Maschine.MODE_BANKS[i].name);
-    return result;
-}
-
-Maschine.setDefaultModeBankString = function (modeName)
-{
-    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
-    {
-        if (Maschine.MODE_BANKS[i].name == modeName)
-        {
-            Maschine.setDefaultModeBank (Maschine.MODE_BANKS[i].id);
-            break;
-        }
-    }
-};
-
-Maschine.getDefaultModeBankName = function ()
-{
-    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
-        if (Maschine.MODE_BANKS[i].isDefault)
-            return Maschine.MODE_BANKS[i].name;
-}
-
-Maschine.getDefaultModeBankId = function ()
-{
-    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
-        if (Maschine.MODE_BANKS[i].isDefault)
-            return Maschine.MODE_BANKS[i].id;
-};
-
-Maschine.setDefaultModeBank = function (modeId)
-{
-    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
-    {
-        Maschine.MODE_BANKS[i].isDefault = Maschine.MODE_BANKS[i].id == modeId;
-    }
-};
-
-Maschine.getModeName = function (modeId)
-{
-    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
-    {
-        if (Maschine.MODE_BANKS[i].id == modeId)
-            return Maschine.MODE_BANKS[i].name;
-    }
-};
 
 function Maschine (output, input, buttons)
 {
@@ -167,11 +103,28 @@ function Maschine (output, input, buttons)
 
     AbstractControlSurface.call (this, output, input, buttons);
 
+    this.previousModeId = null;
+
     for (var i = 36; i < 52; i++)
         this.gridNotes.push (i);
 }
 
 Maschine.prototype = new AbstractControlSurface ();
+
+
+//--------------------------------------
+// Extensions
+//--------------------------------------
+
+Maschine.prototype.getPreviousModeId = function ()
+{
+    return this.previousModeId;
+};
+
+Maschine.prototype.setPreviousModeId = function (modeId)
+{
+    this.previousModeId = modeId;
+;}
 
 //--------------------------------------
 // Display
