@@ -32,7 +32,14 @@ ModeView.prototype.drawGrid = function ()
         this.surface.pads.light (i, (i == this.pressedKey) ? COLOR.ON : COLOR.ON_DIM);
         var index = this.indexTranslation.indexOf (i);
         var mode = Maschine.MODES[index];
-        if (mode != null && mode[0] == this.surface._previousModeId)
+        if (index == 0)
+        {
+            if (this.surface._previousModeId == Maschine.getDefaultModeBankId ())
+                this.surface.pads.light (i,  COLOR.OCEAN);
+            else
+                this.surface.pads.light (i,  COLOR.ON_DIM);
+        }
+        else if (mode != null && mode[0] == this.surface._previousModeId)
         {
             this.surface.pads.light (i,  COLOR.OCEAN);
         }
@@ -45,18 +52,22 @@ ModeView.prototype.drawGrid = function ()
 
 ModeView.prototype.onGridNote = function (note, velocity)
 {
+    var index = this.indexTranslation.indexOf (note);
     this.pressedKey = -1;
     if (velocity > 0)
     {
         this.pressedKey = note;
-        this.selectedMode = Maschine.MODES[this.indexTranslation.indexOf (note)];
+        this.selectedMode = Maschine.MODES[index];
     }
     else
     {
         if (this.selectedMode != null)
         {
-            // will select the mode when the Solo button is released
-            this.surface._previousModeId = this.selectedMode[0]
+            // will select the mode when the Select button is released
+            if (index == 0)
+                this.surface._previousModeId = Maschine.getDefaultModeBankId ();
+            else
+                this.surface._previousModeId = this.selectedMode[0]
         }
     }
 };

@@ -18,12 +18,15 @@ ParamPageSelectMode.prototype.getCurrentMode = function ()
     return this.currentMode;
 };
 
-ParamPageSelectMode.prototype.setCurrentMode = function (mode)
+ParamPageSelectMode.prototype.setCurrentMode = function (mode, noUpdate)
 {
     this.currentMode = mode;
     this.currentModeChanged ();
-    this.clearTopRow ();
-    this.updateFirstRow ();
+    if (!noUpdate)
+    {
+        this.clearTopRow ();
+        this.updateFirstRow ();
+    }
     //this.surface.setPendingMode (this.currentMode);
     this.surface._previousDeviceBankModeId = this.currentMode;
 };
@@ -70,6 +73,7 @@ ParamPageSelectMode.prototype.updateDisplay = function ()
 {
     var d = this.surface.getDisplay ();
     d.clear ();
+
     for (var i = 0; i < this.bottomItems.length; i++)
         d.setCell (0, i, this.bottomItems[i].getLabel ());
 
@@ -130,7 +134,6 @@ ParamPageSelectMode.prototype.onValueKnob = function (index, value)
 ParamPageSelectMode.prototype.onFirstRow = function (index)
 {
     var device = this.model.getCursorDevice ();
-
     if (index < 7)
         this.bottomItems[index].execute ();
     else if (index == 7)

@@ -27,6 +27,9 @@ Config.SCALES_LAYOUT         = 7;
 
 Config.TRACK_PAD_COLOR       = 8;
 Config.MODE_NOTIFY           = 9;
+Config.MODE_BANK_DEFAULT     = 10;
+
+Config.NUM_CONFIGS           = 11;
 
 Config.accentActive      = false;                       // Accent button active
 Config.fixedAccentValue  = 127;                         // Fixed velocity value for accent
@@ -37,6 +40,7 @@ Config.scaleLayout       = '4th ^';
 
 Config.padTrackColor    = true;
 Config.modeNotify       = false;
+Config.defaultModeBank  = 'Macro';
 
 // label, category, options, initialValue
 function Configurator () {}
@@ -89,6 +93,16 @@ Config.init = function ()
 {
     var prefs = host.getPreferences ();
     //var prefs = host.getDocumentState ();
+
+    ///////////////////////////
+    // Controller Defaults
+
+    Configurator.addEnumSetting ("project", Config.MODE_BANK_DEFAULT, "defaultModeBankSetting",
+        "Mode Bank", "Controller", Maschine.getModeBankNames (), "Macro",
+        function (value) {
+            Config.defaultModeBank = value;
+            Maschine.setDefaultModeBankString (value);
+        });
 
     ///////////////////////////
     // Notifications
@@ -152,6 +166,12 @@ Config.init = function ()
         });
 };
 
+
+Config.setDefaultModeBank = function (value)
+{
+    Config.defaultModeBankSetting.set (value);
+};
+
 Config.setModeNotify = function (enabled)
 {
     Config.modeNotifySetting.set (enabled ? "On" : "Off");
@@ -197,7 +217,7 @@ Config.setScaleLayout = function (scaleLayout)
 // ------------------------------
 
 Config.listeners = [];
-for (var i = 0; i <= Config.SCALES_LAYOUT; i++)
+for (var i = 0; i <= Config.NUM_CONFIGS; i++)
     Config.listeners[i] = [];
 
 Config.addPropertyListener = function (property, listener)

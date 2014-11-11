@@ -28,7 +28,12 @@ SelectMode.prototype.updateDisplay = function ()
 
     for (var i = 0; i < 4; i++)
     {
-        d.setCell(0, column, this.getModeName (modes[i], modeId));
+        if (i == 0)
+            d.setCell(0, column, this.getName(
+                optimizeName(Maschine.getDefaultModeBankName (), 5),
+                Maschine.getDefaultModeBankId (), modeId));
+        else
+            d.setCell(0, column, this.getModeName (modes[i], modeId));
         column++;
     }
 
@@ -59,6 +64,13 @@ SelectMode.prototype.updateDisplay = function ()
 
     d.allDone ();
 };
+
+SelectMode.prototype.getName = function (name, modeId, activeModeId)
+{
+    if (modeId == activeModeId)
+        name = ">" + name;
+    return name;
+}
 
 SelectMode.prototype.getModeName = function (mode, activeModeId)
 {

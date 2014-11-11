@@ -30,7 +30,7 @@ Maschine.MODE_XFADE = 13;
 Maschine.MODE_MASTER = 14;
 Maschine.MODE_GROOVE = 15;
 Maschine.MODE_FRAME = 16;
-Maschine.MODE_ACCENT = 17
+Maschine.MODE_ACCENT = 17;
 
 Maschine.MODE_PARAM_PAGE_SELECT = 20;
 Maschine.MODE_BANK_COMMON = 21;
@@ -41,18 +41,6 @@ Maschine.MODE_BANK_MODULATE = 25;
 Maschine.MODE_BANK_USER = 26;
 Maschine.MODE_PRESET = 27;
 Maschine.MODE_DEVICE_LAYER = 28;
-
-
-
-Maschine.isDeviceBankMode = function (modeId)
-{
-    return Maschine.BANK_MODES.indexOf (modeId) != -1;
-};
-
-Maschine.isDeviceMode = function (modeId)
-{
-    return Maschine.isDeviceBankMode (modeId) || modeId == Maschine.MODE_BANK_DEVICE;
-};
 
 Maschine.VIEW_PLAY         = 0;
 Maschine.VIEW_MODE         = 1;
@@ -91,23 +79,84 @@ Maschine.MODES = [
     [Maschine.MODE_ACCENT, "Accent"]
 ];
 
-Maschine.BANK_MODES = [
-    Maschine.MODE_BANK_COMMON,
-    Maschine.MODE_BANK_ENVELOPE,
-    Maschine.MODE_BANK_DIRECT,
-    Maschine.MODE_BANK_MACRO,
-    Maschine.MODE_BANK_MODULATE,
-    Maschine.MODE_BANK_USER
+function ModeBank (id, name, isDefault)
+{
+    this.id = id;
+    this.name = name;
+    this.isDefault = isDefault == null ? false : isDefault;
+}
+
+Maschine.MODE_BANKS = [
+    new ModeBank (Maschine.MODE_BANK_DEVICE, 'Device', true),
+    new ModeBank (Maschine.MODE_BANK_COMMON, 'Common'),
+    new ModeBank (Maschine.MODE_BANK_ENVELOPE, 'Envelope'),
+    new ModeBank (Maschine.MODE_BANK_DIRECT, 'Direct'),
+    new ModeBank (Maschine.MODE_BANK_MODULATE, 'Modulate'),
+    new ModeBank (Maschine.MODE_BANK_MACRO, 'Macro'),
+    new ModeBank (Maschine.MODE_BANK_USER, 'User'),
 ];
 
+Maschine.isDeviceBankMode = function (modeId)
+{
+    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
+        if (Maschine.MODE_BANKS[i].id == modeId)
+            return true;
+    return false;
+};
 
-// TEMP
+Maschine.isDeviceMode = function (modeId)
+{
+    return Maschine.isDeviceBankMode (modeId) || modeId == Maschine.MODE_BANK_DEVICE;
+};
+
+Maschine.getModeBankNames = function ()
+{
+    var result = [];
+    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
+        result.push (Maschine.MODE_BANKS[i].name);
+    return result;
+}
+
+Maschine.setDefaultModeBankString = function (modeName)
+{
+    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
+    {
+        if (Maschine.MODE_BANKS[i].name == modeName)
+        {
+            Maschine.setDefaultModeBank (Maschine.MODE_BANKS[i].id);
+            break;
+        }
+    }
+};
+
+Maschine.getDefaultModeBankName = function ()
+{
+    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
+        if (Maschine.MODE_BANKS[i].isDefault)
+            return Maschine.MODE_BANKS[i].name;
+}
+
+Maschine.getDefaultModeBankId = function ()
+{
+    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
+        if (Maschine.MODE_BANKS[i].isDefault)
+            return Maschine.MODE_BANKS[i].id;
+};
+
+Maschine.setDefaultModeBank = function (modeId)
+{
+    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
+    {
+        Maschine.MODE_BANKS[i].isDefault = Maschine.MODE_BANKS[i].id == modeId;
+    }
+};
+
 Maschine.getModeName = function (modeId)
 {
-    for (var i = 0; i < Maschine.MODES.length; i++)
+    for (var i = 0; i < Maschine.MODE_BANKS.length; i++)
     {
-        if (Maschine.MODES[i][0] == modeId)
-            return Maschine.MODES[i][1];
+        if (Maschine.MODE_BANKS[i].id == modeId)
+            return Maschine.MODE_BANKS[i].name;
     }
 };
 

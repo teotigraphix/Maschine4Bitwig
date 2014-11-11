@@ -347,6 +347,8 @@ AbstractView.prototype.onNavigate = function (event)
     else
     {
         this.surface.setActiveView (this.surface._previousViewId);
+        if (Maschine.isDeviceMode (this.surface._previousModeId))
+            this.surface.getMode (Maschine.MODE_PARAM_PAGE_SELECT).setCurrentMode (this.surface._previousModeId);
         this.surface.setPendingMode (this.surface._previousModeId);
         this.notifyModeChange (this.surface._previousModeId);
     }

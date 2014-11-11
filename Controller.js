@@ -9,6 +9,7 @@ GlobalConfig.CURSOR_DEVICE_TEXT_LENGTH = 6;
 function Controller (kind)
 {
     Config.init ();
+    this.addConfigListeners ();
 
     var output = new MidiOutput ();
     var input = new MaschineMidiInput ();
@@ -44,8 +45,6 @@ function Controller (kind)
     {
         this.surface = new MaschineMK1 (output, input);
     }
-	
-    this.surface.setDefaultMode (Maschine.MODE_BANK_DEVICE);
 
     // add Modes
     this.surface.addMode (Maschine.MODE_SELECT, new SelectMode (this.model));
@@ -98,11 +97,11 @@ function Controller (kind)
         this.updateMode (newMode);
     }));
 
-    this.addConfigListeners ();
+    this.surface.setDefaultMode (Maschine.getDefaultModeBankId ());
 
     // set active view & mode
     this.surface.setActiveView (Maschine.VIEW_PLAY);
-    this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+    this.surface.setPendingMode (Maschine.MODE_BANK_MACRO);
 }
 
 Controller.prototype = new AbstractController ();
@@ -176,6 +175,11 @@ Controller.prototype.updateIndication = function (mode)
 
 Controller.prototype.addConfigListeners = function ()
 {
+    Config.addPropertyListener (Config.MODE_BANK_DEFAULT, doObject (this, function ()
+    {
+        this.surface.setDefaultMode (Maschine.getDefaultModeBankId ());
+        this.surface.getMode (Maschine.MODE_PARAM_PAGE_SELECT).setCurrentMode (Maschine.getDefaultModeBankId (), true);
+    }));
     Config.addPropertyListener (Config.SCALES_SCALE, doObject (this, function ()
     {
         this.scales.setScaleByName (Config.scale);
