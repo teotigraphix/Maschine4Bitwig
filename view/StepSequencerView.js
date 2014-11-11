@@ -29,6 +29,9 @@ StepSequencerView.prototype.onGridNote = function (note, velocity)
     if (velocity != 0)
     {
         var col = 4 * (3 - y) + x;
+//        println("index, " + index);
+//        println("col, " + col);
+//        println("index, " + index);
         this.clip.toggleStep (col, this.offsetY + this.getSelectedPad (), Config.accentActive ? Config.fixedAccentValue : velocity);
     }
 };
@@ -40,15 +43,15 @@ StepSequencerView.prototype.drawGrid = function ()
         this.surface.pads.turnOff ();
         return;
     }
-    println("draw");
+
     var isRecording = this.model.hasRecordingState ();
 
     // Clip length/loop area
-    var quartersPerPad = this.model.getQuartersPerMeasure ();
-    var maxQuarters = quartersPerPad * 16;
-    var start = this.clip.getLoopStart ();
-    var loopStartPad = Math.floor (Math.max (0, start) / quartersPerPad);
-    var loopEndPad   = Math.ceil (Math.min (maxQuarters, start + this.clip.getLoopLength ()) / quartersPerPad);
+//    var quartersPerPad = this.model.getQuartersPerMeasure ();
+//    var maxQuarters = quartersPerPad * 16;
+//    var start = this.clip.getLoopStart ();
+//    var loopStartPad = Math.floor (Math.max (0, start) / quartersPerPad);
+//    var loopEndPad   = Math.ceil (Math.min (maxQuarters, start + this.clip.getLoopLength ()) / quartersPerPad);
 //    for (var pad = 0; pad < 16; pad++)
 //        this.surface.pads.lightEx (4 + pad % 4, 4 + Math.floor (pad / 4), pad >= loopStartPad && pad < loopEndPad ? PUSH_COLOR2_WHITE : PUSH_COLOR_BLACK, null, false);
 
@@ -57,6 +60,7 @@ StepSequencerView.prototype.drawGrid = function ()
     var hiStep = this.isInXRange (step) ? step % DrumView.NUM_DISPLAY_COLS : -1;
     for (var col = 0; col < DrumView.NUM_DISPLAY_COLS; col++)
     {
+        //println("drawc, " + col);
         var isSet = this.clip.getStep (col, this.offsetY + this.getSelectedPad ());
         var hilite = col == hiStep;
         var x = col % 4;

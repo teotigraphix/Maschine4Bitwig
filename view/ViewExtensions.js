@@ -185,14 +185,14 @@ AbstractView.prototype.onGoupButton = function (event, index)
 
 AbstractView.prototype.onStepMode = function (event)
 {
-    this.refreshButton(MaschineButton.DUPLICATE, event);
+    this.refreshButton (MaschineButton.STEP_MODE, event);
 
     if (!event.isDown())
         return;
 
-    if (!this.surface.isActiveView(Maschine.VIEW_SEQUENCER))
+    if (!this.surface.isActiveView (Maschine.VIEW_SEQUENCER))
     {
-        this.surface.setActiveView(Maschine.VIEW_SEQUENCER);
+        this.surface.setActiveView (Maschine.VIEW_SEQUENCER);
     }
 };
 
@@ -377,6 +377,21 @@ AbstractView.prototype.onSelect = function (event)
 
     if (event.isLong ())
         return;
+
+    if (this.surface.isActiveView (Maschine.VIEW_SEQUENCER) || this.surface._tempDrumSelect)
+    {
+        if (event.isDown ())
+        {
+            this.surface._tempDrumSelect = true;
+            this.surface.setActiveView (Maschine.VIEW_DRUM);
+        }
+        else
+        {
+            this.surface.setActiveView (Maschine.VIEW_SEQUENCER);
+            this.surface._tempDrumSelect= false;
+        }
+        return;
+    }
 
     if (event.isDown ())
     {

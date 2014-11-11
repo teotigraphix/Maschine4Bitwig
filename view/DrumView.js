@@ -1,5 +1,5 @@
 
-DrumView.NUM_DISPLAY_COLS = 32;
+DrumView.NUM_DISPLAY_COLS = 16;
 DrumView.DRUM_START_KEY = 36;
 
 Scales.DRUM_MATRIX =

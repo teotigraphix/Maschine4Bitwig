@@ -54,7 +54,10 @@ Maschine.VIEW_SOLO         = 7;
 Maschine.VIEW_BUTTONS = [
     [Maschine.VIEW_SESSION, MaschineButton.SCENE],
     [Maschine.VIEW_DRUM, MaschineButton.PATTERN],
-    [Maschine.VIEW_PLAY, MaschineButton.PAD_MODE]
+    [Maschine.VIEW_PLAY, MaschineButton.PAD_MODE],
+    [Maschine.VIEW_SEQUENCER, MaschineButton.STEP_MODE],
+    // TODO Fix in MaschineButton
+    [Maschine.VIEW_SEQUENCER, MaschineButton.PLUGIN]
 ];
 
 Maschine.MODES = [
