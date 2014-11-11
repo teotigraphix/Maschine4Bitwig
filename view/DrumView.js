@@ -55,6 +55,8 @@ DrumView.prototype.onGridNote = function (note, velocity) {
     // Mark selected note
     this.pressedKeys[this.offsetY + this.selectedPad] = velocity;
 
+    this.model.getCursorDevice().drumPadBank.getChannel (index).selectInEditor ();
+
 //    // Delete all of the notes on that 'pad'
 //    if (playedPad >= 0 && this.surface.isDeletePressed ())
 //    {
@@ -82,10 +84,14 @@ DrumView.prototype.drawGrid = function ()
             var index = 4 * y + x;
             var p = this.pads[index]; // mute, exists, solo
 
-            var padColorId = this.model.getCursorDevice ().drumPadLayers[index].color;
+            var pad = this.model.getCursorDevice ().drumPadLayers[index];
+
+            var padColorId = pad.color;
             var padColor = BitwigColor.getColor (padColorId);
             if (padColor == null)
                 padColor = BitwigColor.getColor (selectedTrack.color);
+            if (!pad.exists)
+                padColor = COLOR.OFF;
 
             var c = this.pressedKeys[this.offsetY + index] > 0 ?
                 (isRecording ? COLOR.RED : COLOR.GREEN) : (this.selectedPad == index ? COLOR.BLUE : (p.exists ?
@@ -139,7 +145,7 @@ DrumView.prototype.onUp = function (event)
     //else
         this.onOctaveUp (event);
     //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
-    this.model.getCursorDevice().drumPadBank.scrollChannelsUp ();
+    this.model.getCursorDevice().drumPadBank.scrollChannelsPageUp ();
 
 };
 
@@ -150,5 +156,5 @@ DrumView.prototype.onDown = function (event)
     //else
         this.onOctaveDown (event);
     //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
-    this.model.getCursorDevice().drumPadBank.scrollChannelsDown ();
+    this.model.getCursorDevice().drumPadBank.scrollChannelsPageDown ();
 };

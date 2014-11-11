@@ -144,6 +144,11 @@ AbstractView.prototype.onRec = function (event)
     }
 };
 
+AbstractView.prototype.onGrid = function (event)
+{
+    this.refreshButton (MaschineButton.GRID, event);
+};
+
 AbstractView.prototype.onGoupButton = function (event, index)
 {
     switch (index)
@@ -178,8 +183,40 @@ AbstractView.prototype.onGoupButton = function (event, index)
     }
 };
 
+AbstractView.prototype.onDeviceLeft = function (event)
+{
+    if (!event.isDown ())
+        return;
+
+    // TODO FIX The returned channel selection does not contain the layers instead it is the top level tracks selection
+    var cd = this.model.getCursorDevice ();
+    if (cd.hasSelectedDevice ())
+    {
+        if (cd.hasLayers ())
+            this.surface.setPendingMode (this.surface.getCurrentMode () == Maschine.MODE_BANK_DEVICE ?
+                Maschine.MODE_DEVICE_LAYER : Maschine.MODE_BANK_DEVICE);
+    }
+    else
+    {
+        this.model.getCursorDevice ().cursorDevice.selectFirstInLayer (0);
+    }
+};
+
+AbstractView.prototype.onDeviceRight = function (event)
+{
+    if (event.isDown ())   // TODO Create function in CursorDeviceProxy when API is fully working and tested
+        this.model.getCursorDevice ().cursorDevice.selectParent ();
+};
+
 AbstractView.prototype.onLeftArrow = function (event)
 {
+    if (this.surface.isPressed (MaschineButton.GRID))
+    {
+        println("onLeftArrow(0");
+        this.onDeviceLeft (event);
+        return;
+    }
+
     if (!event.isDown())
         return;
 
@@ -211,6 +248,12 @@ AbstractView.prototype.onLeftArrow = function (event)
 
 AbstractView.prototype.onRightArrow = function (event)
 {
+    if (this.surface.isPressed (MaschineButton.GRID))
+    {
+        this.onDeviceRight (event);
+        return;
+    }
+
     if (!event.isDown())
         return;
 

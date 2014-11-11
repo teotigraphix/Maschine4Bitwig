@@ -23,4 +23,5 @@ load ("PresetMode.js");
 load ("DirectParameterMode.js");
 load ("ParamPageMode.js");
 load ("ParamPageSelectMode.js");
+load ("DeviceLayerMode.js");
 

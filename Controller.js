@@ -71,7 +71,7 @@ function Controller (kind)
 
     this.surface.addMode (Maschine.MODE_BANK_DEVICE, new DeviceMode (this.model));
     this.surface.addMode (Maschine.MODE_PARAM_PAGE_SELECT, new ParamPageSelectMode (this.model));
-//    this.surface.addMode (Maschine.MODE_DEVICE_LAYER, new DeviceLayerMode (this.model));
+    this.surface.addMode (Maschine.MODE_DEVICE_LAYER, new DeviceLayerMode (this.model));
     this.surface.addMode (Maschine.MODE_BANK_COMMON, new ParamPageMode (this.model, Maschine.MODE_BANK_COMMON, 'Common'));
     this.surface.addMode (Maschine.MODE_BANK_ENVELOPE, new ParamPageMode (this.model, Maschine.MODE_BANK_ENVELOPE, 'Envelope'));
     this.surface.addMode (Maschine.MODE_BANK_DIRECT, new DirectParameterMode (this.model, Maschine.MODE_BANK_DIRECT, 'Direct'));
