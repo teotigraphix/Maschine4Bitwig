@@ -12,12 +12,15 @@ AccentMode.prototype = new BaseMode ();
 
 AccentMode.prototype.onValueKnob = function (index, value)
 {
-    // will never need fine increments on accent velocity since they are integers
     var v = changeValue (value, Config.fixedAccentValue, 1, Config.maxParameterValue);
     Config.setAccentValue (v == 0 ? 1 : v);
 };
 
-AccentMode.prototype.onFirstRow = function (index) {};
+AccentMode.prototype.onFirstRow = function (index)
+{
+    if (index == 7)
+        Config.setAccentEnabled (!Config.accentActive);
+};
 
 AccentMode.prototype.updateDisplay = function () 
 {
@@ -27,14 +30,7 @@ AccentMode.prototype.updateDisplay = function ()
         .allDone ();
 };
 
-//AccentMode.prototype.updateFirstRow = function ()
-//{
-//    for (var i = 0; i < 8; i++)
-//        this.surface.setButton (20 + i, PUSH_COLOR_BLACK);
-//};
-//
-//AccentMode.prototype.updateSecondRow = function ()
-//{
-//    for (var i = 0; i < 8; i++)
-//        this.surface.setButton (102 + i, PUSH_COLOR2_BLACK);
-//};
+AccentMode.prototype.updateFirstRow = function ()
+{
+    this.surface.lightButton (MaschineButton.TOP_ROW_7, Config.accentActive);
+};
