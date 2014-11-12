@@ -164,6 +164,8 @@ AbstractView.prototype.onGoupButton = function (event, index)
             break;
 
         case 3:
+            if (!event.isLong ())
+                this.surface.lightColor (MaschineButton.GROUP_D, event.isDown () ? COLOR.ON : COLOR.ON_DIM);
             break;
 
         case 4:
@@ -339,12 +341,72 @@ AbstractView.prototype.onPattern = function(event)
     }
 };
 
+AbstractView.prototype.doNavigateAction = function (index)
+{
+    println("Maschine.doNavigateAction " + index);
+    switch (index)
+    {
+        case 0:
+            this.model.getApplication ().undo ();
+            break;
+
+        case 1:
+            this.model.getApplication ().redo ();
+            break;
+
+        case 4:
+            this.model.getApplication ().quantize ();
+            break;
+
+        case 8:
+            this.model.getApplication ().deleteSelection ();
+            break;
+
+        case 14:
+            if (this.surface.isActiveView (Maschine.VIEW_PLAY))
+                this.surface.getActiveView ().onDown (new ButtonEvent (ButtonEvent.DOWN));
+            break;
+
+        case 15:
+            if (this.surface.isActiveView (Maschine.VIEW_PLAY))
+                this.surface.getActiveView ().onUp (new ButtonEvent (ButtonEvent.DOWN));
+            break;
+    }
+};
+
+AbstractView.prototype.onNavigateAction = function (event)
+{
+    if (event.isLong ())
+        return;
+
+    if (event.isDown ())
+    {
+        // println("NavigateAction down");
+        if (!this.surface.isActiveView (Maschine.VIEW_NAVIGATE_ACTION))
+        {
+            this.surface._previousViewId = this.surface.activeViewId;
+            this.surface.setActiveView (Maschine.VIEW_NAVIGATE_ACTION);
+        }
+    }
+    else
+    {
+        //println("NavigateAction up");
+        this.surface.setActiveView (this.surface._previousViewId);
+    }
+};
+
 AbstractView.prototype.onNavigate = function (event)
 {
     this.refreshButton (MaschineButton.NAVIGATE, event);
 
     if (event.isLong ())
         return;
+
+    if (this.surface.isPressed (MaschineButton.GROUP_D))
+    {
+        this.onNavigateAction (event);
+        return;
+    }
 
     // TODO refactor temp variable
     if (event.isDown ())

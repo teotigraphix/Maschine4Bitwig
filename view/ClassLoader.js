@@ -22,5 +22,6 @@ load ("DrumView.js");
 load ("StepSequencerView.js");
 load ("EditToolsView.js");
 load ("ModeView.js");
+load ("NavigateActionView.js");
 load ("MuteView.js");
 load ("SoloView.js");

@@ -50,6 +50,7 @@ Maschine.VIEW_SESSION      = 4;
 Maschine.VIEW_EIDT_TOOLS   = 5;
 Maschine.VIEW_MUTE         = 6;
 Maschine.VIEW_SOLO         = 7;
+Maschine.VIEW_NAVIGATE_ACTION = 8;
 
 Maschine.VIEW_BUTTONS = [
     [Maschine.VIEW_SESSION, MaschineButton.SCENE],

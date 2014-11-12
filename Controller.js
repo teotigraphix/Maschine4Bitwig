@@ -81,6 +81,7 @@ function Controller (kind)
     // add Views
     this.surface.addView (Maschine.VIEW_PLAY, new PlayView (this.model));
     this.surface.addView (Maschine.VIEW_MODE, new ModeView (this.model));
+    this.surface.addView (Maschine.VIEW_NAVIGATE_ACTION, new NavigateActionView (this.model));
     this.surface.addView (Maschine.VIEW_DRUM, new DrumView (this.model));
     this.surface.addView (Maschine.VIEW_SEQUENCER, new StepSequencerView (this.model));
     this.surface.addView (Maschine.VIEW_SESSION, new SceneView (this.model));
@@ -132,6 +133,7 @@ Controller.prototype.updateMode = function (mode)
         this.surface.lightButton (i, false);
 
     this.surface.lightButton (MaschineButton.BROWSE, this.surface.isActiveMode(Maschine.MODE_PRESET));
+    this.surface.lightColor (MaschineButton.GROUP_D, COLOR.ON_DIM);
 };
 
 Controller.prototype.updateIndication = function (mode)
