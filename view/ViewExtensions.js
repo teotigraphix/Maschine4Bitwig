@@ -59,6 +59,8 @@ AbstractView.prototype.onAll = function (event)
 
 AbstractView.prototype.onAuto = function (event)
 {
+    this.refreshButton (MaschineButton.AUTO, event);
+
     if (!event.isDown ())
         return;
 

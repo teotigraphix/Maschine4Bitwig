@@ -61,9 +61,10 @@ AbstractSceneView.prototype.onGridNote = function (note, velocity)
     var tb = this.getCurrentTrackBank ();
     var slot = tb.getTrack (t).slots[s];
     var slots = tb.getClipLauncherSlots (t);
-    
+
     if (!this.surface.isSelectPressed ())
     {
+
         if (tb.getTrack (t).recarm)
         {
             if (slot.isRecording)

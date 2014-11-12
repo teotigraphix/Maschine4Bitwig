@@ -26,19 +26,27 @@ SceneView.prototype.onSelect = function (event)
 
 SceneView.prototype.onGridNote = function (note, velocity)
 {
+    if (velocity == 0)
+        return;
+
+    var index = note - 36;
+    var t = index % this.columns;
+    var s = (this.rows - 1) - Math.floor (index / this.columns);
+
+    var tb = this.getCurrentTrackBank ();
+    var slot = tb.getTrack (t).slots[s];
+    var slots = tb.getClipLauncherSlots (t);
+
     if (!this.surface.isPressed(MaschineButton.SCENE))
     {
         AbstractSceneView.prototype.onGridNote.call (this, note, velocity);
     }
     else
     {
-        if (velocity == 0)
-            return;
-
-        var index = note - 36;
-        var t = index % this.columns;
-        var tb = this.getCurrentTrackBank ();
-        var slots = tb.getClipLauncherSlots (t);
-        slots.stop ();
+        println (slot);
+        if (!slot.isPlaying)
+            slots.launch (s);
+        else
+            slots.stop ();
     }
 };
