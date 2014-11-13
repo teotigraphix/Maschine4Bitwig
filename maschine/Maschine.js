@@ -41,6 +41,7 @@ Maschine.MODE_BANK_MODULATE = 25;
 Maschine.MODE_BANK_USER = 26;
 Maschine.MODE_PRESET = 27;
 Maschine.MODE_DEVICE_LAYER = 28;
+Maschine.MODE_TRACK_VIEW = 29;
 
 Maschine.VIEW_PLAY         = 0;
 Maschine.VIEW_MODE         = 1;
@@ -50,7 +51,8 @@ Maschine.VIEW_SESSION      = 4;
 Maschine.VIEW_EIDT_TOOLS   = 5;
 Maschine.VIEW_MUTE         = 6;
 Maschine.VIEW_SOLO         = 7;
-Maschine.VIEW_NAVIGATE_ACTION = 8;
+Maschine.VIEW_TRACK        = 8;
+Maschine.VIEW_NAVIGATE_ACTION = 9;
 
 Maschine.VIEW_BUTTONS = [
     [Maschine.VIEW_SESSION, MaschineButton.SCENE],

@@ -448,6 +448,30 @@ AbstractView.prototype.onSelect = function (event)
     if (event.isLong ())
         return;
 
+    if (!event.isDown () && this.surface.isActiveView (Maschine.VIEW_TRACK))
+    {
+        this.surface.setActiveView (this.surface._previousViewId);
+        this.surface.setPendingMode (this.surface.getPreviousModeId ());
+        return;
+    }
+
+    if (this.surface.isPressed (MaschineButton.GROUP_D))
+    {
+        if (event.isDown ())
+        {
+            this.surface._previousViewId = this.surface.activeViewId;
+            this.surface.setPreviousModeId (this.surface.getActiveMode().getId());
+            this.surface.setActiveView (Maschine.VIEW_TRACK);
+            this.surface.setPendingMode (Maschine.MODE_TRACK_VIEW);
+        }
+//        else if (this.surface.isActiveView (Maschine.VIEW_TRACK))
+//        {
+//            this.surface.setActiveView (this.surface._previousViewId);
+//            this.surface.setPendingMode (this.surface.getPreviousModeId ());
+//        }
+        return;
+    }
+
     if (this.surface.isActiveView (Maschine.VIEW_SEQUENCER) || this.surface._tempDrumSelect)
     {
         if (event.isDown ())

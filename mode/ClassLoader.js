@@ -19,6 +19,7 @@ load ("GrooveMode.js");
 load ("FrameMode.js");
 load ("AccentMode.js");
 load ("PresetMode.js");
+load ("TrackViewMode.js");
 
 load ("DirectParameterMode.js");
 load ("ParamPageMode.js");
