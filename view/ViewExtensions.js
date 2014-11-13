@@ -16,6 +16,12 @@ AbstractView.prototype.onBrowse = function (event)
     if (!event.isDown ())
         return;
 
+    if (this.surface.isShiftPressed ())
+    {
+        this.model.getApplication ().toggleBrowserVisibility ();
+        return;
+    }
+
     if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
     {
         if (!this.surface.isActiveMode (Maschine.MODE_PRESET))
