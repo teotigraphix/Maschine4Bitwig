@@ -139,11 +139,18 @@ PlayView.prototype.onGridNote = function (note, velocity)
 
     if (!this.canSelectedTrackHoldNotes ())
         return;
+
+//    var index = note - 36;
+//    this.surface.getView (Maschine.VIEW_DRUM).selectedPad = index;
+
     // Mark selected notes
     for (var i = 0; i < 128; i++)
     {
         if (this.noteMap[note] == this.noteMap[i])
+        {
             this.pressedKeys[i] = velocity;
+        }
+
     }
 };
 

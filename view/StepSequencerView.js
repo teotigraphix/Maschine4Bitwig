@@ -26,14 +26,48 @@ StepSequencerView.prototype.onGridNote = function (note, velocity)
     var x = index % 4;
     var y = Math.floor (index / 4);
 
+    var len = this.clip.getLoopLength();
+//    println("len, " + len);
+//    if (len == 0 )
+//        this.onNew();
+
     if (velocity != 0)
     {
-        var col = 4 * (3 - y) + x;
+        var col = 4 * y + x;
 //        println("index, " + index);
 //        println("col, " + col);
-//        println("index, " + index);
+//        println("this.offsetY, " + this.offsetY);
+//        println("this.getSelectedPad ()), " + (this.getSelectedPad ()));
         this.clip.toggleStep (col, this.offsetY + this.getSelectedPad (), Config.accentActive ? Config.fixedAccentValue : velocity);
     }
+};
+
+StepSequencerView.prototype.onNew = function ()
+{
+
+    var tb = this.getCurrentTrackBank ();
+    var t = tb.getSelectedTrack ();
+    if (t != null)
+    {
+        var slotIndexes = tb.getSelectedSlots (t.index);
+        var slotIndex = slotIndexes.length == 0 ? 0 : slotIndexes[0].index;
+        for (var i = 0; i < 4; i++)
+        {
+            var sIndex = (slotIndex + i) % 4;
+            var s = t.slots[sIndex];
+            if (!s.hasContent)
+            {
+                var slots = tb.getClipLauncherSlots (t.index);
+                slots.createEmptyClip (sIndex, Math.pow (2, tb.getNewClipLength ()));
+                if (slotIndex != sIndex)
+                    slots.select (sIndex);
+                slots.launch (sIndex);
+                this.model.getTransport ().setLauncherOverdub (true);
+                return;
+            }
+        }
+    }
+    displayNotification ("In the current selected grid view there is no empty slot. Please scroll down.");
 };
 
 StepSequencerView.prototype.drawGrid = function ()
@@ -46,26 +80,20 @@ StepSequencerView.prototype.drawGrid = function ()
 
     var isRecording = this.model.hasRecordingState ();
 
-    // Clip length/loop area
-//    var quartersPerPad = this.model.getQuartersPerMeasure ();
-//    var maxQuarters = quartersPerPad * 16;
-//    var start = this.clip.getLoopStart ();
-//    var loopStartPad = Math.floor (Math.max (0, start) / quartersPerPad);
-//    var loopEndPad   = Math.ceil (Math.min (maxQuarters, start + this.clip.getLoopLength ()) / quartersPerPad);
-//    for (var pad = 0; pad < 16; pad++)
-//        this.surface.pads.lightEx (4 + pad % 4, 4 + Math.floor (pad / 4), pad >= loopStartPad && pad < loopEndPad ? PUSH_COLOR2_WHITE : PUSH_COLOR_BLACK, null, false);
+    var tb = this.model.getTrackBank ();
+    var selectedTrack = tb.getSelectedTrack ();
+    var padColor = BitwigColor.getColor (selectedTrack.color);
 
     // Paint the sequencer steps
     var step = this.clip.getCurrentStep ();
     var hiStep = this.isInXRange (step) ? step % DrumView.NUM_DISPLAY_COLS : -1;
     for (var col = 0; col < DrumView.NUM_DISPLAY_COLS; col++)
     {
-        //println("drawc, " + col);
         var isSet = this.clip.getStep (col, this.offsetY + this.getSelectedPad ());
         var hilite = col == hiStep;
         var x = col % 4;
-        var y = 3 - Math.floor (col / 4);
-        this.surface.pads.lightEx (x, 3 - y, isSet ? (hilite ? COLOR.GREEN : COLOR.BLUE) : hilite ? COLOR.GREEN : COLOR.OFF, null, false);
+        var y = Math.floor (col / 4);
+        this.surface.pads.lightEx (x, 3 - y, isSet ? (hilite ? COLOR.GREEN : padColor) : hilite ? COLOR.GREEN : COLOR.OFF, null, false);
     }
 };
 

@@ -589,6 +589,36 @@ AbstractView.prototype.onJogWheelInternal = function (increase)
 // Protected API
 //--------------------------------------
 
+
+AbstractView.prototype.onNew = function (event)
+{
+    if (!event.isDown ())
+        return;
+    var tb = this.getCurrentTrackBank ();
+    var t = tb.getSelectedTrack ();
+    if (t != null)
+    {
+        var slotIndexes = tb.getSelectedSlots (t.index);
+        var slotIndex = slotIndexes.length == 0 ? 0 : slotIndexes[0].index;
+        for (var i = 0; i < 4; i++)
+        {
+            var sIndex = (slotIndex + i) % 4;
+            var s = t.slots[sIndex];
+            if (!s.hasContent)
+            {
+                var slots = tb.getClipLauncherSlots (t.index);
+                slots.createEmptyClip (sIndex, Math.pow (2, tb.getNewClipLength ()));
+                if (slotIndex != sIndex)
+                    slots.select (sIndex);
+                slots.launch (sIndex);
+                this.model.getTransport ().setLauncherOverdub (true);
+                return;
+            }
+        }
+    }
+    displayNotification ("In the current selected grid view there is no empty slot. Please scroll down.");
+};
+
 AbstractView.prototype.onValueKnob = function (index, value)
 {
     // TODO MCU vpot weirdness, need to research this

@@ -55,7 +55,7 @@ DrumView.prototype.onGridNote = function (note, velocity) {
     // Mark selected note
     this.pressedKeys[this.offsetY + this.selectedPad] = velocity;
 
-    this.model.getCursorDevice().drumPadBank.getChannel (index).selectInEditor ();
+    this.model.getCursorDevice ().drumPadBank.getChannel (index).selectInEditor ();
 
 //    // Delete all of the notes on that 'pad'
 //    if (playedPad >= 0 && this.surface.isDeletePressed ())

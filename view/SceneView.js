@@ -43,10 +43,16 @@ SceneView.prototype.onGridNote = function (note, velocity)
     }
     else
     {
-        println (slot);
-        if (!slot.isPlaying)
+        if (!slot.hasContent)
+        {
+            tb.select (t);
+            this.onNew (new ButtonEvent (ButtonEvent.DOWN));
+        }
+        else if (!slot.isPlaying)
             slots.launch (s);
         else
             slots.stop ();
+
+        slots.select (s);
     }
 };
