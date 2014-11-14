@@ -39,6 +39,8 @@ DrumView.prototype = new AbstractSequencerView ();
 DrumView.prototype.onActivate = function ()
 {
     AbstractSequencerView.prototype.onActivate.call (this);
+
+    this.model.getCursorDevice ().drumPadBank.setIndication (true);
 };
 
 DrumView.prototype.onGridNote = function (note, velocity) {
@@ -140,21 +142,25 @@ DrumView.prototype.onOctaveUp = function (event)
 
 DrumView.prototype.onUp = function (event)
 {
+    if (!event.isDown ())
+        return;
     //if (!this.surface.isShiftPressed ())
     //    AbstractView.prototype.onUp.call (this, event);
     //else
         this.onOctaveUp (event);
     //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
-    this.model.getCursorDevice().drumPadBank.scrollChannelsPageUp ();
+    this.model.getCursorDevice().drumPadBank.scrollChannelsPageDown ();
 
 };
 
 DrumView.prototype.onDown = function (event)
 {
+    if (!event.isDown ())
+        return;
     //if (!this.surface.isShiftPressed ())
     //    AbstractView.prototype.onDown.call (this, event);
     //else
         this.onOctaveDown (event);
     //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
-    this.model.getCursorDevice().drumPadBank.scrollChannelsPageDown ();
+    this.model.getCursorDevice().drumPadBank.scrollChannelsPageUp();
 };
