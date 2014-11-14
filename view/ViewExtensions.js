@@ -449,30 +449,7 @@ AbstractView.prototype.onSelect = function (event)
     if (event.isLong ())
         return;
 
-    if (!event.isDown () && this.surface.isActiveView (Maschine.VIEW_TRACK))
-    {
-        this.surface.setActiveView (this.surface._previousViewId);
-        this.surface.setPendingMode (this.surface.getPreviousModeId ());
-        return;
-    }
-
-    if (this.surface.isPressed (MaschineButton.GROUP_D))
-    {
-        if (event.isDown ())
-        {
-            this.surface._previousViewId = this.surface.activeViewId;
-            this.surface.setPreviousModeId (this.surface.getActiveMode().getId());
-            this.surface.setActiveView (Maschine.VIEW_TRACK);
-            this.surface.setPendingMode (Maschine.MODE_TRACK_VIEW);
-        }
-//        else if (this.surface.isActiveView (Maschine.VIEW_TRACK))
-//        {
-//            this.surface.setActiveView (this.surface._previousViewId);
-//            this.surface.setPendingMode (this.surface.getPreviousModeId ());
-//        }
-        return;
-    }
-
+    // [SELECT] + StepSequencerView, allow drum track selection
     if (this.surface.isActiveView (Maschine.VIEW_SEQUENCER) || this.surface._tempDrumSelect)
     {
         if (event.isDown ())
@@ -488,47 +465,51 @@ AbstractView.prototype.onSelect = function (event)
         return;
     }
 
-    if (event.isDown ())
+    // [D + SELECT] navigate for next device bank mode
+    // Will also catch when [D] was released BEFORE [SELECT] and revert to last mode
+    if (this.surface.isPressed (MaschineButton.GROUP_D) ||
+        this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
     {
-        if (Maschine.isDeviceMode (this.surface.getActiveMode ().getId ()))
+        if (event.isDown ())
         {
-            this.surface.setPreviousModeId (this.surface.getActiveMode().getId());
-            this.surface.setPendingMode(Maschine.MODE_PARAM_PAGE_SELECT);
-        }
-    }
-    else
-    {
-        if (this.surface._previousDeviceBankModeId == null)
-        {
-            this.surface.setPendingMode (this.surface.getPreviousModeId ());
+            if (Maschine.isDeviceMode (this.surface.getActiveMode ().getId ()))
+            {
+                this.surface.setPreviousModeId (this.surface.getActiveMode().getId());
+                this.surface.setPendingMode(Maschine.MODE_PARAM_PAGE_SELECT);
+            }
         }
         else
         {
-            this.surface.setPendingMode (this.surface._previousDeviceBankModeId);
-            this.surface._previousDeviceBankModeId = null;
+            if (this.surface._previousDeviceBankModeId == null)
+            {
+                this.surface.setPendingMode (this.surface.getPreviousModeId ());
+            }
+            else
+            {
+                this.surface.setPendingMode (this.surface._previousDeviceBankModeId);
+                this.surface._previousDeviceBankModeId = null;
+            }
+            this.notifyModeChange ();
         }
-        this.notifyModeChange ();
+        return;
     }
 
-//    if (event.isDown ())
-//    {
-//        if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
-//        {
-//            this.surface.setPendingMode (Maschine.MODE_PARAM_PAGE_SELECT);
-//        }
-//        else if (Maschine.isDeviceBankMode (this.surface.getActiveMode ().getId ()) ||
-//                 this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
-//        {
-//            this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
-//        }
-//    }
-//    else
-//    {
-//        if (this.surface.isActiveMode (Maschine.MODE_PARAM_PAGE_SELECT))
-//        {
-//            //this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
-//        }
-//    }
+    // [SELECT] Up && TrackView - Revert to previous view and mode
+    if (!event.isDown () && this.surface.isActiveView (Maschine.VIEW_TRACK))
+    {
+        this.surface.setActiveView (this.surface._previousViewId);
+        this.surface.setPendingMode (this.surface.getPreviousModeId ());
+        return;
+    }
+
+    // [SELECT] Select current Track
+    if (event.isDown ())
+    {
+        this.surface._previousViewId = this.surface.activeViewId;
+        this.surface.setPreviousModeId (this.surface.getActiveMode().getId());
+        this.surface.setActiveView (Maschine.VIEW_TRACK);
+        this.surface.setPendingMode (Maschine.MODE_TRACK_VIEW);
+    }
 };
 
 AbstractView.prototype.onSolo = function (event)
