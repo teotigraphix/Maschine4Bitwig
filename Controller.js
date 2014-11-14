@@ -63,6 +63,7 @@ function Controller (kind)
     this.surface.addMode (Maschine.MODE_FRAME, new FrameMode (this.model));
     this.surface.addMode (Maschine.MODE_ACCENT, new AccentMode (this.model));
     this.surface.addMode (Maschine.MODE_TRACK_VIEW, new TrackViewMode (this.model));
+    this.surface.addMode (Maschine.MODE_SCENE_TRIGGER, new SceneTriggerMode (this.model));
 
     this.surface.addMode (Maschine.MODE_SEND1, new SendMode (this.model, Maschine.MODE_SEND1));
     this.surface.addMode (Maschine.MODE_SEND2, new SendMode (this.model, Maschine.MODE_SEND2));
@@ -124,6 +125,10 @@ Controller.prototype.validateViews = function ()
         var info = Maschine.VIEW_BUTTONS[i];
         this.surface.lightButton (info[1], this.surface.isActiveView (info[0]));
     }
+
+   var isScene = (this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER) ||
+                    this.surface.isActiveView (Maschine.VIEW_SCENE_TRIGGER));
+   this.surface.lightButton (MaschineButton.SCENE, isScene);
 };
 
 Controller.prototype.updateMode = function (mode)

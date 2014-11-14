@@ -331,9 +331,18 @@ AbstractView.prototype.onScene = function (event)
     if (!event.isDown ())
         return;
 
-    if (!this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER))
+    if (!this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER) ||
+        this.surface.isActiveView (Maschine.VIEW_SCENE_TRIGGER))
     {
+
         this.surface.setActiveView (Maschine.VIEW_CLIP_TRIGGER);
+        this.notify ("Clip Trigger View");
+    }
+    else if (this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER))
+    {
+        this.surface.setActiveView (Maschine.VIEW_SCENE_TRIGGER);
+        this.surface.setPendingMode (Maschine.MODE_SCENE_TRIGGER);
+        this.notify ("Scene Trigger View");
     }
 };
 

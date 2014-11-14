@@ -20,6 +20,7 @@ load ("FrameMode.js");
 load ("AccentMode.js");
 load ("PresetMode.js");
 load ("TrackViewMode.js");
+load ("SceneTriggerMode.js");
 
 load ("DirectParameterMode.js");
 load ("ParamPageMode.js");
