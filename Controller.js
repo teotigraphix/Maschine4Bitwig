@@ -85,7 +85,8 @@ function Controller (kind)
     this.surface.addView (Maschine.VIEW_NAVIGATE_ACTION, new NavigateActionView (this.model));
     this.surface.addView (Maschine.VIEW_DRUM, new DrumView (this.model));
     this.surface.addView (Maschine.VIEW_SEQUENCER, new StepSequencerView (this.model));
-    this.surface.addView (Maschine.VIEW_SESSION, new SceneView (this.model));
+    this.surface.addView (Maschine.VIEW_CLIP_TRIGGER, new ClipTriggerView (this.model));
+    this.surface.addView (Maschine.VIEW_SCENE_TRIGGER, new SceneTriggerView (this.model));
     this.surface.addView (Maschine.VIEW_EIDT_TOOLS, new EditToolsView (this.model));
     this.surface.addView (Maschine.VIEW_MUTE, new MuteView (this.model));
     this.surface.addView (Maschine.VIEW_SOLO, new SoloView (this.model));

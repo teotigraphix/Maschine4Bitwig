@@ -1,3 +1,6 @@
+// Written by Michael Schmalle - teotigraphix.com
+// (c) 2014
+// Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 AbstractSceneView.CLIP_COLOR_IS_RECORDING        = { color: COLOR.RECORD, blink: null, fast: false };
 AbstractSceneView.CLIP_COLOR_IS_RECORDING_QUEUED = { color: COLOR.RED_MEDIUM, blink: null, fast: false };
@@ -9,22 +12,22 @@ AbstractSceneView.CLIP_COLOR_NO_CONTENT          = { color: COLOR.OFF, blink: nu
 AbstractSceneView.CLIP_COLOR_RECORDING_ARMED     = { color: COLOR.RED_DIM, blink: null, fast: false };
 AbstractSceneView.USE_CLIP_COLOR                 = true;
 
-function SceneView (model)
+function ClipTriggerView (model)
 {
     AbstractSceneView.call (this, model, 4, 4);
 }
-SceneView.prototype = new AbstractSceneView ();
+ClipTriggerView.prototype = new AbstractSceneView ();
 
-SceneView.prototype.onActivate = function ()
+ClipTriggerView.prototype.onActivate = function ()
 {
     AbstractSceneView.prototype.onActivate.call (this);
 };
 
-SceneView.prototype.onSelect = function (event)
+ClipTriggerView.prototype.onSelect = function (event)
 {
 };
 
-SceneView.prototype.onGridNote = function (note, velocity)
+ClipTriggerView.prototype.onGridNote = function (note, velocity)
 {
     if (velocity == 0)
         return;

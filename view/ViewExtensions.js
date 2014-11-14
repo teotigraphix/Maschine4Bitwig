@@ -331,9 +331,9 @@ AbstractView.prototype.onScene = function (event)
     if (!event.isDown ())
         return;
 
-    if (!this.surface.isActiveView (Maschine.VIEW_SESSION))
+    if (!this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER))
     {
-        this.surface.setActiveView (Maschine.VIEW_SESSION);
+        this.surface.setActiveView (Maschine.VIEW_CLIP_TRIGGER);
     }
 };
 
@@ -654,13 +654,13 @@ AbstractView.prototype.onFirstRow = function (index)
 
 AbstractView.prototype.getCurrentTrackBank = function ()
 {
-    return this.surface.isActiveView (Maschine.VIEW_SESSION) ?
+    return this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER) ?
         this.model.sessionTrackBank : this.model.getCurrentTrackBank ();
 };
 
 AbstractView.prototype.getCurrentTrackBankLength = function ()
 {
-    return this.surface.isActiveView (Maschine.VIEW_SESSION) ?
+    return this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER) ?
         4 : 8;
 };
 
@@ -801,4 +801,4 @@ AbstractView.prototype.updateArrows = function ()
 AbstractView.prototype.getColorArrowState = function (isOn)
 {
     return isOn ? COLOR.AQUA : COLOR.AQUA_OFF;
-}
+};
