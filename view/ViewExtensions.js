@@ -22,16 +22,17 @@ AbstractView.prototype.onBrowse = function (event)
         return;
     }
 
-    if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
+    if (Maschine.isDeviceMode (this.surface.getActiveMode ().getId ()))
     {
         if (!this.surface.isActiveMode (Maschine.MODE_PRESET))
         {
+            this.surface.setPreviousModeId (this.surface.getActiveMode ().getId ());
             this.surface.setPendingMode (Maschine.MODE_PRESET);
         }
     }
     else if (this.surface.isActiveMode (Maschine.MODE_PRESET))
     {
-        this.surface.setPendingMode (Maschine.MODE_BANK_DEVICE);
+        this.surface.setPendingMode ( this.surface.getPreviousModeId ());
     }
 };
 
