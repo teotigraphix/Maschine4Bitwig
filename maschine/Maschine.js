@@ -43,6 +43,7 @@ Maschine.MODE_PRESET = 27;
 Maschine.MODE_DEVICE_LAYER = 28;
 Maschine.MODE_TRACK_VIEW = 29;
 Maschine.MODE_SCENE_TRIGGER = 30;
+Maschine.MODE_CLIP_TRIGGER = 31;
 
 Maschine.VIEW_PLAY            = 0;
 Maschine.VIEW_MODE            = 1;
@@ -57,9 +58,9 @@ Maschine.VIEW_TRACK           = 9;
 Maschine.VIEW_NAVIGATE_ACTION = 10;
 
 Maschine.VIEW_BUTTONS = [
-    //[Maschine.VIEW_CLIP_TRIGGER, MaschineButton.SCENE],
-    //[Maschine.VIEW_SCENE_TRIGGER, MaschineButton.SCENE],
-    [Maschine.VIEW_DRUM, MaschineButton.PATTERN],
+    [Maschine.VIEW_SCENE_TRIGGER, MaschineButton.SCENE],
+    [Maschine.VIEW_CLIP_TRIGGER, MaschineButton.PATTERN],
+    //[Maschine.VIEW_DRUM, MaschineButton.PATTERN],
     [Maschine.VIEW_PLAY, MaschineButton.PAD_MODE],
     [Maschine.VIEW_SEQUENCER, MaschineButton.STEP_MODE],
     // TODO Fix in MaschineButton

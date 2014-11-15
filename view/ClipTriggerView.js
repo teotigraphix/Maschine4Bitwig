@@ -23,10 +23,6 @@ ClipTriggerView.prototype.onActivate = function ()
     AbstractSceneView.prototype.onActivate.call (this);
 };
 
-ClipTriggerView.prototype.onSelect = function (event)
-{
-};
-
 ClipTriggerView.prototype.onGridNote = function (note, velocity)
 {
     if (velocity == 0)

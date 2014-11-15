@@ -328,40 +328,36 @@ AbstractView.prototype.onScene = function (event)
 {
     this.refreshButton (MaschineButton.SCENE, event);
 
-    if (!event.isDown ())
+    if (event.isLong ())
         return;
 
-    if (!this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER) ||
-        this.surface.isActiveView (Maschine.VIEW_SCENE_TRIGGER))
-    {
-
-        this.surface.setActiveView (Maschine.VIEW_CLIP_TRIGGER);
-        this.notify ("Clip Trigger View");
-    }
-    else if (this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER))
-    {
-        this.surface.setActiveView (Maschine.VIEW_SCENE_TRIGGER);
+    if (event.isDown ())
         this.surface.setPendingMode (Maschine.MODE_SCENE_TRIGGER);
-        this.notify ("Scene Trigger View");
-    }
+    else
+        this.surface.resotoreMode ();
+
+    if (!this.surface.isActiveView (Maschine.VIEW_SCENE_TRIGGER))
+        this.surface.setActiveView (Maschine.VIEW_SCENE_TRIGGER);
 };
 
 AbstractView.prototype.onPattern = function(event)
 {
     this.refreshButton (MaschineButton.PATTERN, event);
 
-    if (!event.isDown ())
+    if (event.isLong ())
         return;
 
-    if (!this.surface.isActiveView (Maschine.VIEW_DRUM))
-    {
-        this.surface.setActiveView (Maschine.VIEW_DRUM);
-    }
+    if (event.isDown ())
+        this.surface.setPendingMode (Maschine.MODE_CLIP_TRIGGER);
+    else
+        this.surface.resotoreMode ();
+
+    if (!this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER))
+        this.surface.setActiveView (Maschine.VIEW_CLIP_TRIGGER);
 };
 
 AbstractView.prototype.doNavigateAction = function (index)
 {
-    println("Maschine.doNavigateAction " + index);
     switch (index)
     {
         case 0:

@@ -5,6 +5,7 @@
 function SceneTriggerMode (model)
 {
     BaseMode.call (this, model);
+    this.isTemporary = true;
     this.id = Maschine.MODE_SCENE_TRIGGER;
 }
 
@@ -17,16 +18,16 @@ SceneTriggerMode.prototype.updateDisplay = function ()
     var sb = this.surface.getView (Maschine.VIEW_SCENE_TRIGGER).sceneBank;
 
     for (var i = 0; i < 4; i++)
-        d.setCell (0, i, sb.getSceneName (i));
+        d.setCell (0, i, sb.getSceneName (i + 4));
 
     for (var i = 0; i < 4; i++)
-        d.setCell (1, i, sb.getSceneName (i + 4));
+        d.setCell (1, i, sb.getSceneName (i));
 
     for (var i = 0; i < 4; i++)
-        d.setCell (0, i + 4, sb.getSceneName (i + 8));
+        d.setCell (0, i + 4, sb.getSceneName (i + 12));
 
     for (var i = 0; i < 4; i++)
-        d.setCell (1, i + 4, sb.getSceneName (i + 12));
+        d.setCell (1, i + 4, sb.getSceneName (i + 8));
 
     d.allDone ();
 };
