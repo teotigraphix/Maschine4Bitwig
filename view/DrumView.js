@@ -7,7 +7,7 @@ Scales.DRUM_MATRIX =
         0,   1,  2,  3,
         4,   5,  6,  7,
         8,   9, 10, 11,
-        12, 13, 14, 15,
+        12, 13, 14, 15
     ];
 
 function DrumView (model)
@@ -124,21 +124,21 @@ DrumView.prototype.getPadColor = function (index)
     var isRecording = this.model.hasRecordingState();
     var pad = this.model.getCursorDevice ().drumPadLayers[index];
 
-    var padColorId = pad.color;
-    var padColor = BitwigColor.getColor (padColorId);
-    if (padColor == null)
-        padColor = BitwigColor.getColor (selectedTrack.color);
+    var padColor = this.getSelectPadColor (pad, selectedTrack, true);
     if (!pad.exists)
         padColor = COLOR.OFF;
 
-    var recording = isRecording ? COLOR.RED : COLOR.GREEN;
+    var recording = isRecording ? COLOR.RED : this.getSelectPadColor (pad, selectedTrack, true);
     var padColorOn = Config.padTrackColor ? padColor : COLOR.ON;
-    var padColorSolo = pad.solo ? COLOR.YELLOW : padColorOn;
-    var padColorMute = pad.mute ? COLOR.ON_DIM : padColorSolo;
+    var padColorSolo = pad.solo ? padColorOn : padColorOn;
+    var padColorMute = pad.mute ? padColorOn : padColorSolo;
 
     var color = this.pressedKeys[this.offsetY + index] > 0 ?
-        recording : (this.selectedPad == index ? COLOR.ON : (pad.exists ?
+        recording : (this.selectedPad == index ? this.getSelectPadColor (pad, selectedTrack) : (pad.exists ?
         padColorMute : COLOR.OFF));
+
+    if (this.pressedKeys[this.offsetY + index] > 0)
+        return this.getSelectPadColor (pad, selectedTrack);
 
     return color;
 };
@@ -148,6 +148,21 @@ function dump(object) {
         println (name + " : " + object[name]);
     }
 }
+
+DrumView.prototype.getSelectPadColor = function (pad, selectedTrack, isDim)
+{
+    if (this.surface.isPressed (MaschineButton.MUTE))
+        isDim = pad.mute;
+    if (this.surface.isPressed (MaschineButton.SOLO))
+        isDim = !pad.solo;
+
+    var padColorId = pad.color;
+    var padColor = BitwigColor.getColor (padColorId, isDim);
+    if (padColor == null)
+        padColor = BitwigColor.getColor (selectedTrack.color, isDim);
+
+    return padColor;
+};
 
 DrumView.prototype.updateNoteMapping = function ()
 {
