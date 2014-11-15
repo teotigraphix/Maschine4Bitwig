@@ -61,7 +61,7 @@ Maschine.VIEW_BUTTONS = [
     [Maschine.VIEW_SCENE_TRIGGER, MaschineButton.SCENE],
     [Maschine.VIEW_CLIP_TRIGGER, MaschineButton.PATTERN],
     //[Maschine.VIEW_DRUM, MaschineButton.PATTERN],
-    [Maschine.VIEW_PLAY, MaschineButton.PAD_MODE],
+    //[Maschine.VIEW_PLAY, MaschineButton.PAD_MODE],
     [Maschine.VIEW_SEQUENCER, MaschineButton.STEP_MODE],
     // TODO Fix in MaschineButton
     [Maschine.VIEW_SEQUENCER, MaschineButton.PLUGIN]

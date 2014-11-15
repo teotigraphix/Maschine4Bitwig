@@ -311,19 +311,6 @@ AbstractView.prototype.onRightArrow = function (event)
 // Pads
 //--------------------------------------
 
-AbstractView.prototype.onPadMode = function (event) // keyboard
-{
-    this.refreshButton (MaschineButton.PAD_MODE, event);
-
-    if (!event.isDown ())
-        return;
-
-    if (!this.surface.isActiveView (Maschine.VIEW_PLAY))
-    {
-        this.surface.setActiveView (Maschine.VIEW_PLAY);
-    }
-};
-
 AbstractView.prototype.onScene = function (event)
 {
     this.refreshButton (MaschineButton.SCENE, event);
@@ -354,6 +341,23 @@ AbstractView.prototype.onPattern = function(event)
 
     if (!this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER))
         this.surface.setActiveView (Maschine.VIEW_CLIP_TRIGGER);
+};
+
+AbstractView.prototype.onPadMode = function (event) // keyboard
+{
+    this.refreshButton (MaschineButton.PAD_MODE, event);
+
+    if (!event.isDown ())
+        return;
+
+    if (!this.surface.isActiveView (Maschine.VIEW_PLAY))
+    {
+        this.surface.setActiveView (Maschine.VIEW_PLAY);
+    }
+    else if (this.surface.isActiveView (Maschine.VIEW_PLAY))
+    {
+        this.surface.setActiveView (Maschine.VIEW_DRUM);
+    }
 };
 
 AbstractView.prototype.doNavigateAction = function (index)
@@ -523,6 +527,9 @@ AbstractView.prototype.onSolo = function (event)
     if (event.isLong ())
         return;
 
+    if (this.surface.isActiveView (Maschine.VIEW_DRUM))
+        return;
+
     if (event.isDown ())
     {
         if (!this.surface.isActiveView (Maschine.VIEW_SOLO))
@@ -544,6 +551,9 @@ AbstractView.prototype.onMute = function (event)
 {
     this.refreshButton (MaschineButton.MUTE, event);
     if (event.isLong ())
+        return;
+
+    if (this.surface.isActiveView (Maschine.VIEW_DRUM))
         return;
 
     if (event.isDown ())

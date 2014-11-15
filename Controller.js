@@ -127,9 +127,9 @@ Controller.prototype.validateViews = function ()
         this.surface.lightButton (info[1], this.surface.isActiveView (info[0]));
     }
 
-//   var isScene = (this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER) ||
-//                    this.surface.isActiveView (Maschine.VIEW_SCENE_TRIGGER));
-//   this.surface.lightButton (MaschineButton.SCENE, isScene);
+   var isKeyboard = (this.surface.isActiveView (Maschine.VIEW_PLAY) ||
+                     this.surface.isActiveView (Maschine.VIEW_DRUM));
+   this.surface.lightButton (MaschineButton.PAD_MODE, isKeyboard);
 };
 
 Controller.prototype.updateMode = function (mode)

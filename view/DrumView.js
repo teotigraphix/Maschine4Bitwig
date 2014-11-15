@@ -57,7 +57,15 @@ DrumView.prototype.onGridNote = function (note, velocity) {
     // Mark selected note
     this.pressedKeys[this.offsetY + this.selectedPad] = velocity;
 
-    this.model.getCursorDevice ().drumPadBank.getChannel (index).selectInEditor ();
+    if (velocity > 0)
+    {
+        this.model.getCursorDevice ().drumPadBank.getChannel (index).selectInEditor ();
+        if (this.surface.isPressed (MaschineButton.MUTE))
+            this.toggleMute (index);
+        else if  (this.surface.isPressed (MaschineButton.SOLO))
+            this.toggleSolo (index);
+    }
+
 
 //    // Delete all of the notes on that 'pad'
 //    if (playedPad >= 0 && this.surface.isDeletePressed ())
@@ -67,42 +75,72 @@ DrumView.prototype.onGridNote = function (note, velocity) {
 //    }
 };
 
+DrumView.prototype.isMute = function (index)
+{
+    var d = this.model.getCursorDevice ().drumPadLayers[index];
+    return d.mue;
+};
+
+DrumView.prototype.isSolo = function (index)
+{
+    var d = this.model.getCursorDevice ().drumPadLayers[index];
+    return d.solo;
+};
+
+DrumView.prototype.toggleMute = function (index)
+{
+    var d = this.model.getCursorDevice ().drumPadLayers[index];
+    this.model.getCursorDevice ().drumPadBank.getChannel (index).getMute().set(!d.mute);
+};
+
+DrumView.prototype.toggleSolo = function (index)
+{
+    var d = this.model.getCursorDevice ().drumPadLayers[index];
+    this.model.getCursorDevice ().drumPadBank.getChannel (index).getSolo().set(!d.solo);
+};
+
 DrumView.prototype.drawGrid = function ()
 {
-    if (!this.canSelectedTrackHoldNotes())
+    if (!this.canSelectedTrackHoldNotes ())
     {
-        this.surface.pads.turnOff();
+        this.surface.pads.turnOff ();
         return;
     }
 
-    var isRecording = this.model.hasRecordingState();
-
-    var tb = this.model.getTrackBank ();
-    var selectedTrack = tb.getSelectedTrack ();
     for (var y = 0; y < 4; y++)
     {
         for (var x = 0; x < 4; x++)
         {
             var index = 4 * y + x;
-            var p = this.pads[index]; // mute, exists, solo
-
-            var pad = this.model.getCursorDevice ().drumPadLayers[index];
-
-            var padColorId = pad.color;
-            var padColor = BitwigColor.getColor (padColorId);
-            if (padColor == null)
-                padColor = BitwigColor.getColor (selectedTrack.color);
-            if (!pad.exists)
-                padColor = COLOR.OFF;
-
-            var c = this.pressedKeys[this.offsetY + index] > 0 ?
-                (isRecording ? COLOR.RED : COLOR.GREEN) : (this.selectedPad == index ? COLOR.BLUE : (p.exists ?
-                (p.mute ? COLOR.BLUE_DIM : (p.solo ? COLOR.YELLOW : Config.padTrackColor ? padColor
-                    : COLOR.ON)) : COLOR.YELLOW_DIM));
-
-            this.surface.pads.lightEx (x, 3 - y, c, null, false);
+            this.surface.pads.lightEx (x, 3 - y, this.getPadColor (index), null, false);
         }
     }
+};
+
+DrumView.prototype.getPadColor = function (index)
+{
+    var tb = this.model.getTrackBank ();
+    var selectedTrack = tb.getSelectedTrack ();
+    var isRecording = this.model.hasRecordingState();
+    var pad = this.model.getCursorDevice ().drumPadLayers[index];
+
+    var padColorId = pad.color;
+    var padColor = BitwigColor.getColor (padColorId);
+    if (padColor == null)
+        padColor = BitwigColor.getColor (selectedTrack.color);
+    if (!pad.exists)
+        padColor = COLOR.OFF;
+
+    var recording = isRecording ? COLOR.RED : COLOR.GREEN;
+    var padColorOn = Config.padTrackColor ? padColor : COLOR.ON;
+    var padColorSolo = pad.solo ? COLOR.YELLOW : padColorOn;
+    var padColorMute = pad.mute ? COLOR.ON_DIM : padColorSolo;
+
+    var color = this.pressedKeys[this.offsetY + index] > 0 ?
+        recording : (this.selectedPad == index ? COLOR.ON : (pad.exists ?
+        padColorMute : COLOR.OFF));
+
+    return color;
 };
 
 function dump(object) {
@@ -147,9 +185,9 @@ DrumView.prototype.onUp = function (event)
     //if (!this.surface.isShiftPressed ())
     //    AbstractView.prototype.onUp.call (this, event);
     //else
-        this.onOctaveUp (event);
+    //    this.onOctaveUp (event);
     //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
-    this.model.getCursorDevice().drumPadBank.scrollChannelsPageDown ();
+    //this.model.getCursorDevice().drumPadBank.scrollChannelsPageDown ();
 
 };
 
@@ -160,7 +198,7 @@ DrumView.prototype.onDown = function (event)
     //if (!this.surface.isShiftPressed ())
     //    AbstractView.prototype.onDown.call (this, event);
     //else
-        this.onOctaveDown (event);
+     //   this.onOctaveDown (event);
     //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
-    this.model.getCursorDevice().drumPadBank.scrollChannelsPageUp();
+    //this.model.getCursorDevice().drumPadBank.scrollChannelsPageUp();
 };
