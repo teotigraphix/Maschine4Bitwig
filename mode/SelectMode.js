@@ -26,39 +26,39 @@ SelectMode.prototype.updateDisplay = function ()
     var modes = Maschine.MODES;
     var column = 0;
 
-    for (var i = 0; i < 4; i++)
+    for (var i = 12; i < 16; i++)
     {
-        if (i == 0)
-            d.setCell(0, column, this.getName(
+        if (i == 12)
+            d.setCell(1, column, this.getName(
                 optimizeName(Maschine.getDefaultModeBankName (), 5),
                 Maschine.getDefaultModeBankId (), modeId));
         else
-            d.setCell(0, column, this.getModeName (modes[i], modeId));
+            d.setCell(1, column, this.getModeName (modes[i], modeId));
         column++;
     }
 
     column = 0;
-    for (var i = 4; i < 8; i++)
-    {
-        d.setCell(1, column, this.getModeName (modes[i], modeId));
-        column++;
-    }
-
-    column = 4;
     for (var i = 8; i < 12; i++)
     {
-        if (modes[i] == null)
-            break;
         d.setCell(0, column, this.getModeName (modes[i], modeId));
         column++;
     }
 
     column = 4;
-    for (var i = 12; i < 16; i++)
+    for (var i = 4; i < 8; i++)
     {
         if (modes[i] == null)
             break;
         d.setCell(1, column, this.getModeName (modes[i], modeId));
+        column++;
+    }
+
+    column = 4;
+    for (var i = 0; i < 4; i++)
+    {
+        if (modes[i] == null)
+            break;
+        d.setCell(0, column, this.getModeName (modes[i], modeId));
         column++;
     }
 

@@ -68,25 +68,25 @@ Maschine.VIEW_BUTTONS = [
 ];
 
 Maschine.MODES = [
-    [Maschine.MODE_BANK_DEVICE, "Device"],
-    [Maschine.MODE_TRACK, "Track"],
+    [Maschine.MODE_MASTER, "Master"],
     [Maschine.MODE_VOLUME, "Volume"],
-    [Maschine.MODE_PAN, "Pan"],
+    [Maschine.MODE_PAN, "  Pan"],
+    [Maschine.MODE_GROOVE, "Groove"],
 
     [Maschine.MODE_SEND1, "Send1"],
     [Maschine.MODE_SEND2, "Send2"],
     [Maschine.MODE_SEND3, "Send3"],
     [Maschine.MODE_SEND4, "Send4"],
 
-    [Maschine.MODE_SCALE, "Scale"],
-    [Maschine.MODE_SCALE_LAYOUT, "SclLay"],
     [Maschine.MODE_CLIP, "Clip"],
+    [Maschine.MODE_ACCENT, "Accent"],
+    [Maschine.MODE_SCALE_LAYOUT, "SclLay"],
     [Maschine.MODE_XFADE, "XFade"],
 
-    [Maschine.MODE_MASTER, "Master"],
-    [Maschine.MODE_GROOVE, "Groove"],
-    [Maschine.MODE_FRAME, "Frame"],
-    [Maschine.MODE_ACCENT, "Accent"]
+    [Maschine.MODE_BANK_DEVICE, "Device"],
+    [Maschine.MODE_TRACK, "Track"],
+    [Maschine.MODE_SCALE, "Scale"],
+    [Maschine.MODE_FRAME, "Frame"]
 ];
 
 function ModeBank (id, name, isDefault)

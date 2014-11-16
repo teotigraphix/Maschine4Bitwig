@@ -32,7 +32,7 @@ ModeView.prototype.drawGrid = function ()
         this.surface.pads.light (i, (i == this.pressedKey) ? COLOR.ON : COLOR.ON_DIM);
         var index = this.indexTranslation.indexOf (i);
         var mode = Maschine.MODES[index];
-        if (index == 0)
+        if (index == 12)
         {
             if (this.surface.getPreviousModeId () == Maschine.getDefaultModeBankId ())
                 this.surface.pads.light (i,  COLOR.OCEAN);
@@ -64,7 +64,7 @@ ModeView.prototype.onGridNote = function (note, velocity)
         if (this.selectedMode != null)
         {
             // will select the mode when the Select button is released
-            if (index == 0)
+            if (index == 12)
                 this.surface.setPreviousModeId (Maschine.getDefaultModeBankId ());
             else
                 this.surface.setPreviousModeId (this.selectedMode[0]);
