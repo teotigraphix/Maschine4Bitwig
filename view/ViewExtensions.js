@@ -212,31 +212,44 @@ AbstractView.prototype.onDeviceLeft = function (event)
     if (!event.isDown ())
         return;
 
-    // TODO FIX The returned channel selection does not contain the layers instead it is the top level tracks selection
     var cd = this.model.getCursorDevice ();
-    if (cd.hasSelectedDevice ())
+    if (!cd.hasSelectedDevice ())
+        return;
+
+    if (!cd.hasLayers ())
+        return;
+
+    var displaysDevice = this.surface.getCurrentMode () == Maschine.MODE_BANK_DEVICE;
+    var dl = cd.getSelectedLayer ();
+    if (displaysDevice)
     {
-        if (cd.hasLayers ())
-            this.surface.setPendingMode (this.surface.getCurrentMode () == Maschine.MODE_BANK_DEVICE ?
-                Maschine.MODE_DEVICE_LAYER : Maschine.MODE_BANK_DEVICE);
+        if (dl == null)
+            cd.selectLayer (0);
     }
     else
     {
-        this.model.getCursorDevice ().cursorDevice.selectFirstInLayer (0);
+        if (dl != null)
+            cd.selectFirstDeviceInLayer (dl.index);
     }
+    this.surface.setPendingMode (displaysDevice ? Maschine.MODE_DEVICE_LAYER : Maschine.MODE_BANK_DEVICE);
 };
 
 AbstractView.prototype.onDeviceRight = function (event)
 {
-    if (event.isDown ())   // TODO Create function in CursorDeviceProxy when API is fully working and tested
-        this.model.getCursorDevice ().cursorDevice.selectParent ();
+    var isDeviceMode = this.surface.getCurrentMode () == Maschine.MODE_BANK_DEVICE;
+    this.surface.setPendingMode (isDeviceMode ? Maschine.MODE_DEVICE_LAYER : Maschine.MODE_BANK_DEVICE);
+    if (isDeviceMode)
+    // TODO FIX Required - No way to check if we are on the top of the device tree
+        this.model.getCursorDevice ().selectParent ();
+    else
+    // TODO Create a function
+        this.model.getCursorDevice ().cursorDevice.getChannel ().selectInEditor();
 };
 
 AbstractView.prototype.onLeftArrow = function (event)
 {
     if (this.surface.isPressed (MaschineButton.GRID))
     {
-        println("onLeftArrow(0");
         this.onDeviceLeft (event);
         return;
     }
@@ -261,7 +274,14 @@ AbstractView.prototype.onLeftArrow = function (event)
     {
         if (Maschine.isDeviceMode (this.surface.getCurrentMode ()))
         {
-            this.model.getCursorDevice ().selectPrevious ();
+            var isDeviceMode = this.surface.getCurrentMode () == Maschine.MODE_BANK_DEVICE;
+            this.surface.setPendingMode (isDeviceMode ? Maschine.MODE_DEVICE_LAYER : Maschine.MODE_BANK_DEVICE);
+            if (isDeviceMode)
+            // TODO FIX Required - No way to check if we are on the top of the device tree
+                this.model.getCursorDevice ().selectParent ();
+            else
+            // TODO Create a function
+                this.model.getCursorDevice ().cursorDevice.getChannel ().selectInEditor();
         }
         else
         {
@@ -722,6 +742,22 @@ AbstractView.prototype.scrollLeft = function (event)
 {
     switch (this.surface.getCurrentMode ())
     {
+        case Maschine.MODE_DEVICE_LAYER:
+            var cd = this.model.getCursorDevice ();
+            var sel = cd.getSelectedLayer ();
+            var index = sel == null ? 0 : sel.index - 1;
+            if (index == -1 || this.surface.isShiftPressed ())
+            {
+                if (!cd.canScrollLayersUp ())
+                    return;
+                cd.scrollLayersPageUp ();
+                var newSel = index == -1 || sel == null ? 7 : sel.index;
+                scheduleTask (doObject (this, this.selectLayer), [ newSel ], 75);
+                return;
+            }
+            this.selectLayer (index);
+            break;
+
         default:
             this.scrollTrackLeft (event);
             break;
@@ -732,10 +768,31 @@ AbstractView.prototype.scrollRight = function (event)
 {
     switch (this.surface.getCurrentMode ())
     {
+        case Maschine.MODE_DEVICE_LAYER:
+            var cd = this.model.getCursorDevice ();
+            var sel = cd.getSelectedLayer ();
+            var index = sel == null ? 0 : sel.index + 1;
+            if (index == 8 || this.surface.isShiftPressed ())
+            {
+                if (!cd.canScrollLayersDown ())
+                    return;
+                cd.scrollLayersPageDown ();
+                var newSel = index == 8 || sel == null ? 0 : sel.index;
+                scheduleTask (doObject (this, this.selectLayer), [ newSel ], 75);
+                return;
+            }
+            this.selectLayer (index);
+            break;
+
         default:
             this.scrollTrackRight (event);
             break;
     }
+};
+
+AbstractView.prototype.selectLayer = function (index)
+{
+    this.model.getCursorDevice ().selectLayer (index);
 };
 
 AbstractDisplay.NOTIFICATION_TIME = 500; // ms
@@ -793,15 +850,28 @@ AbstractView.prototype.showTempo = function ()
 
 AbstractView.prototype.updateArrowStates = function ()
 {
-    var tb = this.model.getCurrentTrackBank ();
-    var isDevice = Maschine.isDeviceMode (this.surface.getCurrentMode ());
+    switch (this.surface.getCurrentMode ())
+    {
+        case Maschine.MODE_BANK_DEVICE:
+        case Maschine.MODE_PRESET:
+            var cd = this.model.getCursorDevice ();
+            this.canScrollLeft = cd.canSelectPreviousFX ();
+            this.canScrollRight = cd.canSelectNextFX ();
+            break;
 
-    var sel = tb.getSelectedTrack ();
-    // var cd = this.model.getCursorDevice ();
-    this.canScrollLeft = isDevice ? true /* TODO: Bitwig bug cd.canSelectPreviousFX () */ :
-        sel != null && sel.index > 0 || tb.canScrollTracksUp ();
-    this.canScrollRight = isDevice ? true /* TODO: Bitwig bug cd.canSelectNextFX () */ :
-        sel != null && sel.index < this.getCurrentTrackBankLength() - 1 || tb.canScrollTracksDown ();
+        case Maschine.MODE_DEVICE_LAYER:
+            var cd = this.model.getCursorDevice ();
+            this.canScrollLeft = cd.canScrollLayersDown ();
+            this.canScrollRight = cd.canScrollLayersUp ();
+            break;
+
+        default:
+            var tb = this.model.getCurrentTrackBank ();
+            var sel = tb.getSelectedTrack ();
+            this.canScrollLeft = sel != null && sel.index > 0 || tb.canScrollTracksUp ();
+            this.canScrollRight = sel != null && sel.index < 7 || tb.canScrollTracksDown ();
+            break;
+    }
 };
 
 AbstractView.prototype.updateArrows = function ()

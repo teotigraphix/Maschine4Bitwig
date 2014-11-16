@@ -12,29 +12,27 @@ DeviceLayerMode.prototype = new BaseMode ();
 
 DeviceLayerMode.prototype.onValueKnob = function (index, value)
 {
-    var param = this.model.getCursorDevice ().getFXParam (index);
-    param.value = this.surface.changeValue (value, param.value);
-    this.model.getCursorDevice ().setParameter (index, param.value);
+    var cd = this.model.getCursorDevice ();
+    var selectedDeviceLayer = cd.getSelectedLayer ();
+    if (selectedDeviceLayer == null)
+        return;
+    switch (index)
+    {
+        case 0:
+            cd.changeLayerVolume (selectedDeviceLayer.index, value, this.surface.getFractionValue ());
+            break;
+        case 1:
+            cd.changeLayerPan (selectedDeviceLayer.index, value, this.surface.getFractionValue ());
+            break;
+    }
 };
-
-//DeviceLayerMode.prototype.onValueKnobTouch = function (index, isTouched)
-//{
-//    if (isTouched && this.surface.isDeletePressed ())
-//    {
-//        this.surface.setButtonConsumed (PUSH_BUTTON_DELETE);
-//        this.model.getCursorDevice ().resetParameter (index);
-//    }
-//};
 
 DeviceLayerMode.prototype.onFirstRow = function (index)
 {
-    var device = this.model.getCursorDevice ();
-    var layer = device.getDeviceLayer (index);
+    var cd = this.model.getCursorDevice ();
+    var layer = cd.getLayer (index);
     if (layer.exists)
-    {
-        device.selectDeviceLayer (layer.index);
-    }
-
+        cd.selectLayer (layer.index);
 };
 
 //DeviceLayerMode.prototype.onSecondRow = function (index)
@@ -50,25 +48,27 @@ DeviceLayerMode.prototype.updateDisplay = function ()
     if (this.model.hasSelectedDevice ())
     {
         var cursorDevice = this.model.getCursorDevice ();
-        var t = cursorDevice.getSelectedDeviceLayer ();
+        var t = cursorDevice.getSelectedLayer ();
         d.clear ();
         if (t == null)
         {
-            d.setBlock (0, 1, 'Please select').setBlock (0, 2, 'Device Layer');
+            d.setBlock (1, 1, '    Please select').setBlock (1, 2, 'a Device Layer...');
         }
         else
         {
-            d.setCell (0, 0, "Volume", Display.FORMAT_RAW);
-            d.setCell (0, 1, "Pan", Display.FORMAT_RAW);
+            //d.setCell (0, 0, "Volume", Display.FORMAT_RAW)
+                d.setCell (1, 0, t.volumeStr, Display.FORMAT_RAW)
+            //    .setCell (0, 1, "Pan", Display.FORMAT_RAW)
+                .setCell (1, 1, t.panStr, Display.FORMAT_RAW);
         }
-        
+
         var selIndex = t == null ? -1 : t.index;
         for (var i = 0; i < 8; i++)
         {
-            var layer = cursorDevice.getDeviceLayer (i);
+            var layer = cursorDevice.getLayer (i);
             var isSel = i == selIndex;
             var n = optimizeName (layer.name, isSel ? 7 : 8);
-            d.setCell (1, i, isSel ? '>' + n : n, Display.FORMAT_RAW);
+            d.setCell (0, i, isSel ? Display.RIGHT_ARROW + n : n, Display.FORMAT_RAW);
         }
     }
     else
@@ -78,27 +78,19 @@ DeviceLayerMode.prototype.updateDisplay = function ()
 
 DeviceLayerMode.prototype.updateFirstRow = function ()
 {
-//    var selectedDevice = this.model.getSelectedDevice ();
-//    if (this.model.hasSelectedDevice ())
-//    {
-//        this.surface.setButton (20, PUSH_COLOR_BLACK);
-//        this.surface.setButton (21, PUSH_COLOR_BLACK);
-//        this.surface.setButton (22, PUSH_COLOR_BLACK);
-//        this.surface.setButton (23, PUSH_COLOR_BLACK);
-//        this.surface.setButton (24, PUSH_COLOR_BLACK);
-//        this.surface.setButton (25, this.model.getCursorDevice ().hasPreviousParameterPage () ? PUSH_COLOR_ORANGE_HI : PUSH_COLOR_BLACK);
-//        this.surface.setButton (26, this.model.getCursorDevice ().hasNextParameterPage () ? PUSH_COLOR_ORANGE_HI : PUSH_COLOR_BLACK);
-//        this.surface.setButton (27, selectedDevice.enabled ? PUSH_COLOR_GREEN_LO : PUSH_COLOR_BLACK);
-//    }
+    if (this.model.hasSelectedDevice () && this.model.getCursorDevice ().hasLayers ())
+    {
+        var cd = this.model.getCursorDevice ();
+        for (var i = 0; i < 8; i++)
+        {
+            var dl = cd.getLayer (i);
+            this.surface.lightButton (MaschineButton.TOP_ROW_0 + i, dl.exists);
+        }
+    }
 //    else
 //    {
 //        for (var i = 0; i < 8; i++)
 //            this.surface.setButton (20 + i, PUSH_COLOR_BLACK);
 //    }
 };
-//
-//DeviceLayerMode.prototype.updateSecondRow = function ()
-//{
-//    for (var i = 0; i < 8; i++)
-//        this.surface.setButton (102 + i, this.model.getCursorDevice().isMacroMapping(i) ? PUSH_COLOR_GREEN_HI_FBLINK : PUSH_COLOR_BLACK);
-//};
+

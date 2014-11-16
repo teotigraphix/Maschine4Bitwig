@@ -15,21 +15,11 @@ DirectParameterMode.prototype = new BaseMode ();
 
 DirectParameterMode.prototype.onValueKnob = function (index, value)
 {
-/* TODO FIX REQUIRED
-    var param = this.model.getCursorDevice ().getFXParam (index);
-    param.value = this.surface.changeValue (value, param.value);
-    this.model.getCursorDevice ().setParameter (index, param.value);
-*/
-};
-
-DirectParameterMode.prototype.onValueKnobTouch = function (index, isTouched) 
-{
-    if (isTouched && this.surface.isDeletePressed ())
-    {
-/* TODO Not possible?           
-        this.surface.setButtonConsumed (PUSH_BUTTON_DELETE);
-        this.model.getCursorDevice ().resetParameter (index);*/
-    }
+    var cursorDevice = this.model.getCursorDevice ();
+    var params = cursorDevice.getDirectParameters ();
+    var pos = this.currentPage * 8 + index;
+    if (pos < params.length)
+        cursorDevice.changeDirectParameter (pos, value);
 };
 
 DirectParameterMode.prototype.onFirstRow = function (index)
