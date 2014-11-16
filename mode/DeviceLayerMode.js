@@ -31,7 +31,10 @@ DeviceLayerMode.prototype.onFirstRow = function (index)
     var device = this.model.getCursorDevice ();
     var layer = device.getDeviceLayer (index);
     if (layer.exists)
+    {
         device.selectDeviceLayer (layer.index);
+    }
+
 };
 
 //DeviceLayerMode.prototype.onSecondRow = function (index)
@@ -51,13 +54,12 @@ DeviceLayerMode.prototype.updateDisplay = function ()
         d.clear ();
         if (t == null)
         {
-            d.setBlock (1, 1, '    Please select').setBlock (1, 2, 'a Device Layer...');
+            d.setBlock (0, 1, 'Please select').setBlock (0, 2, 'Device Layer');
         }
         else
         {
             d.setCell (0, 0, "Volume", Display.FORMAT_RAW);
-             
-             d.setCell (0, 1, "Pan", Display.FORMAT_RAW);
+            d.setCell (0, 1, "Pan", Display.FORMAT_RAW);
         }
         
         var selIndex = t == null ? -1 : t.index;
