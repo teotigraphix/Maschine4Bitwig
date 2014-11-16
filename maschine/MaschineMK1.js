@@ -102,7 +102,7 @@ MaschineMK1.prototype.handleEvent = function (cc, value)
     switch (cc)
     {
         case MaschineMK2Button.CONTROL: // CHANNEL
-            view.onChannel (event);
+            view.onControl (event);
             break;
 
         case MaschineMK2Button.STEP: // PLUGIN-IN

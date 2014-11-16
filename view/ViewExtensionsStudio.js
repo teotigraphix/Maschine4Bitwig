@@ -1,13 +1,13 @@
+// Written by Michael Schmalle - teotigraphix.com
+// (c) 2014
+// Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-AbstractView.prototype.updateButtons = function ()
+// CONTROL in MK2, MIKRO
+AbstractView.prototype.onChannel = function (event)
 {
-    var layout = this.model.getApplication ().getPanelLayout ();
-    this.surface.lightButton (MaschineButton.ARRANGE, (layout == 'ARRANGE'));
-    this.surface.lightButton (MaschineButton.MIX, (layout == 'MIX'));
-    this.surface.lightButton (MaschineButton.SAMPLING, (layout == 'EDIT'));
+    this.onControl (MaschineMK2Button.CHANNEL, event);
 };
 
-AbstractView.prototype.onChannel = function () {};
 AbstractView.prototype.onPlugin = function () {};
 
 AbstractView.prototype.onArrange = function (event)
@@ -181,3 +181,14 @@ AbstractView.prototype.onJogWheel = function (increase)
 AbstractView.prototype.onBack = function() {};
 // TODO AbstractView.prototype.onEnter = function() {}; // Shift Button overrides
 
+//--------------------------------------
+// Protected API
+//--------------------------------------
+
+AbstractView.prototype.updateButtons = function ()
+{
+    var layout = this.model.getApplication ().getPanelLayout ();
+    this.surface.lightButton (MaschineButton.ARRANGE, (layout == 'ARRANGE'));
+    this.surface.lightButton (MaschineButton.MIX, (layout == 'MIX'));
+    this.surface.lightButton (MaschineButton.SAMPLING, (layout == 'EDIT'));
+};

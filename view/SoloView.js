@@ -50,7 +50,7 @@ SoloView.prototype.drawGrid = function ()
                 this.surface.pads.light (i, COLOR.GREEN);
             }
             else
-                this.surface.pads.light (i, t.monitor ? t.selected ? COLOR.GREEN : COLOR.GREEN_MEDIUM : t.selected ? COLOR.OCEAN : COLOR.ON_DIM);
+                this.surface.pads.light (i, t.monitor ? t.selected ? COLOR.BLUE : COLOR.BLUE_MEDIUM : t.selected ? COLOR.OCEAN : COLOR.ON_DIM);
         }
         else
         {

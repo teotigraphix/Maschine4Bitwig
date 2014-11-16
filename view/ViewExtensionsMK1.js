@@ -4,12 +4,13 @@
 
 AbstractView.prototype.onTempo = function (event)
 {
-//    this.refreshButton (MaschineMK2Button.TEMPO, event);
-//
-//    if (event.isLong ())
-//    {
-//        this.showTempo ();
-//    }
+    this.refreshButton (MaschineMK2Button.TEMPO, event);
+
+    if (event.isLong ())
+    {
+        this.showTempo ();
+        return;
+    }
 };
 
 AbstractView.prototype.onNoteRepeat = function (event)
@@ -19,7 +20,8 @@ AbstractView.prototype.onNoteRepeat = function (event)
     if (!event.isDown ())
         return;
 
-    this.model.getTransport ().tapTempo ();
+    if (this.surface.isShiftPressed ())
+        this.model.getTransport ().tapTempo ();
 };
 
 AbstractView.prototype.onPlay = function (event)

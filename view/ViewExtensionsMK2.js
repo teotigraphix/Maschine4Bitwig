@@ -9,6 +9,7 @@ AbstractView.prototype.onTempo = function (event)
     if (event.isLong ())
     {
         this.showTempo ();
+        return;
     }
 };
 

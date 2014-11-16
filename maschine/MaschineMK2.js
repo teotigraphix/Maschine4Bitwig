@@ -144,7 +144,7 @@ MaschineMK2.prototype.handleEvent = function (cc, value)
     switch (cc)
     {
         case MaschineMK2Button.CONTROL: // CHANNEL
-            view.onChannel (event);
+            view.onControl (event);
             break;
 
         case MaschineMK2Button.STEP: // PLUGIN-IN
@@ -195,11 +195,11 @@ MaschineMK2.prototype.handleEvent = function (cc, value)
         // Master TODO
 
         case MaschineMK2Button.VOLUME: // TODO add to View
-            //view.onVolume (event);
+            view.onVolume (event);
             break;
 
         case MaschineMK2Button.SWING: // TODO add to View
-            //view.onSwing (event);
+            view.onSwing (event);
             break;
 
         case MaschineMK2Button.TEMPO:

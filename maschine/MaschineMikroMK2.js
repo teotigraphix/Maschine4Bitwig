@@ -60,6 +60,8 @@ MaschineMikroMK2.prototype = new Maschine ();
 // Handlers
 //--------------------------------------
 
+// TODO Missing onStepMode()
+
 MaschineMikroMK2.prototype.handleEvent = function (cc, value)
 {
     var view = this.getActiveView ();
@@ -78,7 +80,7 @@ MaschineMikroMK2.prototype.handleEvent = function (cc, value)
             break;
 
         case MaschineMikroMK2Button.CONTROL: // CHANNEL
-            view.onChannel (event);
+            view.onControl (event);
             break;
 
         case MaschineButton.JOG_WHEEL:

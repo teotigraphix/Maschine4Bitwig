@@ -2,11 +2,27 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-AbstractView.prototype.onEnter = function (event) {};
+//--------------------------------------
+// Main Section
+//--------------------------------------
 
-AbstractView.prototype.onShift = function (event)
+// MK2, MIKRO
+AbstractView.prototype.onControl = function (event)
 {
-    this.refreshButton (MaschineButton.SHIFT, event);
+    this.refreshButton (MaschineButton.CONTROL, event);
+};
+
+AbstractView.prototype.onStepMode = function (event)
+{
+    this.refreshButton (MaschineButton.STEP_MODE, event);
+
+    if (!event.isDown())
+        return;
+
+    if (!this.surface.isActiveView (Maschine.VIEW_SEQUENCER))
+    {
+        this.surface.setActiveView (Maschine.VIEW_SEQUENCER);
+    }
 };
 
 AbstractView.prototype.onBrowse = function (event)
@@ -54,12 +70,6 @@ AbstractView.prototype.onSampling = function (event)
     this.model.getApplication ().setPanelLayout (layout);
 };
 
-// Arrow Left/Right page Knob pages
-
-//--------------------------------------
-// Center Display
-//--------------------------------------
-
 AbstractView.prototype.onAll = function (event)
 {
 };
@@ -98,65 +108,76 @@ AbstractView.prototype.onAuto = function (event)
     }
 };
 
-//AbstractView.prototype.onFirstRow = function (event, index) {};
-//AbstractView.prototype.onValueKnob = function (index, value) {};
+//--------------------------------------
+// Master Section
+//--------------------------------------
+
+// MK2
+AbstractView.prototype.onVolume = function (event)
+{
+};
+
+// MK2
+AbstractView.prototype.onSwing = function (event)
+{
+};
+
+// MK2
+AbstractView.prototype.onTempo = function (event)
+{
+};
 
 AbstractView.prototype.onNoteRepeat = function () {};
 
-//--------------------------------------
-// Transport
-//--------------------------------------
-
-AbstractView.prototype.onRestart = function (event)
+AbstractView.prototype.onJogWheelInternal = function (increase)
 {
-    this.refreshButton (MaschineButton.RESTART, event);
-
-    if (!event.isDown ())
-        return;
-
-    if (this.surface.isSelectPressed ())
+    if (this.model.hasSelectedDevice ())
     {
-        this.model.getTransport ().stop ();
-        this.model.getTransport ().setPosition (0);
-    }
-    else if (this.surface.isShiftPressed ())
-    {
-        this.model.getTransport ().toggleLoop ();
-    }
-    else
-        this.model.getTransport ().restart ();
-}; // loop
+        var cursorDevice = this.model.getCursorDevice ();
+        if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
+        {
+            if (!increase)
+            {
+                if (cursorDevice.hasPreviousParameterPage ())
+                    cursorDevice.previousParameterPage ();
+            }
+            else
+            {
+                if (cursorDevice.hasNextParameterPage ())
+                    cursorDevice.nextParameterPage ();
+            }
 
-// AbstractView.prototype.onPlay = function (event) {}; Controller Specific
-
-AbstractView.prototype.onRec = function (event)
-{
-    if (!event.isDown ())
-        return;
-
-    var layout = this.model.getApplication ().getPanelLayout ()
-    var shiftPressed = this.surface.isShiftPressed ();
-
-    if (layout == 'ARRANGE')
-    {
-        if (shiftPressed)
-            this.model.getTransport ().toggleLauncherOverdub ();
-        else
-            this.model.getTransport ().record ();
-    }
-    else  if (layout == 'MIX' || layout == 'EDIT')
-    {
-        if (!shiftPressed)
-            this.model.getTransport ().toggleLauncherOverdub ();
-        else
-            this.model.getTransport ().record ();
+            this.notifyBankChange ();
+        }
+        else if (this.surface.isActiveMode (Maschine.MODE_PRESET))
+        {
+            if (!increase)
+            {
+                cursorDevice.switchToPreviousPreset ();
+            }
+            else
+            {
+                cursorDevice.switchToNextPreset ();
+            }
+        }
     }
 };
 
-AbstractView.prototype.onGrid = function (event)
+// MK2
+AbstractView.prototype.onMasterLeftArrow = function (event)
 {
-    this.refreshButton (MaschineButton.GRID, event);
 };
+
+// MK2
+AbstractView.prototype.onMasterRightArrow = function (event)
+{
+};
+
+AbstractView.prototype.onEnter = function (event) {};
+
+//--------------------------------------
+// Groups Section
+//--------------------------------------
 
 AbstractView.prototype.onGoupButton = function (event, index)
 {
@@ -194,56 +215,30 @@ AbstractView.prototype.onGoupButton = function (event, index)
     }
 };
 
-AbstractView.prototype.onStepMode = function (event)
+//--------------------------------------
+// Transport Section
+//--------------------------------------
+
+AbstractView.prototype.onRestart = function (event)
 {
-    this.refreshButton (MaschineButton.STEP_MODE, event);
+    this.refreshButton (MaschineButton.RESTART, event);
 
-    if (!event.isDown())
-        return;
-
-    if (!this.surface.isActiveView (Maschine.VIEW_SEQUENCER))
-    {
-        this.surface.setActiveView (Maschine.VIEW_SEQUENCER);
-    }
-};
-
-AbstractView.prototype.onDeviceLeft = function (event)
-{
     if (!event.isDown ())
         return;
 
-    var cd = this.model.getCursorDevice ();
-    if (!cd.hasSelectedDevice ())
-        return;
-
-    if (!cd.hasLayers ())
-        return;
-
-    var displaysDevice = this.surface.getCurrentMode () == Maschine.MODE_BANK_DEVICE;
-    var dl = cd.getSelectedLayer ();
-    if (displaysDevice)
+    if (this.surface.isSelectPressed ())
     {
-        if (dl == null)
-            cd.selectLayer (0);
+        this.model.getTransport ().stop ();
+        this.model.getTransport ().setPosition (0);
+    }
+    else if (this.surface.isShiftPressed ())
+    {
+        this.model.getTransport ().toggleLoop ();
     }
     else
     {
-        if (dl != null)
-            cd.selectFirstDeviceInLayer (dl.index);
+        this.model.getTransport ().restart ();
     }
-    this.surface.setPendingMode (displaysDevice ? Maschine.MODE_DEVICE_LAYER : Maschine.MODE_BANK_DEVICE);
-};
-
-AbstractView.prototype.onDeviceRight = function (event)
-{
-    var isDeviceMode = this.surface.getCurrentMode () == Maschine.MODE_BANK_DEVICE;
-    this.surface.setPendingMode (isDeviceMode ? Maschine.MODE_DEVICE_LAYER : Maschine.MODE_BANK_DEVICE);
-    if (isDeviceMode)
-    // TODO FIX Required - No way to check if we are on the top of the device tree
-        this.model.getCursorDevice ().selectParent ();
-    else
-    // TODO Create a function
-        this.model.getCursorDevice ().cursorDevice.getChannel ().selectInEditor();
 };
 
 AbstractView.prototype.onLeftArrow = function (event)
@@ -257,37 +252,15 @@ AbstractView.prototype.onLeftArrow = function (event)
     if (!event.isDown())
         return;
 
-    if (this.surface.isShiftPressed ())
-    {
-        var device = this.model.getCursorDevice ();
-        switch (this.surface.getCurrentMode ())
-        {
-            case Maschine.MODE_BANK_DEVICE:
-                if (device.hasPreviousParameterPage ())
-                    device.previousParameterPage ();
-
-                this.notifyBankChange ();
-                break;
-        }
-    }
-    else
-    {
-        if (Maschine.isDeviceMode (this.surface.getCurrentMode ()))
-        {
-            var isDeviceMode = this.surface.getCurrentMode () == Maschine.MODE_BANK_DEVICE;
-            this.surface.setPendingMode (isDeviceMode ? Maschine.MODE_DEVICE_LAYER : Maschine.MODE_BANK_DEVICE);
-            if (isDeviceMode)
-            // TODO FIX Required - No way to check if we are on the top of the device tree
-                this.model.getCursorDevice ().selectParent ();
-            else
-            // TODO Create a function
-                this.model.getCursorDevice ().cursorDevice.getChannel ().selectInEditor();
-        }
-        else
-        {
-            this.scrollLeft (event);
-        }
-    }
+    this.model.getCursorDevice ().selectPrevious ();
+//    if (Maschine.isDeviceMode (this.surface.getCurrentMode ()))
+//    {
+//        this.model.getCursorDevice ().selectPrevious ();
+//    }
+//    else
+//    {
+//        this.scrollLeft (event);
+//    }
 };
 
 AbstractView.prototype.onRightArrow = function (event)
@@ -301,34 +274,56 @@ AbstractView.prototype.onRightArrow = function (event)
     if (!event.isDown())
         return;
 
-    if (this.surface.isShiftPressed ())
-    {
-        var device = this.model.getCursorDevice ();
-        switch (this.surface.getCurrentMode ())
-        {
-            case Maschine.MODE_BANK_DEVICE:
-                if (device.hasNextParameterPage ())
-                    device.nextParameterPage ();
+    this.model.getCursorDevice ().selectNext ();
+//    if (Maschine.isDeviceMode (this.surface.getCurrentMode ()))
+//    {
+//        this.model.getCursorDevice ().selectNext ();
+//    }
+//    else
+//    {
+//        this.scrollRight (event);
+//    }
+};
 
-                this.notifyBankChange ();
-                break;
-        }
-    }
-    else
+AbstractView.prototype.onGrid = function (event)
+{
+    //this.refreshButton (MaschineButton.GRID, event);
+};
+
+AbstractView.prototype.onPlay = function (event) {};
+
+AbstractView.prototype.onRec = function (event)
+{
+    if (!event.isDown ())
+        return;
+
+    var layout = this.model.getApplication ().getPanelLayout ()
+    var shiftPressed = this.surface.isShiftPressed ();
+
+    if (layout == 'ARRANGE')
     {
-        if (Maschine.isDeviceMode (this.surface.getCurrentMode ()))
-        {
-            this.model.getCursorDevice ().selectNext ();
-        }
+        if (shiftPressed)
+            this.model.getTransport ().toggleLauncherOverdub ();
         else
-        {
-            this.scrollRight (event);
-        }
+            this.model.getTransport ().record ();
+    }
+    else  if (layout == 'MIX' || layout == 'EDIT')
+    {
+        if (!shiftPressed)
+            this.model.getTransport ().toggleLauncherOverdub ();
+        else
+            this.model.getTransport ().record ();
     }
 };
 
+AbstractView.prototype.onErase = function (event)
+{
+    if (event.isUp ())
+        this.model.getApplication ().deleteSelection ();
+};
+
 //--------------------------------------
-// Pads
+// Pads Section
 //--------------------------------------
 
 AbstractView.prototype.onScene = function (event)
@@ -380,59 +375,6 @@ AbstractView.prototype.onPadMode = function (event) // keyboard
     }
 };
 
-AbstractView.prototype.doNavigateAction = function (index)
-{
-    switch (index)
-    {
-        case 0:
-            this.model.getApplication ().undo ();
-            break;
-
-        case 1:
-            this.model.getApplication ().redo ();
-            break;
-
-        case 4:
-            this.model.getApplication ().quantize ();
-            break;
-
-        case 8:
-            this.model.getApplication ().deleteSelection ();
-            break;
-
-        case 14:
-            if (this.surface.isActiveView (Maschine.VIEW_PLAY))
-                this.surface.getActiveView ().onDown (new ButtonEvent (ButtonEvent.DOWN));
-            break;
-
-        case 15:
-            if (this.surface.isActiveView (Maschine.VIEW_PLAY))
-                this.surface.getActiveView ().onUp (new ButtonEvent (ButtonEvent.DOWN));
-            break;
-    }
-};
-
-AbstractView.prototype.onNavigateAction = function (event)
-{
-    if (event.isLong ())
-        return;
-
-    if (event.isDown ())
-    {
-        // println("NavigateAction down");
-        if (!this.surface.isActiveView (Maschine.VIEW_NAVIGATE_ACTION))
-        {
-            this.surface._previousViewId = this.surface.activeViewId;
-            this.surface.setActiveView (Maschine.VIEW_NAVIGATE_ACTION);
-        }
-    }
-    else
-    {
-        //println("NavigateAction up");
-        this.surface.setActiveView (this.surface._previousViewId);
-    }
-};
-
 AbstractView.prototype.onNavigate = function (event)
 {
     this.refreshButton (MaschineButton.NAVIGATE, event);
@@ -469,6 +411,8 @@ AbstractView.prototype.onNavigate = function (event)
 
 AbstractView.prototype.onDuplicate = function (event)
 {
+    if (event.isDown ())
+        this.model.getApplication ().duplicate ();
 };
 
 AbstractView.prototype.onSelect = function (event)
@@ -593,49 +537,109 @@ AbstractView.prototype.onMute = function (event)
     }
 };
 
-AbstractView.prototype.onJogWheelInternal = function (increase)
-{
-    if (this.surface.isShiftPressed ())
-    {
-        if (this.model.hasSelectedDevice ())
-        {
-            var cursorDevice = this.model.getCursorDevice ();
-            if (this.surface.isActiveMode (Maschine.MODE_BANK_DEVICE))
-            {
-                if (!increase)
-                {
-                    if (cursorDevice.hasPreviousParameterPage ())
-                        cursorDevice.previousParameterPage ();
-                }
-                else
-                {
-                    if (cursorDevice.hasNextParameterPage ())
-                        cursorDevice.nextParameterPage ();
-                }
-
-                this.notifyBankChange ();
-            }
-            else if (this.surface.isActiveMode (Maschine.MODE_PRESET))
-            {
-                if (!increase)
-                {
-                    cursorDevice.switchToPreviousPreset ();
-                }
-                else
-                {
-                    cursorDevice.switchToNextPreset ();
-                }
-            }
-        }
-    }
-};
-
-
-
 //--------------------------------------
 // Protected API
 //--------------------------------------
 
+AbstractView.prototype.onShift = function (event)
+{
+    this.refreshButton (MaschineButton.SHIFT, event);
+};
+
+//AbstractView.prototype.onFirstRow = function (event, index) {};
+//AbstractView.prototype.onValueKnob = function (index, value) {};
+
+AbstractView.prototype.onDeviceLeft = function (event)
+{
+    if (!event.isDown ())
+        return;
+
+    var cd = this.model.getCursorDevice ();
+    if (!cd.hasSelectedDevice ())
+        return;
+
+    if (!cd.hasLayers ())
+        return;
+
+    var displaysDevice = this.surface.getCurrentMode () == Maschine.MODE_BANK_DEVICE;
+    var dl = cd.getSelectedLayer ();
+    if (displaysDevice)
+    {
+        if (dl == null)
+            cd.selectLayer (0);
+    }
+    else
+    {
+        if (dl != null)
+            cd.selectFirstDeviceInLayer (dl.index);
+    }
+    this.surface.setPendingMode (displaysDevice ? Maschine.MODE_DEVICE_LAYER : Maschine.MODE_BANK_DEVICE);
+};
+
+AbstractView.prototype.onDeviceRight = function (event)
+{
+    var isDeviceMode = this.surface.getCurrentMode () == Maschine.MODE_BANK_DEVICE;
+    this.surface.setPendingMode (isDeviceMode ? Maschine.MODE_DEVICE_LAYER : Maschine.MODE_BANK_DEVICE);
+    if (isDeviceMode)
+    // TODO FIX Required - No way to check if we are on the top of the device tree
+        this.model.getCursorDevice ().selectParent ();
+    else
+    // TODO Create a function
+        this.model.getCursorDevice ().cursorDevice.getChannel ().selectInEditor();
+};
+
+AbstractView.prototype.doNavigateAction = function (index)
+{
+    switch (index)
+    {
+        case 0:
+            this.model.getApplication ().undo ();
+            break;
+
+        case 1:
+            this.model.getApplication ().redo ();
+            break;
+
+        case 4:
+            this.model.getApplication ().quantize ();
+            break;
+
+        case 8:
+            this.model.getApplication ().deleteSelection ();
+            break;
+
+        case 14:
+            if (this.surface.isActiveView (Maschine.VIEW_PLAY))
+                this.surface.getActiveView ().onDown (new ButtonEvent (ButtonEvent.DOWN));
+            break;
+
+        case 15:
+            if (this.surface.isActiveView (Maschine.VIEW_PLAY))
+                this.surface.getActiveView ().onUp (new ButtonEvent (ButtonEvent.DOWN));
+            break;
+    }
+};
+
+AbstractView.prototype.onNavigateAction = function (event)
+{
+    if (event.isLong ())
+        return;
+
+    if (event.isDown ())
+    {
+        // println("NavigateAction down");
+        if (!this.surface.isActiveView (Maschine.VIEW_NAVIGATE_ACTION))
+        {
+            this.surface._previousViewId = this.surface.activeViewId;
+            this.surface.setActiveView (Maschine.VIEW_NAVIGATE_ACTION);
+        }
+    }
+    else
+    {
+        //println("NavigateAction up");
+        this.surface.setActiveView (this.surface._previousViewId);
+    }
+};
 
 AbstractView.prototype.onNew = function (event)
 {
@@ -845,7 +849,7 @@ AbstractView.prototype.refreshButton = function (buttonId, event)
 AbstractView.prototype.showTempo = function ()
 {
     var bpm = parseFloat (Math.round (this.model.getTransport ().getTempo () * 100) / 100).toFixed (2);
-    this.surface.getDisplay ().showNotification ("Current Tempo:     " + bpm + " BPM");
+    this.surface.getDisplay ().showNotificationLeft ("Current Tempo:", bpm + " BPM", 1000);
 };
 
 AbstractView.prototype.updateArrowStates = function ()
