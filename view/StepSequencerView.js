@@ -82,7 +82,8 @@ StepSequencerView.prototype.drawGrid = function ()
 
     var tb = this.model.getTrackBank ();
     var selectedTrack = tb.getSelectedTrack ();
-    var padColor = BitwigColor.getColor (selectedTrack.color);
+    var pad = this.model.getCursorDevice ().drumPadLayers[this.getSelectedPad ()];
+    var padColor = this.getSelectPadColor (pad, selectedTrack, false);
 
     // Paint the sequencer steps
     var step = this.clip.getCurrentStep ();
@@ -95,6 +96,16 @@ StepSequencerView.prototype.drawGrid = function ()
         var y = Math.floor (col / 4);
         this.surface.pads.lightEx (x, 3 - y, isSet ? (hilite ? COLOR.GREEN : padColor) : hilite ? COLOR.GREEN : COLOR.OFF, null, false);
     }
+};
+
+StepSequencerView.prototype.getSelectPadColor = function (pad, selectedTrack, isDim)
+{
+    var padColorId = pad.color;
+    var padColor = BitwigColor.getColor (padColorId, isDim);
+    if (padColor == null)
+        padColor = BitwigColor.getColor (selectedTrack.color, isDim);
+
+    return padColor;
 };
 
 StepSequencerView.prototype.getSelectedPad = function ()

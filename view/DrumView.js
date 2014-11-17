@@ -206,7 +206,6 @@ DrumView.prototype.onUp = function (event)
     //    this.onOctaveUp (event);
     //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
     //this.model.getCursorDevice().drumPadBank.scrollChannelsPageDown ();
-
 };
 
 DrumView.prototype.onDown = function (event)

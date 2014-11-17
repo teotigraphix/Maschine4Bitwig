@@ -380,7 +380,12 @@ AbstractView.prototype.onPadMode = function (event) // keyboard
     if (!event.isDown ())
         return;
 
-    if (!this.surface.isActiveView (Maschine.VIEW_PLAY))
+    // If the view is STEP, just send it straight back to DRUM
+    if (this.surface.isActiveView (Maschine.VIEW_SEQUENCER))
+    {
+        this.surface.setActiveView (Maschine.VIEW_DRUM);
+    }
+    else if (!this.surface.isActiveView (Maschine.VIEW_PLAY))
     {
         this.surface.setActiveView (Maschine.VIEW_PLAY);
     }

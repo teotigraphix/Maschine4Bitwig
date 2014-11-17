@@ -153,10 +153,10 @@ var COLOR_BITWIG_DIM =
     GREEN_COLD: new Color(147, 1, 0.62 - COLOR_DIM, 26), // SeaGreen
     GREEN_BLUISH: new Color(173, 1, 0.65 - COLOR_DIM, 30), // DarkCyan
     TURQUOISE: new Color(198, 1, 0.85 - COLOR_DIM, 37), // DarkTurquoise
-    PURPLE_LIGHT: new Color(274, 0.51 - COLOR_DIM, 0.94, 48), // Orchid
+    PURPLE_LIGHT: new Color(274, 0.51, 0.94 - COLOR_DIM, 48), // Orchid
     PINK_LIGHT: new Color(339, 0.55, 0.88 - COLOR_DIM, 56), // PaleVioletRed
     SKIN: new Color(4, 0.63, 0.93 - COLOR_DIM, 4), // Tomato
-    BROWN_REDISH: new Color(21, 0.76 - COLOR_DIM, 1, 10), // Coral
+    BROWN_REDISH: new Color(21, 0.76, 1 - COLOR_DIM, 10), // Coral
     BROWN_LIGHT: new Color(42, 0.66, 0.89 - COLOR_DIM, 61), // SandyBrown
     GREEN_LIGHT: new Color(77, 0.60, 0.75 - COLOR_DIM, 18), // YellowGreen
     GREEN_MEDIUM: new Color(137, 0.67, 0.73 - COLOR_DIM, 25), // MediumSeaGreen
