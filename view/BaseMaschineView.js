@@ -25,10 +25,12 @@ BaseMaschineView.prototype.updateButtons = function ()
     if (layout == 'ARRANGE')
     {
         this.surface.lightButton (MaschineButton.REC, t.isRecording);
+        this.surface.lightButton (MaschineButton.AUTO, t.isWritingArrangerAutomation);
     }
     else if (layout == 'MIX' || layout == 'EDIT')
     {
         this.surface.lightButton (MaschineButton.REC, t.isLauncherOverdub);
+        this.surface.lightButton (MaschineButton.AUTO, t.isWritingClipLauncherAutomation);
     }
 
     var master = this.model.getMasterTrack ();
