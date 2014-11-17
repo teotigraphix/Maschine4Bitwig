@@ -22,6 +22,7 @@ load ("PresetMode.js");
 load ("TrackViewMode.js");
 load ("SceneTriggerMode.js");
 load ("ClipTriggerMode.js");
+load ("TempoMode.js");
 
 load ("DirectParameterMode.js");
 load ("ParamPageMode.js");

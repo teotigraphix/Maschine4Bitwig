@@ -5,6 +5,8 @@
 function BaseMode (model)
 {
     AbstractMode.call (this, model);
+
+    this.isTemporary = false;
 }
 BaseMode.prototype = new AbstractMode ();
 

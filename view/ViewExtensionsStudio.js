@@ -63,11 +63,19 @@ AbstractView.prototype.onEncoderLarge = function (value)
 AbstractView.prototype.onTap = function (event)
 {
     this.refreshButton (MaschineButton.TAP, event);
-
     if (event.isLong ())
-    {
-        this.showTempo ();
         return;
+
+    if (event.isDown ())
+    {
+        if (!this.surface.isActiveMode (Maschine.MODE_TEMPO))
+        {
+            this.surface.setPendingMode (Maschine.MODE_TEMPO);
+        }
+    }
+    else
+    {
+        this.surface.resotoreMode ();
     }
 
     if (event.isDown ())

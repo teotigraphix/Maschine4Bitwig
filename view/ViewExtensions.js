@@ -125,6 +125,21 @@ AbstractView.prototype.onSwing = function (event)
 // MK2
 AbstractView.prototype.onTempo = function (event)
 {
+    this.refreshButton (MaschineMK2Button.TEMPO, event);
+    if (event.isLong ())
+        return;
+
+    if (event.isDown ())
+    {
+        if (!this.surface.isActiveMode (Maschine.MODE_TEMPO))
+        {
+            this.surface.setPendingMode (Maschine.MODE_TEMPO);
+        }
+    }
+    else
+    {
+        this.surface.resotoreMode ();
+    }
 };
 
 AbstractView.prototype.onNoteRepeat = function () {};

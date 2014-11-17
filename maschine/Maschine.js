@@ -45,6 +45,8 @@ Maschine.MODE_TRACK_VIEW = 29;
 Maschine.MODE_SCENE_TRIGGER = 30;
 Maschine.MODE_CLIP_TRIGGER = 31;
 
+Maschine.MODE_TEMPO = 32;
+
 Maschine.VIEW_PLAY            = 0;
 Maschine.VIEW_MODE            = 1;
 Maschine.VIEW_DRUM            = 2;
