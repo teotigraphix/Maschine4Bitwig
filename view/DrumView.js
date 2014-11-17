@@ -17,6 +17,8 @@ function DrumView (model)
     this.canScrollUp = false;
     this.canScrollDown = false;
 
+    this.offsetRow = 0;
+
     // TODO: Read the information in Bitwig 1.1
     this.pads = initArray ({ exists: true, solo: false, mute: false }, 16);
     this.selectedPad = 0;
@@ -170,8 +172,23 @@ DrumView.prototype.updateNoteMapping = function ()
         this.surface.isPressed (MaschineButton.MUTE) ||
         this.surface.isPressed (MaschineButton.SOLO);
     this.noteMap = this.canSelectedTrackHoldNotes () && !isPressed ?
-        this.scales.getDrumMatrix () : this.scales.getEmptyMatrix ();
+        this.getDrumMatrix () : this.scales.getEmptyMatrix ();
     this.surface.setKeyTranslationTable (this.noteMap);
+};
+
+DrumView.prototype.getDrumMatrix = function ()
+{
+    var matrix = Scales.DRUM_MATRIX;
+    var noteMap = this.scales.getEmptyMatrix ();
+    // start note 36, end note 100
+    var startNote = Scales.DRUM_NOTE_START;
+    for (var note = startNote; note < Scales.DRUM_NOTE_END; note++)
+    {
+        var n = matrix[note - Scales.DRUM_NOTE_START] == -1 ? -1 : matrix[note - startNote] +
+            startNote + (this.scales.drumOctave * 16) + this.offsetRow;
+        noteMap[note] = n < 0 || n > 127 ? -1 : n;
+    }
+    return noteMap;
 };
 
 DrumView.prototype.onOctaveDown = function (event)
@@ -196,6 +213,28 @@ DrumView.prototype.onOctaveUp = function (event)
     this.surface.getDisplay ().showNotification ('          ' + this.scales.getDrumRangeText ());
 };
 
+DrumView.prototype.onRowDown = function (event)
+{
+    if (!event.isDown ())
+        return;
+    this.clearPressedKeys ();
+    this.offsetRow -= 4;
+    this.offsetY = DrumView.DRUM_START_KEY + (this.scales.getDrumOctave () * 16) + this.offsetRow;
+    this.updateNoteMapping ();
+    this.surface.getDisplay ().showNotification ('          ' + this.scales.getDrumRangeText ());
+};
+
+DrumView.prototype.onRowUp = function (event)
+{
+    if (!event.isDown ())
+        return;
+    this.clearPressedKeys ();
+    this.offsetRow += 4;
+    this.offsetY = DrumView.DRUM_START_KEY + (this.scales.getDrumOctave () * 16) + this.offsetRow;
+    this.updateNoteMapping ();
+    this.surface.getDisplay ().showNotification ('          ' + this.scales.getDrumRangeText ());
+};
+
 DrumView.prototype.onUp = function (event)
 {
     if (!event.isDown ())
@@ -203,6 +242,7 @@ DrumView.prototype.onUp = function (event)
 
     if (this.surface.isShiftPressed ())
     {
+        this.onRowUp(event);
         this.model.getCursorDevice().drumPadBank.scrollChannelsDown ();
         return;
     }
@@ -219,6 +259,7 @@ DrumView.prototype.onDown = function (event)
 
     if (this.surface.isShiftPressed ())
     {
+        this.onRowDown(event);
         this.model.getCursorDevice().drumPadBank.scrollChannelsUp ();
         return;
     }
