@@ -21,11 +21,6 @@ function SoloView (model)
 
 SoloView.prototype = new BaseMaschineView ();
 
-SoloView.prototype.attachTo = function (surface)
-{
-    AbstractView.prototype.attachTo.call (this, surface);
-};
-
 SoloView.prototype.isMonitor = function (note)
 {
     return this.monitorIndexTranslation.indexOf (note) != -1;

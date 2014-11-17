@@ -492,7 +492,10 @@ AbstractView.prototype.onSolo = function (event)
         return;
 
     if (this.surface.isActiveView (Maschine.VIEW_DRUM))
+    {
+        this.surface.getActiveView ().updateNoteMapping ();
         return;
+    }
 
     if (event.isDown ())
     {
@@ -518,7 +521,10 @@ AbstractView.prototype.onMute = function (event)
         return;
 
     if (this.surface.isActiveView (Maschine.VIEW_DRUM))
+    {
+        this.surface.getActiveView ().updateNoteMapping ();
         return;
+    }
 
     if (event.isDown ())
     {

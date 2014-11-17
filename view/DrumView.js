@@ -166,7 +166,10 @@ DrumView.prototype.getSelectPadColor = function (pad, selectedTrack, isDim)
 
 DrumView.prototype.updateNoteMapping = function ()
 {
-    this.noteMap = this.canSelectedTrackHoldNotes () && !this.surface.isSelectPressed () ?
+    var isPressed = this.surface.isSelectPressed () ||
+        this.surface.isPressed (MaschineButton.MUTE) ||
+        this.surface.isPressed (MaschineButton.SOLO);
+    this.noteMap = this.canSelectedTrackHoldNotes () && !isPressed ?
         this.scales.getDrumMatrix () : this.scales.getEmptyMatrix ();
     this.surface.setKeyTranslationTable (this.noteMap);
 };

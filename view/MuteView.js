@@ -22,11 +22,6 @@ function MuteView (model)
 
 MuteView.prototype = new BaseMaschineView ();
 
-MuteView.prototype.attachTo = function (surface)
-{
-    AbstractView.prototype.attachTo.call (this, surface);
-};
-
 MuteView.prototype.isRecArm = function (note)
 {
     return this.recarmIndexTranslation.indexOf (note) != -1;
