@@ -11,7 +11,7 @@ MaschineMidiInput.prototype = new MidiInput();
 
 MaschineMidiInput.prototype.createNoteInput = function ()
 {
-    var noteInput = this.port.createNoteInput ("Maschine Pads", "80????", "90????");
+    var noteInput = this.port.createNoteInput ("Pads", "80????", "90????");
     noteInput.setShouldConsumeEvents (false);
     return noteInput;
 };
