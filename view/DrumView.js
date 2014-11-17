@@ -200,22 +200,30 @@ DrumView.prototype.onUp = function (event)
 {
     if (!event.isDown ())
         return;
-    //if (!this.surface.isShiftPressed ())
-    //    AbstractView.prototype.onUp.call (this, event);
-    //else
-    //    this.onOctaveUp (event);
-    //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
-    //this.model.getCursorDevice().drumPadBank.scrollChannelsPageDown ();
+
+    if (this.surface.isShiftPressed ())
+    {
+        this.model.getCursorDevice().drumPadBank.scrollChannelsDown ();
+        return;
+    }
+
+    this.onOctaveUp (event);
+
+    this.model.getCursorDevice().drumPadBank.scrollChannelsPageDown ();
 };
 
 DrumView.prototype.onDown = function (event)
 {
     if (!event.isDown ())
         return;
-    //if (!this.surface.isShiftPressed ())
-    //    AbstractView.prototype.onDown.call (this, event);
-    //else
-     //   this.onOctaveDown (event);
+
+    if (this.surface.isShiftPressed ())
+    {
+        this.model.getCursorDevice().drumPadBank.scrollChannelsUp ();
+        return;
+    }
+
+    this.onOctaveDown (event);
     //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
-    //this.model.getCursorDevice().drumPadBank.scrollChannelsPageUp();
+    this.model.getCursorDevice().drumPadBank.scrollChannelsPageUp ();
 };
