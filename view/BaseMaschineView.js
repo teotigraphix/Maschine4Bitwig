@@ -20,7 +20,16 @@ BaseMaschineView.prototype.updateButtons = function ()
 
     this.surface.lightButton (MaschineButton.METRO, t.isClickOn);
     this.surface.lightButton (MaschineButton.PLAY, t.isPlaying);
-    this.surface.lightButton (MaschineButton.REC, t.isRecording);
+
+    var layout = this.model.getApplication ().getPanelLayout ();
+    if (layout == 'ARRANGE')
+    {
+        this.surface.lightButton (MaschineButton.REC, t.isRecording);
+    }
+    else if (layout == 'MIX' || layout == 'EDIT')
+    {
+        this.surface.lightButton (MaschineButton.REC, t.isLauncherOverdub);
+    }
 
     var master = this.model.getMasterTrack ();
     var v = master.getVolume ();
