@@ -1,6 +1,6 @@
 
 DrumView.NUM_DISPLAY_COLS = 16;
-DrumView.DRUM_START_KEY = 36;
+DrumView.DRUM_START_KEY = 52;
 
 Scales.DRUM_MATRIX =
     [
@@ -141,7 +141,7 @@ DrumView.prototype.getPadColor = function (index)
 
     if (this.pressedKeys[this.offsetY + index] > 0)
         return this.getSelectPadColor (pad, selectedTrack);
-
+    println("c " + color);
     return color;
 };
 
