@@ -19,7 +19,7 @@ DirectParameterMode.prototype.onValueKnob = function (index, value)
     var params = cursorDevice.getDirectParameters ();
     var pos = this.currentPage * 8 + index;
     if (pos < params.length)
-        cursorDevice.changeDirectParameter (pos, value);
+        cursorDevice.changeDirectParameter (pos, value, this.surface.getFractionValue ());
 };
 
 DirectParameterMode.prototype.onFirstRow = function (index)
@@ -54,7 +54,7 @@ DirectParameterMode.prototype.updateDisplay = function ()
     if (hasDevice)
     {
         var cursorDevice = this.model.getCursorDevice ();
-        
+
         var params = cursorDevice.getDirectParameters ();
         var pageOffset = this.currentPage * 8;
         if (pageOffset >= params.length)
@@ -62,26 +62,22 @@ DirectParameterMode.prototype.updateDisplay = function ()
             pageOffset = 0;
             this.currentPage = 0;
         }
-        
+
+        d.clearRow (2);
         for (var i = 0; i < 8; i++)
         {
             var param = pageOffset + i >= params.length ? this.emptyParameter : params[pageOffset + i];
             var isEmpty = param.name.length == 0;
             d.setCell (0, i, param.name, Display.FORMAT_RAW)
-             .setCell (1, i, param.valueStr, Display.FORMAT_RAW);
-
-            if (isEmpty)
-                d.clearCell (2, i);
-            else
-                d.setCell (2, i, param.value, Display.FORMAT_RAW);
+                .setCell (1, i, param.valueStr, Display.FORMAT_RAW);
         }
-        
+
         d.setCell (3, 0, 'Selected', Display.FORMAT_RAW).setCell (3, 1, 'Device: ', Display.FORMAT_RAW)
-         .setBlock (3, 1, selectedDevice.name)
-         .setCell (3, 4, "Page: " + this.currentPage, Display.FORMAT_RAW)
-         .setCell (3, 5, this.currentPage > 0 ? ' < Prev ' : '', Display.FORMAT_RAW)
-         .setCell (3, 6, this.currentPage < Math.floor (params.length / 8) + (params.length % 8 > 0 ? 1 : 0) ? ' Next > ' : '', Display.FORMAT_RAW)
-         .setCell (3, 7, selectedDevice.enabled ? 'Enabled' : 'Disabled').done (3);
+            .setBlock (3, 1, selectedDevice.name)
+            .setCell (3, 4, "Page: " + this.currentPage, Display.FORMAT_RAW)
+            .setCell (3, 5, this.currentPage > 0 ? ' < Prev ' : '', Display.FORMAT_RAW)
+            .setCell (3, 6, this.currentPage < Math.floor (params.length / 8) + (params.length % 8 > 0 ? 1 : 0) ? ' Next > ' : '', Display.FORMAT_RAW)
+            .setCell (3, 7, selectedDevice.enabled ? 'Enabled' : 'Disabled').done (3);
     }
     else
         d.clear ().setBlock (1, 1, '    Please select').setBlock (1, 2, 'a Device...    ').clearRow (3);
