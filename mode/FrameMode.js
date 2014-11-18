@@ -3,8 +3,11 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-FrameMode.ROW0 = 'Arange Mix    Edit   NotEdt Auto   Device Mixer  Full  ';
-FrameMode.ROW1 = 'Markrs Follow TrckHt ClpLch XFade  FX     I/O    Meters';
+FrameMode.ROW0 = 'NtEdit  Auto  Device  Mixer                            ';
+FrameMode.ROW1 = '                                                       ';
+
+//FrameMode.ROW0 = 'Arange Mix    Edit   NotEdt Auto   Device Mixer  Full  ';
+//FrameMode.ROW1 = 'Markrs Follow TrckHt ClpLch XFade  FX     I/O    Meters';
 //FrameMode.BUTTON_COLOR_OFF  = PUSH_COLOR_GREEN_LO;
 //FrameMode.BUTTON_COLOR_ON   = PUSH_COLOR_YELLOW_MD;
 //FrameMode.BUTTON_COLOR2_OFF = PUSH_COLOR2_GREEN_LO;
@@ -15,6 +18,7 @@ function FrameMode (model)
 {
     BaseMode.call (this, model);
     this.id = Maschine.MODE_FRAME;
+    this.isTemporary = true;
     this.bottomItems = [];
 }
 FrameMode.prototype = new BaseMode ();
@@ -24,14 +28,10 @@ FrameMode.prototype.onFirstRow = function (index)
     var app = this.model.getApplication ();
     switch (index)
     {
-        case 0: app.setPanelLayout ('ARRANGE'); break;
-        case 1: app.setPanelLayout ('MIX'); break;
-        case 2: app.setPanelLayout ('EDIT'); break;
-        case 3: app.toggleNoteEditor (); break;
-        case 4: app.toggleAutomationEditor (); break;
-        case 5: app.toggleDevices (); break;
-        case 6: app.toggleMixer (); break;
-        case 7: app.toggleFullScreen (); break;
+        case 0: app.toggleNoteEditor (); break;
+        case 1: app.toggleAutomationEditor (); break;
+        case 2: app.toggleDevices (); break;
+        case 3: app.toggleMixer (); break;
     }
 };
 
@@ -59,7 +59,7 @@ FrameMode.prototype.onFirstRow = function (index)
 
 FrameMode.prototype.updateDisplay = function () 
 {
-    this.surface.getDisplay ().setRow (0, FrameMode.ROW0).setRow (1, FrameMode.ROW1).setRow (2, FrameMode.ROW2).setRow (3, FrameMode.ROW3);
+    this.surface.getDisplay ().setRow (0, FrameMode.ROW0).setRow (1, FrameMode.ROW1);
 };
 
 //FrameMode.prototype.updateFirstRow = function ()

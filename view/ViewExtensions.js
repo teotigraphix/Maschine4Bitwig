@@ -56,8 +56,20 @@ AbstractView.prototype.onSampling = function (event)
 {
     this.refreshButton (MaschineButton.SAMPLING, event);
 
-    if (!event.isDown ())
+    if (event.isDown ())
         return;
+
+    if (event.isLong ())
+    {
+        this.surface.setPendingMode (Maschine.MODE_FRAME);
+        return;
+    }
+
+    if (this.surface.isActiveMode (Maschine.MODE_FRAME))
+    {
+        this.surface.resotoreMode ();
+        return;
+    }
 
     var layout = this.model.getApplication ().getPanelLayout ();
     if (layout == 'ARRANGE')
