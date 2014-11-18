@@ -5,7 +5,8 @@
 function StepSequencerView (model)
 {
     AbstractSequencerView.call (this, model, 128, DrumView.NUM_DISPLAY_COLS);
-    this.offsetY = DrumView.DRUM_START_KEY;
+    this.offsetY = 36;
+    println(DrumView.DRUM_START_KEY);
     this.pads = initArray ({ exists: true, solo: false, mute: false }, 16);
     this.pressedKeys = initArray (0, 128);
 }
