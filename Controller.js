@@ -131,6 +131,8 @@ Controller.prototype.validateViews = function ()
    var isKeyboard = (this.surface.isActiveView (Maschine.VIEW_PLAY) ||
                      this.surface.isActiveView (Maschine.VIEW_DRUM));
    this.surface.lightButton (MaschineButton.PAD_MODE, isKeyboard);
+
+    this.model.getCursorDevice ().drumPadBank.setIndication (this.surface.isActiveView (Maschine.VIEW_DRUM));
 };
 
 Controller.prototype.updateMode = function (mode)

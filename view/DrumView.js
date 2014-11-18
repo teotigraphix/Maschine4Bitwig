@@ -14,8 +14,8 @@ function DrumView (model)
 {
     AbstractSequencerView.call (this, model, 128, DrumView.NUM_DISPLAY_COLS);
     this.offsetY = DrumView.DRUM_START_KEY;
-    this.canScrollUp = false;
-    this.canScrollDown = false;
+    this.canScrollUp = true;
+    this.canScrollDown = true;
 
     this.offsetRow = 0;
 
@@ -28,12 +28,15 @@ function DrumView (model)
     var tb = model.getTrackBank ();
     tb.addNoteListener (doObject (this, function (pressed, note, velocity)
     {
-        // Light notes send from the sequencer
-        this.pressedKeys[note] = pressed ? velocity : 0;
+        this.pressedKeys[note + 16] = pressed ? velocity : 0;
     }));
     tb.addTrackSelectionListener (doObject (this, function (index, isSelected)
     {
         this.clearPressedKeys ();
+        scheduleTask (doObject (this, function ()
+        {
+            this.updateSelectedPad ();
+        }), [], 30);
     }));
 }
 DrumView.prototype = new AbstractSequencerView ();
@@ -41,8 +44,21 @@ DrumView.prototype = new AbstractSequencerView ();
 DrumView.prototype.onActivate = function ()
 {
     AbstractSequencerView.prototype.onActivate.call (this);
+    this.updateSelectedPad ();
+};
 
-    this.model.getCursorDevice ().drumPadBank.setIndication (true);
+DrumView.prototype.updateSelectedPad = function ()
+{
+    this.selectedPad = this.getSelectedDrumChannel ();
+};
+
+DrumView.prototype.getSelectedDrumChannel = function ()
+{
+    var channels = this.model.getCursorDevice ().drumPadLayers;
+    for (var i = 0; i < channels.length; i++)
+        if (channels[i].selected)
+            return i;
+    return -1;
 };
 
 DrumView.prototype.onGridNote = function (note, velocity) {
@@ -139,9 +155,11 @@ DrumView.prototype.getPadColor = function (index)
         recording : (this.selectedPad == index ? this.getSelectPadColor (pad, selectedTrack) : (pad.exists ?
         padColorMute : COLOR.OFF));
 
+    //color = this.pressedKeys[this.offsetY + index] > 0 ? COLOR.ON : color;
+
     if (this.pressedKeys[this.offsetY + index] > 0)
-        return this.getSelectPadColor (pad, selectedTrack);
-    println("c " + color);
+        return COLOR.ON_MEDIUM;// this.getSelectPadColor (pad, selectedTrack);
+
     return color;
 };
 
@@ -267,4 +285,14 @@ DrumView.prototype.onDown = function (event)
     this.onOctaveDown (event);
     //this.model.getCursorDevice().drumPadBank.setChannelScrollStepSize (4);
     this.model.getCursorDevice().drumPadBank.scrollChannelsPageUp ();
+};
+
+DrumView.prototype.scrollLeft = function (event)
+{
+    AbstractView.prototype.scrollLeft.call (this, event);
+};
+
+DrumView.prototype.scrollRight = function (event)
+{
+    AbstractView.prototype.scrollRight.call (this, event);
 };
