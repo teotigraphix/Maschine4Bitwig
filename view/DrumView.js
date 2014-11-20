@@ -142,7 +142,7 @@ DrumView.prototype.getPadColor = function (index)
     var isRecording = this.model.hasRecordingState();
     var pad = this.model.getCursorDevice ().drumPadLayers[index];
 
-    if (this.pressedKeys[this.offsetY + index] > 0)
+    if (this.pressedKeys[this.offsetY + index] > 0 && !pad.mute)
         return COLOR.ON_MEDIUM;
 
     var padColor = this.getSelectPadColor (pad, selectedTrack, true);
@@ -162,11 +162,13 @@ DrumView.prototype.getSelectPadColor = function (pad, selectedTrack, isDim)
 {
     if (this.surface.isPressed (MaschineButton.MUTE))
         isDim = pad.mute;
-    if (this.surface.isPressed (MaschineButton.SOLO))
+    else if (this.surface.isPressed (MaschineButton.SOLO))
         isDim = !pad.solo;
-
-    if (pad.selected)
+    else if (pad.selected)
         isDim = false;
+
+    if (!this.surface.isPressed (MaschineButton.MUTE) && pad.mute)
+        return COLOR.OFF;
 
     var padColorId = pad.color;
     var padColor = BitwigColor.getColor (padColorId, isDim);
