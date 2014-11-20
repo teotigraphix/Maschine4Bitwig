@@ -142,7 +142,7 @@ DrumView.prototype.getPadColor = function (index)
     var isRecording = this.model.hasRecordingState();
     var pad = this.model.getCursorDevice ().drumPadLayers[index];
 
-    if (this.pressedKeys[this.offsetY + index] > 0 && !pad.mute)
+    if (this.pressedKeys[this.offsetY + index] > 0 && !pad.mute && (this.isSoloState () && pad.solo))
         return COLOR.ON_MEDIUM;
 
     var padColor = this.getSelectPadColor (pad, selectedTrack, true);
@@ -169,6 +169,8 @@ DrumView.prototype.getSelectPadColor = function (pad, selectedTrack, isDim)
 
     if (!this.surface.isPressed (MaschineButton.MUTE) && pad.mute)
         return COLOR.OFF;
+    if (this.isSoloState () && !this.surface.isPressed (MaschineButton.SOLO) && !pad.solo)
+        return COLOR.OFF;
 
     var padColorId = pad.color;
     var padColor = BitwigColor.getColor (padColorId, isDim);
@@ -176,6 +178,15 @@ DrumView.prototype.getSelectPadColor = function (pad, selectedTrack, isDim)
         padColor = BitwigColor.getColor (selectedTrack.color, isDim);
 
     return padColor;
+};
+
+DrumView.prototype.isSoloState = function ()
+{
+    var len = this.model.getCursorDevice ().drumPadLayers.length;
+    for (var i = 0; i < len; i++)
+        if (this.model.getCursorDevice ().drumPadLayers[i].solo)
+            return true;
+    return false;
 };
 
 DrumView.prototype.updateNoteMapping = function ()
