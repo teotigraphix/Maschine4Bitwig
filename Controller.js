@@ -66,6 +66,7 @@ function Controller (kind)
     this.surface.addMode (Maschine.MODE_SCENE_TRIGGER, new SceneTriggerMode (this.model));
     this.surface.addMode (Maschine.MODE_CLIP_TRIGGER, new ClipTriggerMode (this.model));
     this.surface.addMode (Maschine.MODE_TEMPO, new TempoMode (this.model));
+    this.surface.addMode (Maschine.MODE_DRUM_CHANNEL, new DrumChannelMode (this.model));
 
     this.surface.addMode (Maschine.MODE_SEND1, new SendMode (this.model, Maschine.MODE_SEND1));
     this.surface.addMode (Maschine.MODE_SEND2, new SendMode (this.model, Maschine.MODE_SEND2));

@@ -23,9 +23,9 @@ load ("TrackViewMode.js");
 load ("SceneTriggerMode.js");
 load ("ClipTriggerMode.js");
 load ("TempoMode.js");
+load ("DrumChannelMode.js");
 
 load ("DirectParameterMode.js");
 load ("ParamPageMode.js");
 load ("ParamPageSelectMode.js");
 load ("DeviceLayerMode.js");
-

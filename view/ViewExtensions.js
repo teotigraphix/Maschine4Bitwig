@@ -525,7 +525,15 @@ AbstractView.prototype.onSolo = function (event)
 
     if (this.surface.isActiveView (Maschine.VIEW_DRUM))
     {
-        this.surface.getActiveView ().updateNoteMapping ();
+        if (event.isDown ())
+        {
+            this.surface.getActiveView ().updateNoteMapping ();
+            this.surface.setPendingMode (Maschine.MODE_DRUM_CHANNEL);
+        }
+        else
+        {
+            this.surface.resotoreMode ();
+        }
         return;
     }
 
@@ -554,7 +562,15 @@ AbstractView.prototype.onMute = function (event)
 
     if (this.surface.isActiveView (Maschine.VIEW_DRUM))
     {
-        this.surface.getActiveView ().updateNoteMapping ();
+        if (event.isDown ())
+        {
+            this.surface.getActiveView ().updateNoteMapping ();
+            this.surface.setPendingMode (Maschine.MODE_DRUM_CHANNEL);
+        }
+        else
+        {
+            this.surface.resotoreMode ();
+        }
         return;
     }
 
