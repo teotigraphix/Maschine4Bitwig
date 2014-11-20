@@ -2,11 +2,11 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-AbstractSceneView.CLIP_COLOR_IS_RECORDING        = { color: COLOR.RECORD, blink: null, fast: false };
+AbstractSceneView.CLIP_COLOR_IS_RECORDING        = { color: COLOR.RED, blink: null, fast: false };
 AbstractSceneView.CLIP_COLOR_IS_RECORDING_QUEUED = { color: COLOR.RED_MEDIUM, blink: null, fast: false };
 AbstractSceneView.CLIP_COLOR_IS_PLAYING          = { color: COLOR.GREEN, blink: null, fast: false };
 AbstractSceneView.CLIP_COLOR_IS_PLAYING_QUEUED   = { color: COLOR.YELLOW, blink: null, fast: false };
-AbstractSceneView.CLIP_COLOR_HAS_CONTENT         = { color: COLOR.SCENE_WITH_CONTENT, blink: null, fast: false };
+AbstractSceneView.CLIP_COLOR_HAS_CONTENT         = { color: COLOR.OFF, blink: null, fast: false };
 AbstractSceneView.CLIP_COLOR_IS_STOPPING_QUEUED  = { color: COLOR.ON_DIM, blink: null, fast: false };
 AbstractSceneView.CLIP_COLOR_NO_CONTENT          = { color: COLOR.OFF, blink: null, fast: false };
 AbstractSceneView.CLIP_COLOR_RECORDING_ARMED     = { color: COLOR.RED_DIM, blink: null, fast: false };

@@ -99,9 +99,9 @@ PlayView.prototype.drawGrid = function ()
     for (var i = 36; i < 52; i++)
     {
         this.surface.pads.light (i, isKeyboardEnabled ? (this.pressedKeys[i] > 0 ?
-            (isRecording ? COLOR.ARM : COLOR.PLAY) :
+            (isRecording ? COLOR.RED : COLOR.ON) :
             this.getColor (this.noteMap, i, Config.padTrackColor ? BitwigColor.getColor (selectedTrack.color)
-                : COLOR.ON, Config.padTrackColor ? COLOR.ON : COLOR.OCEAN)) : COLOR.OFF, null, false);
+                : COLOR.ON, Config.padTrackColor ? COLOR.ON_MEDIUM : COLOR.OCEAN)) : COLOR.OFF, null, false);
     }
 };
 

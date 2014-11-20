@@ -78,7 +78,7 @@ function Color (hue, saturation, brightness, id)
 {
     this.hue = hue;
     this.saturation = saturation;
-    this.brightness = Math.max (brightness, 0.0);
+    this.brightness = Math.max (brightness, id == 0 ? 0.0 : 0.05);
     this.id = id;
 };
 
@@ -132,7 +132,7 @@ var COLOR_BITWIG =
     CYAN: new Color(198, 0.73, 1, 41) // Cyan
 };
 
-var COLOR_DIM = 0.7;
+var COLOR_DIM = 0.5;
 
 var COLOR_BITWIG_DIM =
 {
@@ -166,9 +166,7 @@ var COLOR_BITWIG_DIM =
 
 var COLOR =
 {
-    OCEAN : new Color(198.0, 0.73, 1.0),
-
-    OFF : new Color(0.0, 0.0, 0.0),
+    OFF : new Color(0.0, 0.0, 0.0, 0),
     ON : new Color(180.0, 0.0, 1.0),
     ON_MEDIUM : new Color(180.0, 0.0, 0.5),
     ON_DIM : new Color(180.0, 0.0, 0.25),
@@ -194,34 +192,7 @@ var COLOR =
     YELLOW_MEDIUM : new Color(60.0, 1.0, 0.5),
     YELLOW_DIM : new Color(60.0, 1.0, 0.25),
 
-    ARM : new Color(0.0, 1.0, 1.0),
-    PLAY : new Color(100.0, 1.0, 1.0),
-
-    PAD_ARROW_KEY_DISABLED : new Color(220.0, 1.0, 0.1),
-    PAD_ARROW_KEY_ENABLED : new Color(220.0, 1.0, 0.5),
-    PAD_PAGE_MODIFIER : new Color(220.0, 0.5, 0.8),
-    PAD_HOME_MODIFIER : new Color(220.0, 0.5, 0.8),
-    PAD_SHIFT_MODIFIER : new Color(65.0, 1.0, 0.4),
-    PAD_ALT_MODIFIER : new Color(70.0, 1.0, 0.4),
-    RECORD : new Color(0.0, 1.0, 1.0),
-    MUTE : new Color(50.0, 1.0, 1.0),
-    SOLO : new Color(200.0, 1.0, 1.0),
-    PRESSED_NOTE_KEY : new Color(25.0, 1.0, 1.0),
-    SCENE_WITH_CONTENT : new Color(30.0, 1.0, 1.0),
-    SCENE_WITHOUT_CONTENT : new Color(30.0, 1.0, 0.5),
-    LAUNCHED_SCENE_WITH_CONTENT : new Color(200.0, 1.0, 1.0),
-    LAUNCHED_SCENE_WITHOUT_CONTENT : new Color(200.0, 1.0, 0.5),
-    EMPTY_SLOT : new Color(0.0, 0.0, 0.0),
-    EVEN_DRUM_PAD : new Color(260.0, 1.0, 0.1),
-    ODD_DRUM_PAD : new Color(340.0, 1.0, 0.1),
-    EVEN_CURSOR_DRUM_PAD : new Color(260.0, 1.0, 1.0),
-    ODD_CURSOR_DRUM_PAD : new Color(340.0, 1.0, 1.0),
-    DRUM_PAD_NOTE_ON : new Color(80.0, 0.1, 1.0),
-    ACTIVE_NOTE_STEP : new Color(60.0, 1.0, 1.0),
-    INACTIVE_NOTE_STEP : new Color(60.0, 1.0, 0.01),
-    PLAYED_ACTIVE_NOTE_STEP : new Color(150.0, 1.0, 1.0),
-    PLAYED_INACTIVE_NOTE_STEP : new Color(150.0, 1.0, 0.1),
-    UNSELECTED_TOGGLE_BRIGHTNESS_FACTOR : 0.1
+    OCEAN : new Color(198.0, 0.73, 1.0)
 };
 
 Scales.SCALE_COLOR_OFF          = COLOR.OFF;
