@@ -27,48 +27,44 @@ StepSequencerView.prototype.onGridNote = function (note, velocity)
     var x = index % 4;
     var y = Math.floor (index / 4);
 
-    var len = this.clip.getLoopLength();
-//    println("len, " + len);
-//    if (len == 0 )
-//        this.onNew();
+
+    var tb = this.model.sessionTrackBank;
+    var t = tb.getSelectedTrack ();
+    var s = tb.getSelectedSlot (t.index);
+
+    if (velocity != 0)
+    {
+
+        if (s == null || !s.hasContent)
+        {
+            var len = this.clip.getLoopLength ();
+
+            if (len == 0)
+            {
+                println("NEW CLIP " + t.index  );
+                this.doNew (t.index);
+                scheduleTask(doObject(this, function ()
+                {
+                    if (velocity != 0)
+                    {
+                        var col = 4 * y + x;
+                        this.clip.toggleStep (col, this.offsetY + this.getSelectedPad (),
+                            Config.accentActive ? Config.fixedAccentValue : velocity);
+                    }
+                }), [], 50);
+            }
+
+            return;
+        }
+    }
+
+
 
     if (velocity != 0)
     {
         var col = 4 * y + x;
-//        println("index, " + index);
-//        println("col, " + col);
-//        println("this.offsetY, " + this.offsetY);
-//        println("this.getSelectedPad ()), " + (this.getSelectedPad ()));
         this.clip.toggleStep (col, this.offsetY + this.getSelectedPad (), Config.accentActive ? Config.fixedAccentValue : velocity);
     }
-};
-
-StepSequencerView.prototype.onNew = function ()
-{
-
-    var tb = this.getCurrentTrackBank ();
-    var t = tb.getSelectedTrack ();
-    if (t != null)
-    {
-        var slotIndexes = tb.getSelectedSlots (t.index);
-        var slotIndex = slotIndexes.length == 0 ? 0 : slotIndexes[0].index;
-        for (var i = 0; i < 4; i++)
-        {
-            var sIndex = (slotIndex + i) % 4;
-            var s = t.slots[sIndex];
-            if (!s.hasContent)
-            {
-                var slots = tb.getClipLauncherSlots (t.index);
-                slots.createEmptyClip (sIndex, Math.pow (2, tb.getNewClipLength ()));
-                if (slotIndex != sIndex)
-                    slots.select (sIndex);
-                slots.launch (sIndex);
-                this.model.getTransport ().setLauncherOverdub (true);
-                return;
-            }
-        }
-    }
-    displayNotification ("In the current selected grid view there is no empty slot. Please scroll down.");
 };
 
 StepSequencerView.prototype.drawGrid = function ()
@@ -97,6 +93,35 @@ StepSequencerView.prototype.drawGrid = function ()
         var y = Math.floor (col / 4);
         this.surface.pads.lightEx (x, 3 - y, isSet ? (hilite ? COLOR.GREEN : padColor) : hilite ? COLOR.GREEN : COLOR.OFF, null, false);
     }
+};
+
+StepSequencerView.prototype.doNew = function (trackIndex)
+{
+
+    var tb = this.model.sessionTrackBank;
+    var t = tb.getTrack (trackIndex);
+    if (t != null)
+    {
+        var slotIndexes = tb.getSelectedSlots (t.index);
+        var slotIndex = slotIndexes.length == 0 ? 0 : slotIndexes[0].index;
+        for (var i = 0; i < 4; i++)
+        {
+            var sIndex = (slotIndex + i) % 4;
+            var s = t.slots[sIndex];
+            if (!s.hasContent)
+            {
+                var slots = tb.getClipLauncherSlots (t.index);
+                slots.createEmptyClip (sIndex, Math.pow (2, tb.getNewClipLength ()));
+                if (slotIndex != sIndex)
+                    slots.select (sIndex);
+                slots.launch (sIndex);
+                //this.model.getTransport ().setLauncherOverdub (true);
+                println("Created " + trackIndex + ", slot " + sIndex);
+                return;
+            }
+        }
+    }
+    displayNotification ("In the current selected grid view there is no empty slot. Please scroll down.");
 };
 
 StepSequencerView.prototype.getSelectPadColor = function (pad, selectedTrack, isDim)

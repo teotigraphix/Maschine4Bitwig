@@ -345,8 +345,8 @@ AbstractView.prototype.onRec = function (event)
 
 AbstractView.prototype.onErase = function (event)
 {
-    if (event.isUp ())
-        this.model.getApplication ().deleteSelection ();
+//    if (event.isUp ())
+//        this.model.getApplication ().deleteSelection ();
 };
 
 //--------------------------------------
@@ -692,6 +692,18 @@ AbstractView.prototype.onNavigateAction = function (event)
     {
         //println("NavigateAction up");
         this.surface.setActiveView (this.surface._previousViewId);
+    }
+};
+
+AbstractView.prototype.createClip = function (trackIndex, slotIndex)
+{
+    var tb = this.model.sessionTrackBank;
+    var t = tb.getTrack (trackIndex);
+    if (t != null)
+    {
+        var slots = tb.getClipLauncherSlots (t.index);
+        slots.createEmptyClip (slotIndex, Math.pow (2, tb.getNewClipLength ()));
+        tb.showClipInEditor (trackIndex, slotIndex);
     }
 };
 

@@ -36,18 +36,33 @@ ClipTriggerView.prototype.onGridNote = function (note, velocity)
     var slot = tb.getTrack (t).slots[s];
     var slots = tb.getClipLauncherSlots (t);
 
-    if (!this.surface.isPressed(MaschineButton.SCENE))
+
+    if (this.surface.isPressed (MaschineButton.PATTERN))
+    {
+        if (!slot.hasContent)
+        {
+            this.createClip (t, s);
+            return;
+        }
+    }
+    else if (this.surface.isPressed (MaschineButton.ERASE))
+    {
+        this.surface.setButtonConsumed (MaschineButton.ERASE);
+        slots.select (s);
+        this.model.getApplication ().deleteSelection ();
+        displayNotification("Remove Clip " + t + ", slot " + s);
+        return;
+    }
+
+
+    if (!this.surface.isPressed (MaschineButton.PATTERN))
     {
         AbstractSceneView.prototype.onGridNote.call (this, note, velocity);
     }
     else
     {
-        if (!slot.hasContent)
-        {
-            tb.select (t);
-            this.onNew (new ButtonEvent (ButtonEvent.DOWN));
-        }
-        else if (!slot.isPlaying)
+
+        if (!slot.isPlaying)
             slots.launch (s);
         else
             slots.stop ();

@@ -64,6 +64,7 @@ DrumView.prototype.getSelectedDrumChannel = function ()
 DrumView.prototype.onGridNote = function (note, velocity) {
     if (!this.canSelectedTrackHoldNotes ())
         return;
+
     var index = note - 36;
     var x = index % 4;
     // y is bottom
@@ -108,13 +109,13 @@ DrumView.prototype.isSolo = function (index)
 DrumView.prototype.toggleMute = function (index)
 {
     var d = this.model.getCursorDevice ().drumPadLayers[index];
-    this.model.getCursorDevice ().drumPadBank.getChannel (index).getMute().set(!d.mute);
+    this.model.getCursorDevice ().drumPadBank.getChannel (index).getMute ().set (!d.mute);
 };
 
 DrumView.prototype.toggleSolo = function (index)
 {
     var d = this.model.getCursorDevice ().drumPadLayers[index];
-    this.model.getCursorDevice ().drumPadBank.getChannel (index).getSolo().set(!d.solo);
+    this.model.getCursorDevice ().drumPadBank.getChannel (index).getSolo ().set (!d.solo);
 };
 
 DrumView.prototype.drawGrid = function ()
