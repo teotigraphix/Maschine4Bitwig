@@ -75,7 +75,7 @@ AbstractView.prototype.onTap = function (event)
     }
     else
     {
-        this.surface.resotoreMode ();
+        this.surface.restoreMode ();
     }
 
     if (event.isDown ())

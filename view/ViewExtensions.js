@@ -67,7 +67,7 @@ AbstractView.prototype.onSampling = function (event)
 
     if (this.surface.isActiveMode (Maschine.MODE_FRAME))
     {
-        this.surface.resotoreMode ();
+        this.surface.restoreMode ();
         return;
     }
 
@@ -150,7 +150,7 @@ AbstractView.prototype.onTempo = function (event)
     }
     else
     {
-        this.surface.resotoreMode ();
+        this.surface.restoreMode ();
     }
 };
 
@@ -363,7 +363,7 @@ AbstractView.prototype.onScene = function (event)
     if (event.isDown ())
         this.surface.setPendingMode (Maschine.MODE_SCENE_TRIGGER);
     else
-        this.surface.resotoreMode ();
+        this.surface.restoreMode ();
 
     if (!this.surface.isActiveView (Maschine.VIEW_SCENE_TRIGGER))
         this.surface.setActiveView (Maschine.VIEW_SCENE_TRIGGER);
@@ -379,7 +379,7 @@ AbstractView.prototype.onPattern = function(event)
     if (event.isDown ())
         this.surface.setPendingMode (Maschine.MODE_CLIP_TRIGGER);
     else
-        this.surface.resotoreMode ();
+        this.surface.restoreMode ();
 
     if (!this.surface.isActiveView (Maschine.VIEW_CLIP_TRIGGER))
         this.surface.setActiveView (Maschine.VIEW_CLIP_TRIGGER);
@@ -532,7 +532,7 @@ AbstractView.prototype.onSolo = function (event)
         }
         else
         {
-            this.surface.resotoreMode ();
+            this.surface.restoreMode ();
         }
         return;
     }
@@ -569,7 +569,7 @@ AbstractView.prototype.onMute = function (event)
         }
         else
         {
-            this.surface.resotoreMode ();
+            this.surface.restoreMode ();
         }
         return;
     }
@@ -702,7 +702,7 @@ AbstractView.prototype.createClip = function (trackIndex, slotIndex)
     if (t != null)
     {
         var slots = tb.getClipLauncherSlots (t.index);
-        slots.createEmptyClip (slotIndex, Math.pow (2, tb.getNewClipLength ()));
+        slots.createEmptyClip (slotIndex, Math.pow (2, Config.newClipLengthIndex));
         tb.showClipInEditor (trackIndex, slotIndex);
     }
 };
@@ -724,7 +724,7 @@ AbstractView.prototype.onNew = function (event)
             if (!s.hasContent)
             {
                 var slots = tb.getClipLauncherSlots (t.index);
-                slots.createEmptyClip (sIndex, Math.pow (2, tb.getNewClipLength ()));
+                slots.createEmptyClip (sIndex, Math.pow (2, Config.newClipLengthIndex));
                 if (slotIndex != sIndex)
                     slots.select (sIndex);
                 slots.launch (sIndex);

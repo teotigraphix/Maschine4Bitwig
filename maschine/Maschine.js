@@ -47,6 +47,7 @@ Maschine.MODE_CLIP_TRIGGER = 31;
 
 Maschine.MODE_TEMPO = 32;
 Maschine.MODE_DRUM_CHANNEL = 33;
+Maschine.MODE_CLIP_LENGTH      = 34;
 
 Maschine.VIEW_PLAY            = 0;
 Maschine.VIEW_MODE            = 1;
@@ -76,10 +77,10 @@ Maschine.MODES = [
     [Maschine.MODE_PAN, "  Pan"],
     [Maschine.MODE_GROOVE, "Groove"],
 
+    [Maschine.MODE_CLIP_LENGTH, "Fixed"],
     [Maschine.MODE_SEND1, "Send1"],
     [Maschine.MODE_SEND2, "Send2"],
     [Maschine.MODE_SEND3, "Send3"],
-    [Maschine.MODE_SEND4, "Send4"],
 
     [Maschine.MODE_CLIP, "Clip"],
     [Maschine.MODE_ACCENT, "Accent"],

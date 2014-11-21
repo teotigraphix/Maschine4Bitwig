@@ -28,19 +28,24 @@ Config.SCALES_LAYOUT         = 7;
 Config.TRACK_PAD_COLOR       = 8;
 Config.MODE_NOTIFY           = 9;
 Config.MODE_BANK_DEFAULT     = 10;
+Config.FIXED_CLIP_LENGTH     = 11;
 
-Config.NUM_CONFIGS           = 11;
+Config.NUM_CONFIGS           = 12;
 
-Config.accentActive      = false;                       // Accent button active
-Config.fixedAccentValue  = 127;                         // Fixed velocity value for accent
-Config.scale             = 'Major';
-Config.scaleBase         = 'C';
-Config.scaleInKey        = true;
-Config.scaleLayout       = '4th ^';
+Config.accentActive          = false;                       // Accent button active
+Config.fixedAccentValue      = 127;                         // Fixed velocity value for accent
+Config.scale                 = 'Major';
+Config.scaleBase             = 'C';
+Config.scaleInKey            = true;
+Config.scaleLayout           = '4th ^';
 
-Config.padTrackColor    = true;
-Config.modeNotify       = false;
-Config.defaultModeBank  = 'Macro';
+Config.padTrackColor         = true;
+Config.modeNotify            = false;
+Config.defaultModeBank       = 'Macro';
+Config.newClipLength         = "1 Bar";
+Config.newClipLengthIndex    = 2;
+
+Config.CLIP_LENGTHS = [ '1 Beat', '2 Beats', '1 Bar', '2 Bars', '4 Bars', '8 Bars', '16Bars', '32Bars' ];
 
 // label, category, options, initialValue
 function Configurator () {}
@@ -105,6 +110,16 @@ Config.init = function ()
         });
 
     ///////////////////////////
+    // Clips
+
+    Configurator.addEnumSetting ("project", Config.FIXED_CLIP_LENGTH, "newClipLengthSetting",
+        "Length", "Clip", Config.CLIP_LENGTHS, "1 Bar",
+        function (value) {
+            Config.newClipLength = value;
+            Config.newClipLengthIndex = Config.CLIP_LENGTHS.indexOf (value);
+        });
+
+    ///////////////////////////
     // Notifications
 
     Configurator.addEnumSetting ("project", Config.MODE_NOTIFY, "modeNotifySetting",
@@ -166,6 +181,16 @@ Config.init = function ()
         });
 };
 
+Config.setNewClipLengthIndex = function (value)
+{
+    Config.setFixedClipLength (Config.CLIP_LENGTHS[value]);
+};
+
+Config.setFixedClipLength = function (value)
+{
+    Config.newClipLengthIndex = Config.CLIP_LENGTHS.indexOf (value);
+    Config.newClipLengthSetting.set (value);
+};
 
 Config.setDefaultModeBank = function (value)
 {
