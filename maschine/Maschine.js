@@ -139,6 +139,11 @@ Maschine.prototype.setPreviousModeId = function (modeId)
     this.previousModeId = modeId;
 ;}
 
+Maschine.prototype.isCtrlPressed = function ()
+{
+    return this.isPressed (MaschineButton.GROUP_D);
+};
+
 //--------------------------------------
 // Display
 //--------------------------------------

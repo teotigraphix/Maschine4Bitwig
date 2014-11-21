@@ -253,7 +253,7 @@ AbstractView.prototype.onRestart = function (event)
     if (!event.isDown ())
         return;
 
-    if (this.surface.isSelectPressed ())
+    if (this.surface.isCtrlPressed ())
     {
         this.model.getTransport ().stop ();
         this.model.getTransport ().setPosition (0);
