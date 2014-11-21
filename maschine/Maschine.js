@@ -118,6 +118,8 @@ function Maschine (output, input, buttons)
 
     this.previousModeId = null;
 
+    this.ctrlButtonId = MaschineButton.GROUP_D;
+
     for (var i = 36; i < 52; i++)
         this.gridNotes.push (i);
 }
@@ -141,7 +143,7 @@ Maschine.prototype.setPreviousModeId = function (modeId)
 
 Maschine.prototype.isCtrlPressed = function ()
 {
-    return this.isPressed (MaschineButton.GROUP_D);
+    return this.isPressed (this.ctrlButtonId);
 };
 
 //--------------------------------------

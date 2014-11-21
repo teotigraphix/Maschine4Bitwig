@@ -48,9 +48,10 @@ function MaschineMikroMK2 (output, input)
 
     this.shiftButtonId = MaschineButton.SHIFT;
     this.selectButtonId = MaschineButton.SELECT;
+    this.ctrlButtonId = MaschineMikroMK2.CONTROL;
 
     this.pads = new Grid (output);
-    this.display = new Display(output);
+    this.display = new Display (output);
     this.display.clear ().allDone ();
 }
 
