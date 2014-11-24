@@ -170,6 +170,7 @@ var COLOR =
     ON : new Color(180.0, 0.0, 1.0),
     ON_MEDIUM : new Color(180.0, 0.0, 0.5),
     ON_DIM : new Color(180.0, 0.0, 0.25),
+    ON_DIM_LOW : new Color(180.0, 0.0, 0.05),
 
     RED : new Color(0.0, 1.0, 1.0),
     RED_MEDIUM : new Color(0.0, 1.0, 0.5),

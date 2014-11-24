@@ -14,9 +14,19 @@ SceneTriggerView.prototype.drawGrid = function ()
 {
     for (var i = 36; i < 52; i++)
     {
-        //this.surface.pads.light (i, this.sceneBank.sceneExists (i - 36) ? COLOR.ON : COLOR.OFF);
         var name = this.sceneBank.getSceneName (i - 36);
-        this.surface.pads.light (i,  this.pressedKey == i ? COLOR.ON : name == "" ? COLOR.OFF : COLOR.ON_MEDIUM);
+        var color = COLOR.OFF;
+        if (this.sceneBank.sceneExists (i - 36))
+        {
+            if (name != "")
+                color = COLOR.ON_MEDIUM;
+            else
+                color = COLOR.ON_DIM_LOW;
+            if (this.pressedKey == i)
+                color = COLOR.ON;
+        }
+
+        this.surface.pads.light (i, color);
     }
 };
 SceneTriggerView.prototype.onGridNote = function (note, velocity)
