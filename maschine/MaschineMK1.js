@@ -7,6 +7,8 @@ var MASCHINE_MK1_BUTTONS = [
 
     MaschineButton.JOG_WHEEL,
     MaschineButton.JOG_WHEEL_PUSH,
+    MaschineMK1Button.JOG2,
+    MaschineMK1Button.JOG3,
 
     // Controller
     MaschineMK2Button.CONTROL, // CHANNEL (MIDI)
@@ -128,6 +130,16 @@ MaschineMK1.prototype.handleEvent = function (cc, value)
         case MaschineButton.JOG_WHEEL:
             if (value != 127)
                 view.onJogWheel (value == 2);
+            break;
+
+        case MaschineMK1Button.JOG2:
+            if (value != 127)
+                view.onJogWheel2 (value == 2);
+            break;
+
+        case MaschineMK1Button.JOG3:
+            if (value != 127)
+                view.onJogWheel3 (value == 2);
             break;
 
         // First Row Buttons

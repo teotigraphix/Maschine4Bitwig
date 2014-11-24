@@ -105,6 +105,10 @@ MaschineButton.ARROW_RIGHT = MaschineButton.GROUP_H;
 
 MaschineButton.SHIFT = MaschineButton.ENTER;
 
+function MaschineMK1Button () {}
+MaschineMK1Button.JOG2 = 100;
+MaschineMK1Button.JOG3 = 101;
+
 function MaschineMK2Button () {}
 
 MaschineMK2Button.CONTROL = MaschineButton.CHANNEL;

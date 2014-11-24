@@ -37,3 +37,12 @@ AbstractView.prototype.onJogWheel = function (increase)
     else if (this.surface.isSelectPressed () && this.surface.isPressed (MaschineButton.PLAY))
         this.model.getTransport ().changeMetronomeVolume (increase ? 127 : 1, Config.fractionValue);
 };
+
+AbstractView.prototype.onJogWheel2 = function (increase)
+{
+   this.model.getTransport ().changeTempo (increase, this.surface.isShiftPressed ());
+};
+
+AbstractView.prototype.onJogWheel3 = function (increase)
+{
+};

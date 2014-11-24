@@ -278,23 +278,27 @@
         <reaction>ondown</reaction>
       </button>
       <knob id="Swing">
-        <controller>9</controller>
+        <name>Jog3</name>
+        <controller mode="comp">101</controller>
         <channel>0</channel>
         <min>0</min>
         <max>127</max>
         <default>0</default>
+        <inc>2</inc>
         <range>360</range>
-        <steps>20</steps>
+        <steps>100</steps>
         <bipolar>off</bipolar>
       </knob>
       <knob id="Tempo">
-        <controller>3</controller>
+        <name>Jog2</name>
+        <controller mode="comp">100</controller>
         <channel>0</channel>
         <min>0</min>
         <max>127</max>
         <default>0</default>
+        <inc>2</inc>
         <range>360</range>
-        <steps>20</steps>
+        <steps>100</steps>
         <bipolar>off</bipolar>
       </knob>
       <knob id="Volume">
