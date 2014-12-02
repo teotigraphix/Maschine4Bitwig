@@ -9,17 +9,36 @@ function ScalesMode (model)
     this.id = Maschine.MODE_SCALE;
     this.isTemporary = false;
     this.scales = model.getScales ();
+    this.isInvalidated = false;
 }
 ScalesMode.prototype = new BaseMode ();
 
 ScalesMode.prototype.onValueKnob = function (index, value)
 {
-    if (index != 0)
-        return;
-        
-    var scale = this.scales.getSelectedScale ();
-    scale = changeValue (value, scale, 1, this.scales.getScaleSize ());
-    this.scales.setScale (scale);
+    var isInc = value > 64;
+
+    if (index == 0)
+    {
+        if (!this.isInvalidated)
+        {
+            this.isInvalidated = true;
+            scheduleTask( doObject(this, function (index, value) {
+                var scale = this.scales.getSelectedScale ();
+                scale = changeValue (value, scale, 1, this.scales.getScaleSize ());
+                this.scales.setScale (scale);
+                this.isInvalidated = false;
+            }), [index, value], 200);
+        }
+    }
+    else if (index < 7)
+    {
+        this.scales.setScaleOffset (isInc ? index + 5 : index + 1);
+    }
+    else
+    {
+        this.scales.setChromatic (isInc);
+    }
+
     this.update ();
 };
 
