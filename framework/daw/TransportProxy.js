@@ -18,12 +18,14 @@ function TransportProxy ()
     this.isLooping                       = false;
     this.isOverdub                       = false;
     this.isLauncherOverdub               = false;
+    this.automationWriteMode             = "latch";
     this.isWritingArrangerAutomation     = false;
     this.isWritingClipLauncherAutomation = false;
     this.crossfade                       = 0;
     this.numerator                       = 4;
     this.denominator                     = 4;
     this.metroVolume                     = 95;
+    this.preroll                         = 0;
     
     this.transport.addClickObserver (doObject (this, TransportProxy.prototype.handleClick));
     this.transport.addIsPlayingObserver (doObject (this, TransportProxy.prototype.handleIsPlaying));
@@ -31,9 +33,11 @@ function TransportProxy ()
     this.transport.addIsLoopActiveObserver (doObject (this, TransportProxy.prototype.handleIsLoopActive));
     this.transport.addOverdubObserver (doObject (this, TransportProxy.prototype.handleOverdub));
     this.transport.addLauncherOverdubObserver (doObject (this, TransportProxy.prototype.handleLauncherOverdub));
+    this.transport.addAutomationWriteModeObserver (doObject (this, TransportProxy.prototype.handleAutomationWriteMode));
     this.transport.addIsWritingArrangerAutomationObserver (doObject (this, TransportProxy.prototype.handleIsWritingArrangerAutomation));
     this.transport.addIsWritingClipLauncherAutomationObserver (doObject (this, TransportProxy.prototype.handleIsWritingClipLauncherAutomation));
     this.transport.addMetronomeVolumeObserver (doObject (this, TransportProxy.prototype.handleMetronomeVolume));
+    this.transport.addPreRollObserver (doObject (this, TransportProxy.prototype.handlePreRoll));
     this.transport.getTempo ().addRawValueObserver (doObject (this, TransportProxy.prototype.handleTempo));
     this.transport.getCrossfade ().addValueObserver (Config.maxParameterValue, doObject (this, TransportProxy.prototype.handleCrossfade));
 
@@ -97,6 +101,7 @@ TransportProxy.prototype.rewind = function ()
     this.transport.rewind ();
 };
 
+// mode = "latch", "touch" or "write"
 TransportProxy.prototype.setAutomationWriteMode = function (mode)
 {
     this.transport.setAutomationWriteMode (mode);
@@ -110,6 +115,11 @@ TransportProxy.prototype.setClick = function (on)
 TransportProxy.prototype.setLauncherOverdub = function (on)
 {
     this.transport.setLauncherOverdub (on);
+};
+
+TransportProxy.prototype.setAutomationWriteMode = function (mode)
+{
+    this.transport.setAutomationWriteMode (mode);
 };
 
 TransportProxy.prototype.setLoop = function (on)
@@ -254,6 +264,11 @@ TransportProxy.prototype.changeMetronomeVolume = function (value, fractionValue)
     this.transport.setMetronomeValue (this.metroVolume, Config.maxParameterValue);
 };
 
+TransportProxy.prototype.getPreroll = function ()
+{
+    return this.preroll;
+};
+
 TransportProxy.prototype.getNumerator = function ()
 {
     return this.numerator;
@@ -298,6 +313,11 @@ TransportProxy.prototype.handleLauncherOverdub = function (isOverdub)
     this.isLauncherOverdub = isOverdub;
 };
 
+TransportProxy.prototype.handleAutomationWriteMode = function (writeMode)
+{
+    this.automationWriteMode = writeMode;
+};
+
 TransportProxy.prototype.handleIsWritingArrangerAutomation = function (isAutomation)
 {
     this.isWritingArrangerAutomation = isAutomation;
@@ -312,6 +332,26 @@ TransportProxy.prototype.handleMetronomeVolume = function (volume)
 {
     // volume is in the range of -48.0 to 0.0, scale to 0 to 127
     this.metroVolume = Math.round ((48.0 + volume) * 127 / 48.0);
+};
+
+TransportProxy.prototype.handlePreRoll = function (prerollValue)
+{
+    switch (prerollValue)
+    {
+        case "one_bar":
+            this.preroll = 1;
+            break;
+        case "two_bars":
+            this.preroll = 2;
+            break;
+        case "four_bars":
+            this.preroll = 4;
+            break;
+        // "none"
+        default:
+            this.preroll = 0;
+            break;
+    }
 };
 
 TransportProxy.prototype.handleTempo = function (value)
