@@ -9,13 +9,13 @@ function SoloView (model)
     this.pressedKey = -1;
 
     this.monitorIndexTranslation = [
-        48, 49, 50, 51,
-        44, 45, 46, 47
+        44, 45, 46, 47,
+        48, 49, 50, 51
     ];
 
     this.soloIndexTranslation = [
-        40, 41, 42, 43,
-        36, 37, 38, 39
+        36, 37, 38, 39,
+        40, 41, 42, 43
     ];
 }
 
@@ -45,7 +45,7 @@ SoloView.prototype.drawGrid = function ()
                 this.surface.pads.light (i, COLOR.GREEN);
             }
             else
-                this.surface.pads.light (i, t.monitor ? t.selected ? COLOR.BLUE : COLOR.BLUE_MEDIUM : t.selected ? COLOR.OCEAN : COLOR.ON_DIM);
+                this.surface.pads.light (i, t.monitor ? t.selected ? COLOR.ORANGE : COLOR.ORANGE_MEDIUM : t.selected ? COLOR.OCEAN : COLOR.ON_DIM);
         }
         else
         {

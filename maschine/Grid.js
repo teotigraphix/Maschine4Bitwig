@@ -193,6 +193,10 @@ var COLOR =
     YELLOW_MEDIUM : new Color(60.0, 1.0, 0.5),
     YELLOW_DIM : new Color(60.0, 1.0, 0.25),
 
+    ORANGE : new Color(30, 1.0, 1.0),
+    ORANGE_MEDIUM : new Color(30, 1.0, 0.5),
+    ORANGE_DIM : new Color(30, 1.0, 0.25),
+
     OCEAN : new Color(198.0, 0.73, 1.0)
 };
 

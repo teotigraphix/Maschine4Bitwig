@@ -10,13 +10,13 @@ function MuteView (model)
     this.selectedMode = null;
 
     this.recarmIndexTranslation = [
-        48, 49, 50, 51,
-        44, 45, 46, 47
+        44, 45, 46, 47,
+        48, 49, 50, 51
     ];
 
     this.muteIndexTranslation = [
-        40, 41, 42, 43,
-        36, 37, 38, 39
+        36, 37, 38, 39,
+        40, 41, 42, 43
     ];
 }
 
@@ -66,7 +66,7 @@ MuteView.prototype.drawGrid = function ()
                 this.surface.pads.light (i, COLOR.GREEN);
             }
             else
-                this.surface.pads.light (i, !t.mute ? t.selected ? COLOR.GREEN : COLOR.GREEN_MEDIUM : t.selected ? COLOR.OCEAN : COLOR.ON_DIM);
+                this.surface.pads.light (i, t.mute ? t.selected ? COLOR.ORANGE : COLOR.ORANGE_MEDIUM : t.selected ? COLOR.OCEAN : COLOR.ON_DIM);
         }
         else
         {
