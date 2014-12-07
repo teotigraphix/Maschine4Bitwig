@@ -4,6 +4,7 @@
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 Scales.LAYOUT_NAMES  = [ '4th ^', '4th >', '3rd ^', '3rd >', 'Seqnt^', 'Seqnt>' ];
+Scales.PLAY_SHIFT_COLS  = 4;
 
 function ScaleLayoutMode (model)
 {
