@@ -9,7 +9,6 @@ DeviceMode.prototype = new BaseMode ();
 
 DeviceMode.prototype.onValueKnobTouch = function (index, isTouched)
 {
-    println("touch");
     if (isTouched && this.surface.isPressed (MaschineButton.ERASE))
     {
         this.surface.setButtonConsumed (MaschineButton.ERASE);

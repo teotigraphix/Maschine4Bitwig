@@ -36,14 +36,14 @@ var MASCHINE_STUDIO_BUTTONS = [
     MaschineButton.ENCODER_7,
     MaschineButton.ENCODER_8,
 
-    MaschineStudioButton.ENOCDER_1_TOUCH,
-    MaschineStudioButton.ENOCDER_2_TOUCH,
-    MaschineStudioButton.ENOCDER_3_TOUCH,
-    MaschineStudioButton.ENOCDER_4_TOUCH,
-    MaschineStudioButton.ENOCDER_5_TOUCH,
-    MaschineStudioButton.ENOCDER_6_TOUCH,
-    MaschineStudioButton.ENOCDER_7_TOUCH,
-    MaschineStudioButton.ENOCDER_8_TOUCH,
+    MaschineStudioButton.ENCODER_1_TOUCH,
+    MaschineStudioButton.ENCODER_2_TOUCH,
+    MaschineStudioButton.ENCODER_3_TOUCH,
+    MaschineStudioButton.ENCODER_4_TOUCH,
+    MaschineStudioButton.ENCODER_5_TOUCH,
+    MaschineStudioButton.ENCODER_6_TOUCH,
+    MaschineStudioButton.ENCODER_7_TOUCH,
+    MaschineStudioButton.ENCODER_8_TOUCH,
 
     // Master
     MaschineButton.IN1,
@@ -204,7 +204,7 @@ MaschineStudio.prototype.handleEvent = function (cc, value)
         case MaschineStudioButton.ENCODER_6_TOUCH:
         case MaschineStudioButton.ENCODER_7_TOUCH:
         case MaschineStudioButton.ENCODER_8_TOUCH:
-            view.onValueKnobTouch (cc - MaschineButton.ENCODER_1_TOUCH, value == MaschineButton.STATE_DOWN);
+            view.onValueKnobTouch (cc - 100, value == MaschineButton.STATE_DOWN);
             break;
 
         // Master

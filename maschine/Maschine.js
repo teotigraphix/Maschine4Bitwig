@@ -208,3 +208,10 @@ Maschine.prototype.shutdown = function ()
 
     this.pads.turnOff ();
 };
+
+
+Maschine.prototype.setButtonConsumed = function (buttonId)
+{
+    this.lightButton (buttonId, false);
+    this.buttonConsumed[buttonId] = true;
+};
