@@ -750,6 +750,13 @@ AbstractView.prototype.onValueKnob = function (index, value)
         m.onValueKnob (index, value);
 };
 
+AbstractView.prototype.onValueKnobTouch = function (index, isTouched)
+{
+    var m = this.surface.getActiveMode ();
+    if (m != null)
+        m.onValueKnobTouch (index, isTouched);
+};
+
 AbstractView.prototype.onFirstRow = function (index)
 {
     var m = this.surface.getActiveMode ();

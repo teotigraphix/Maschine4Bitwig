@@ -105,6 +105,16 @@ MaschineButton.ARROW_RIGHT = MaschineButton.GROUP_H;
 
 MaschineButton.SHIFT = MaschineButton.ENTER;
 
+function MaschineStudioButton () {}
+MaschineStudioButton.ENCODER_1_TOUCH = 100;
+MaschineStudioButton.ENCODER_2_TOUCH = 101;
+MaschineStudioButton.ENCODER_3_TOUCH = 102;
+MaschineStudioButton.ENCODER_4_TOUCH = 103;
+MaschineStudioButton.ENCODER_5_TOUCH = 104;
+MaschineStudioButton.ENCODER_6_TOUCH = 105;
+MaschineStudioButton.ENCODER_7_TOUCH = 106;
+MaschineStudioButton.ENCODER_8_TOUCH = 107;
+
 function MaschineMK1Button () {}
 MaschineMK1Button.JOG2 = 100;
 MaschineMK1Button.JOG3 = 101;

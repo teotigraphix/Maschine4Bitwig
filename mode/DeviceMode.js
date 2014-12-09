@@ -7,6 +7,16 @@ function DeviceMode (model)
 }
 DeviceMode.prototype = new BaseMode ();
 
+DeviceMode.prototype.onValueKnobTouch = function (index, isTouched)
+{
+    println("touch");
+    if (isTouched && this.surface.isPressed (MaschineButton.ERASE))
+    {
+        this.surface.setButtonConsumed (MaschineButton.ERASE);
+        this.model.getCursorDevice ().resetParameter (index);
+    }
+};
+
 DeviceMode.prototype.onValueKnob = function (index, value)
 {
     var param = this.model.getCursorDevice ().getFXParam (index);

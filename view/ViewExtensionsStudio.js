@@ -131,7 +131,7 @@ AbstractView.prototype.onErase = function (event)
 {
     this.refreshButton (MaschineButton.ERASE, event);
 
-    if (event.isDown ())
+    if (!event.isDown () && !event.isLong ())
         this.model.getApplication ().deleteSelection ();
 };
 
