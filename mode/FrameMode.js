@@ -3,7 +3,7 @@
 // (c) 2014
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-FrameMode.ROW0 = 'NtEdit  Auto  Device  Mixer                            ';
+FrameMode.ROW0 = 'NtEdit  Auto  Device   VST   Mixer                     ';
 FrameMode.ROW1 = '                                                       ';
 
 //FrameMode.ROW0 = 'Arange Mix    Edit   NotEdt Auto   Device Mixer  Full  ';
@@ -28,10 +28,16 @@ FrameMode.prototype.onFirstRow = function (index)
     var app = this.model.getApplication ();
     switch (index)
     {
-        case 0: app.toggleNoteEditor (); break;
-        case 1: app.toggleAutomationEditor (); break;
-        case 2: app.toggleDevices (); break;
-        case 3: app.toggleMixer (); break;
+        case 0: app.toggleNoteEditor ();
+            break;
+        case 1: app.toggleAutomationEditor ();
+            break;
+        case 2: app.toggleDevices ();
+            break;
+        case 3: this.model.getCursorDevice ().toggleWindowOpen ();
+            break;
+        case 4: app.toggleMixer ();
+            break;
     }
 };
 
