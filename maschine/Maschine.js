@@ -3,11 +3,28 @@
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 Maschine.VERSION = "0.1.5";
+Maschine.AUTHOR = "Michael Schmalle";
+Maschine.VENDOR = "Native Instruments";
 
 Maschine.STUDIO = 0;
+Maschine.STUDIO_NAME = "Maschine Studio";
+Maschine.STUDIO_UID = "342ED090-C483-11E3-9C1A-0800200C9A66";
+
 Maschine.MK2 = 1;
+Maschine.MK2_NAME = "Maschine MK2";
+Maschine.MK2_UID = "EAE08E70-6076-11E4-9803-0800200C9A66";
+
 Maschine.MIKROMK2 = 2;
+Maschine.MIKROMK2_NAME = "Maschine Mikro MK2";
+Maschine.MIKROMK2_UID = "0272C080-6081-11E4-9803-0800200C9A66";
+
 Maschine.MK1 = 3;
+Maschine.MK1_NAME = "Maschine MK1";
+Maschine.MK1_UID = "FF7AD6B0-6535-11E4-9803-0800200C9A66";
+
+Maschine.MIKROMK1 = 4;
+Maschine.MIKROMK1_NAME = "Maschine Mikro MK1";
+Maschine.MIKROMK1_UID = "TODO";
 
 Maschine.INSTANCE = -1;
 

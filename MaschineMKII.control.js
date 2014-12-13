@@ -6,15 +6,15 @@ loadAPI(1);
 
 load ("Config.js");
 load ("framework/ClassLoader.js");
-
 load ("maschine/ClassLoader.js");
+
 Maschine.INSTANCE = Maschine.MK2;
 
 load ("mode/ClassLoader.js");
 load ("view/ClassLoader.js");
 load ("Controller.js");
 
-host.defineController("Native Instruments", "Maschine MK2", Maschine.VERSION, "EAE08E70-6076-11E4-9803-0800200C9A66");
+host.defineController(Maschine.VENDOR, Maschine.MK2_NAME, Maschine.VERSION, Maschine.MK2_UID, Maschine.AUTHOR);
 host.defineMidiPorts(1, 1);
 host.addDeviceNameBasedDiscoveryPair(["Maschine MK2 Controller"], ["Maschine MK2 Controller"]);
 host.addDeviceNameBasedDiscoveryPair(["Maschine MK2 Virtual Input"], ["Maschine MK2 Virtual Output"]);
