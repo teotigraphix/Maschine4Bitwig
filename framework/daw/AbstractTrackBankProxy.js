@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014
+// (c) 2014-2015
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 AbstractTrackBankProxy.COLORS =
@@ -18,7 +18,7 @@ AbstractTrackBankProxy.COLORS =
     [ 0.8509804010391235 , 0.18039216101169586, 0.1411764770746231 , 6],    // Red
     [ 1                  , 0.34117648005485535, 0.0235294122248888 , 60],   // Orange
     [ 0.8509804010391235 , 0.615686297416687  , 0.062745101749897  , 62],   // Light Orange
-    [ 0.45098039507865906, 0.5960784554481506 , 0.0784313753247261 , 18],   // Green
+    [ 0.45098039507865906, 0.5960784554481506 , 0.0784313753247261 , 19],   // Green
     [ 0                  , 0.615686297416687  , 0.27843138575553894, 26],   // Cold Green
     [ 0                  , 0.6509804129600525 , 0.5803921818733215 , 30],   // Bluish Green
     [ 0                  , 0.6000000238418579 , 0.8509804010391235 , 37],   // Light Blue
@@ -67,6 +67,9 @@ function AbstractTrackBankProxy (numTracks, numScenes, numSends)
     this.listeners = [];
     this.noteListeners = [];
     this.prefferedViews = [];
+    this.primaryDevice = null;
+    
+    this.trackCount = 0;
 
     this.tracks = this.createTracks (this.numTracks);
 }
@@ -75,46 +78,41 @@ AbstractTrackBankProxy.prototype.init = function ()
 {
     // Monitor 'all' tracks for selection to move the 'window' of the main
     // track bank to the selected track
-    var trackSelectionMonitor = host.createArrangerCursorTrack (0, 0);
-    trackSelectionMonitor.addPositionObserver (doObject (this, AbstractTrackBankProxy.prototype.handleTrackSelection));
+    var cursorTrack = host.createArrangerCursorTrack (0, 0);
+    cursorTrack.addPositionObserver (doObject (this, AbstractTrackBankProxy.prototype.handleTrackSelection));
+
+    this.primaryDevice = new CursorDeviceProxy (cursorTrack.createCursorDevice ("Primary", 0), 0);
 
     for (var i = 0; i < this.numTracks; i++)
     {
         var t = this.trackBank.getChannel (i);
 
-        t.addNoteObserver (doObjectIndex (this, i, function (index, pressed, note, velocity)
-        {
-            // velocity [float: 0..1]
-            var sel = this.getSelectedTrack ();
-            if (sel != null && sel.index == index)
-                this.notifyListeners (pressed, note, Math.round (velocity * 127.0));
-        }));
-
-        t.addPositionObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handlePosition));
-        t.addNameObserver (this.textLength, '', doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleName));
-        t.addIsSelectedObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleBankTrackSelection));
-        t.addVuMeterObserver (Config.maxParameterValue, -1, true, doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleVUMeters));
-        t.addColorObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleColor));
-
+        // DeviceChain attributes
         t.exists ().addValueObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleExists));
+        t.addIsSelectedObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleBankTrackSelection));
+        t.addNameObserver (this.textLength, '', doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleName));
+
+        // Channel attributes
         t.isActivated ().addValueObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleActivated));
+        var v = t.getVolume ();
+        v.addValueObserver (Config.maxParameterValue, doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleVolume));
+        v.addValueDisplayObserver (this.textLength, '', doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleVolumeStr));
+        var p = t.getPan ();
+        p.addValueObserver (Config.maxParameterValue, doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handlePan));
+        p.addValueDisplayObserver (this.textLength, '', doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handlePanStr));
         t.getMute ().addValueObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleMute));
         t.getSolo ().addValueObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleSolo));
+        t.addVuMeterObserver (Config.maxParameterValue, -1, true, doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleVUMeters));
+        t.addColorObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleColor));
+        t.addNoteObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleNotes));
+        
+        // Track attributes
+        t.addPositionObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handlePosition));
         t.getArm ().addValueObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleRecArm));
         t.getMonitor ().addValueObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleMonitor));
         t.getAutoMonitor ().addValueObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleAutoMonitor));
         t.getCrossFadeMode ().addValueObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleCrossfadeMode));
         t.getCanHoldNoteData ().addValueObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleCanHoldNotes));
-
-        // Track volume value & text
-        var v = t.getVolume ();
-        v.addValueObserver (Config.maxParameterValue, doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleVolume));
-        v.addValueDisplayObserver (this.textLength, '', doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleVolumeStr));
-
-        // Track Pan value & text
-        var p = t.getPan ();
-        p.addValueObserver (Config.maxParameterValue, doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handlePan));
-        p.addValueDisplayObserver (this.textLength, '', doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handlePanStr));
 
         // Slot content changes
         var cs = t.getClipLauncherSlots ();
@@ -123,25 +121,24 @@ AbstractTrackBankProxy.prototype.init = function ()
         cs.addHasContentObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleSlotHasContent));
         cs.addPlaybackStateObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handlePlaybackState));
         cs.addColorObserver (doObjectIndex (this, i, AbstractTrackBankProxy.prototype.handleSlotColor));
-
-        // Devices on the track
-        var bank = t.createDeviceBank (this.numDevices);
-        for (var j = 0; j < this.numDevices; j++)
-        {
-            var device = bank.getDevice (j);
-            device.addNameObserver (this.textLength, '', doObjectDoubleIndex (this, i, j, AbstractTrackBankProxy.prototype.handleDeviceName));
-        }
     }
 
     this.trackBank.addCanScrollChannelsUpObserver (doObject (this, AbstractTrackBankProxy.prototype.handleCanScrollTracksUp));
     this.trackBank.addCanScrollChannelsDownObserver (doObject (this, AbstractTrackBankProxy.prototype.handleCanScrollTracksDown));
     this.trackBank.addCanScrollScenesUpObserver (doObject (this, AbstractTrackBankProxy.prototype.handleCanScrollScenesUp));
     this.trackBank.addCanScrollScenesDownObserver (doObject (this, AbstractTrackBankProxy.prototype.handleCanScrollScenesDown));
+    
+    this.trackBank.addChannelCountObserver (doObject (this, AbstractTrackBankProxy.prototype.handleChannelCount));
 };
 
 AbstractTrackBankProxy.prototype.isMuteState = function ()
 {
     return this.trackState == TrackState.MUTE;
+};
+
+AbstractTrackBankProxy.prototype.getTrackCount = function ()
+{
+    return this.trackCount;
 };
 
 AbstractTrackBankProxy.prototype.isSoloState = function ()
@@ -534,17 +531,15 @@ AbstractTrackBankProxy.prototype.createTracks = function (count)
             recarm: false,
             monitor: false,
             autoMonitor: false,
+            canHoldNotes: false,
             sends: [],
             slots: [],
-            devices: [],
             crossfadeMode: 'AB'
         };
         for (var j = 0; j < this.numScenes; j++)
             t.slots.push ({ index: j });
         for (var j = 0; j < this.numSends; j++)
             t.sends.push ({ index: j });
-        for (var j = 0; j < this.numDevices; j++)
-            t.devices.push ("");
         tracks.push (t);
     }
     return tracks;
@@ -567,7 +562,13 @@ AbstractTrackBankProxy.prototype.notifyListeners = function (pressed, note, velo
 
 AbstractTrackBankProxy.prototype.handleTrackSelection = function (index)
 {
-    this.trackBank.scrollToChannel (Math.floor (index / this.numTracks) * this.numTracks);
+   this.scrollToChannel (index);
+};
+
+AbstractTrackBankProxy.prototype.scrollToChannel = function (channel)
+{
+    if (channel < this.trackCount)
+        this.trackBank.scrollToChannel (Math.floor (channel / this.numTracks) * this.numTracks);
 };
 
 AbstractTrackBankProxy.prototype.handleBankTrackSelection = function (index, isSelected)
@@ -595,6 +596,14 @@ AbstractTrackBankProxy.prototype.handleVUMeters = function (index, value)
 AbstractTrackBankProxy.prototype.handleColor = function (index, red, green, blue)
 {
     this.tracks[index].color = AbstractTrackBankProxy.getColorIndex (red, green, blue);
+};
+
+AbstractTrackBankProxy.prototype.handleNotes = function (index, pressed, note, velocity)
+{
+    // velocity [float: 0..1]
+    var sel = this.getSelectedTrack ();
+    if (sel != null && sel.index == index)
+        this.notifyListeners (pressed, note, Math.round (velocity * 127.0));
 };
 
 AbstractTrackBankProxy.prototype.handleExists = function (index, exists)
@@ -722,7 +731,7 @@ AbstractTrackBankProxy.prototype.handleCanScrollScenesDown = function (canScroll
     this.canScrollScenesDownFlag = canScroll;
 };
 
-AbstractTrackBankProxy.prototype.handleDeviceName = function (index, device, name)
+AbstractTrackBankProxy.prototype.handleChannelCount = function (count)
 {
-    this.tracks[index].devices[device] = name;
+    this.trackCount = count;
 };

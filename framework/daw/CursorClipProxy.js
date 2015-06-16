@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014
+// (c) 2014-2015
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function CursorClipProxy (stepSize, rowSize)
@@ -164,6 +164,8 @@ CursorClipProxy.prototype.getCurrentStep = function ()
 
 CursorClipProxy.prototype.getStep = function (step, row)
 {
+    if (row < 0)
+        return 0;
     if (typeof (this.data[step]) == 'undefined' || typeof (this.data[step][row]) == 'undefined')
     {
         host.errorln ("Attempt to get undefined step data: " + step + " : " + row);
@@ -184,10 +186,13 @@ CursorClipProxy.prototype.setStep = function (step, row, velocity, duration)
 
 CursorClipProxy.prototype.clearRow = function (row)
 {
-    // TODO Can be calculated in 1.1
+    // Can be calculated but it is complicated:
+    //   var quartersPerPad = this.model.getQuartersPerMeasure ();
+    //   var stepsPerMeasure = Math.round (quartersPerPad / this.resolutions[this.selectedIndex]);
+    //   var numOfSteps = this.playEnd * stepsPerMeasure;
     
-    // Since there is no dedicated function, we suggest a maximum of 32 tracks 
-    // with a resolution of 64 steps each
+    // We suggest a maximum of 32 measures with a resolution of 64 steps each
+    // Would be nice to have a dedicated function
     for (var step = 0; step < 64 * 32; step++)
         this.clip.clearStep (step, row);
 };

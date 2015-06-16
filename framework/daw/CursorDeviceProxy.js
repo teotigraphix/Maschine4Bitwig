@@ -1,10 +1,12 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014
+// (c) 2014-2015
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-function CursorDeviceProxy (numSends)
+function CursorDeviceProxy (cursorDevice, numSends)
 {
+    this.cursorDevice = cursorDevice;
+
     this.numSends = numSends;
     this.numParams = 8;
     this.numDeviceLayers = 8;
@@ -47,10 +49,16 @@ function CursorDeviceProxy (numSends)
     };
     
     this.directParameters = [];
+    this.numDirectPageBank = 0;
+    this.directParameterPageNames = [];
+    this.currentDirectParameterPage = 0;
+    this.directParameterObservationEnabled = false;
     this.deviceBanks = [];
+    this.drumPadBanks = [];
+    this.position = 0;
+    this.siblingDevices = initArray ("", this.numDevicesInBank);
 
     this.isMacroMappings = initArray (false, this.numParams);
-    this.cursorDevice = host.createEditorCursorDevice ();
 
     this.cursorDevice.addIsEnabledObserver (doObject (this, CursorDeviceProxy.prototype.handleIsEnabled));
     this.cursorDevice.addPositionObserver (doObject (this, CursorDeviceProxy.prototype.handlePosition));
@@ -99,7 +107,7 @@ function CursorDeviceProxy (numSends)
     
     this.cursorDevice.addDirectParameterIdObserver (doObject (this, CursorDeviceProxy.prototype.handleDirectParameterIds));
     this.cursorDevice.addDirectParameterNameObserver (this.textLength, doObject (this, CursorDeviceProxy.prototype.handleDirectParameterNames));
-    this.cursorDevice.addDirectParameterValueDisplayObserver (this.textLength, doObject (this, CursorDeviceProxy.prototype.handleDirectParameterValueDisplay));
+    this.directParameterValueDisplayObserver = this.cursorDevice.addDirectParameterValueDisplayObserver (this.textLength, doObject (this, CursorDeviceProxy.prototype.handleDirectParameterValueDisplay));
     this.cursorDevice.addDirectParameterNormalizedValueObserver (doObject (this, CursorDeviceProxy.prototype.handleDirectParameterValue));
     
     this.cursorDevice.isWindowOpen ().addValueObserver (doObject (this, CursorDeviceProxy.prototype.handleIsWindowOpen));
@@ -109,15 +117,24 @@ function CursorDeviceProxy (numSends)
     this.cursorDevice.hasLayers ().addValueObserver (doObject (this, CursorDeviceProxy.prototype.handleHasLayers));
     this.cursorDevice.hasSlots ().addValueObserver (doObject (this, CursorDeviceProxy.prototype.handleHasSlots));
 
+    // Monitor the sibling devices of the cursor device
+    this.siblings = this.cursorDevice.createSiblingsDeviceBank (this.numDevicesInBank);
+    for (i = 0; i < this.numDevicesInBank; i++)
+    {
+        var sibling = this.siblings.getDevice (i);
+        sibling.addNameObserver (this.textLength, '', doObjectIndex (this, i, CursorDeviceProxy.prototype.handleSiblingName));
+    }    
+
     var layer = null;
     var v = null;
     var p = null;
     
     // Monitor the layers of a container device (if any)
-    this.layerBank = this.cursorDevice.createLayerBank (this.numDeviceLayers);
-    this.layerBank.addCanScrollChannelsUpObserver (doObject (this, CursorDeviceProxy.prototype.handleCanScrollLayerUp));
-    this.layerBank.addCanScrollChannelsDownObserver (doObject (this, CursorDeviceProxy.prototype.handleCanScrollLayerDown));
+    this.cursorDeviceLayer = this.cursorDevice.createCursorLayer ();
+    this.cursorDeviceLayer.addCanSelectPreviousObserver (doObject (this, CursorDeviceProxy.prototype.handleCanScrollLayerDown));
+    this.cursorDeviceLayer.addCanSelectNextObserver (doObject (this, CursorDeviceProxy.prototype.handleCanScrollLayerUp));
     
+    this.layerBank = this.cursorDevice.createLayerBank (this.numDeviceLayers);
     this.deviceLayers = this.createDeviceLayers (this.numDeviceLayers);
     for (i = 0; i < this.numDeviceLayers; i++)
     {
@@ -139,15 +156,11 @@ function CursorDeviceProxy (numSends)
         for (var j = 0; j < this.numSends; j++)
         {
             var s = layer.getSend (j);
-            // TODO FIX Required - Always returns null
-            if (s != null)
-            {
-                println ("Layer Sends are fixed!");
-            
-                s.addNameObserver (this.textLength, '', doObjectDoubleIndex (this, i, j, CursorDeviceProxy.prototype.handleLayerSendName));
-                s.addValueObserver (Config.maxParameterValue, doObjectDoubleIndex (this, i, j, CursorDeviceProxy.prototype.handleLayerSendVolume));
-                s.addValueDisplayObserver (this.textLength, '', doObjectDoubleIndex (this, i, j, CursorDeviceProxy.prototype.handleLayerSendVolumeStr));
-            }
+            if (s == null)
+                continue;
+            s.addNameObserver (this.textLength, '', doObjectDoubleIndex (this, i, j, CursorDeviceProxy.prototype.handleLayerSendName));
+            s.addValueObserver (Config.maxParameterValue, doObjectDoubleIndex (this, i, j, CursorDeviceProxy.prototype.handleLayerSendVolume));
+            s.addValueDisplayObserver (this.textLength, '', doObjectDoubleIndex (this, i, j, CursorDeviceProxy.prototype.handleLayerSendVolumeStr));
         }
 
         this.deviceBanks[i] = layer.createDeviceBank (this.numDevicesInBank);
@@ -160,6 +173,7 @@ function CursorDeviceProxy (numSends)
     {
         layer = this.drumPadBank.getChannel (i);
         layer.exists ().addValueObserver (doObjectIndex (this, i, CursorDeviceProxy.prototype.handleDrumPadExists));
+        layer.isActivated ().addValueObserver (doObjectIndex (this, i, CursorDeviceProxy.prototype.handleDrumPadActivated));
         layer.addIsSelectedObserver (doObjectIndex (this, i, CursorDeviceProxy.prototype.handleDrumPadSelection));
         layer.addNameObserver (this.textLength, '', doObjectIndex (this, i, CursorDeviceProxy.prototype.handleDrumPadName));
         v = layer.getVolume ();
@@ -172,6 +186,19 @@ function CursorDeviceProxy (numSends)
         layer.getMute ().addValueObserver (doObjectIndex (this, i, CursorDeviceProxy.prototype.handleDrumPadMute));
         layer.getSolo ().addValueObserver (doObjectIndex (this, i, CursorDeviceProxy.prototype.handleDrumPadSolo));
         layer.addColorObserver (doObjectIndex (this, i, CursorDeviceProxy.prototype.handleDrumPadColor));
+        // Sends values & texts
+        for (var j = 0; j < this.numSends; j++)
+        {
+            var s = layer.getSend (j);
+            if (s == null)
+                continue;
+println("#54 is fixed for drum pads! " + i+"/"+j);
+            s.addNameObserver (this.textLength, '', doObjectDoubleIndex (this, i, j, CursorDeviceProxy.prototype.handleDrumPadSendName));
+            s.addValueObserver (Config.maxParameterValue, doObjectDoubleIndex (this, i, j, CursorDeviceProxy.prototype.handleDrumPadSendVolume));
+            s.addValueDisplayObserver (this.textLength, '', doObjectDoubleIndex (this, i, j, CursorDeviceProxy.prototype.handleDrumPadSendVolumeStr));
+        }
+
+        this.drumPadBanks[i] = layer.createDeviceBank (this.numDevicesInBank);
     }
 
     //----------------------------------
@@ -239,6 +266,21 @@ function CursorDeviceProxy (numSends)
 // Bitwig Device API
 //--------------------------------------
 
+CursorDeviceProxy.prototype.getSiblingDeviceName = function (index)
+{
+    return this.siblingDevices[index];
+};
+
+CursorDeviceProxy.prototype.getPositionInChain = function ()
+{
+    return this.position;
+};
+
+CursorDeviceProxy.prototype.getPositionInBank = function ()
+{
+    return this.position % this.numDevicesInBank;
+};
+
 CursorDeviceProxy.prototype.getCommonParameter = function (index)
 {
     return this.cursorDevice.getCommonParameter (index);
@@ -284,73 +326,121 @@ CursorDeviceProxy.prototype.previousParameterPage = function ()
     return this.cursorDevice.previousParameterPage ();
 };
 
-CursorDeviceProxy.prototype.setParameterPage = function (index)
+CursorDeviceProxy.prototype.hasPreviousParameterPage = function ()
 {
-    return this.cursorDevice.setParameterPage (index);
+    return this.hasPreviousParamPage;
+};
+
+CursorDeviceProxy.prototype.hasNextParameterPage = function ()
+{
+    return this.hasNextParamPage;
+};
+
+CursorDeviceProxy.prototype.getParameterPageNames = function ()
+{
+    return this.parameterPageNames;
+};
+
+CursorDeviceProxy.prototype.getSelectedParameterPageName = function ()
+{
+    return this.selectedParameterPage >= 0 ? this.parameterPageNames[this.selectedParameterPage] : "";
+};
+
+CursorDeviceProxy.prototype.getSelectedParameterPage = function ()
+{
+    return this.selectedParameterPage;
+};
+
+CursorDeviceProxy.prototype.setSelectedParameterPage = function (index)
+{
+    this.cursorDevice.setParameterPage (index);
 };
 
 CursorDeviceProxy.prototype.setPresetCategory = function (index)
 {
-    return this.cursorDevice.setPresetCategory (index);
+    this.cursorDevice.setPresetCategory (index);
 };
 
 CursorDeviceProxy.prototype.setPresetCreator = function (index)
 {
-    return this.cursorDevice.setPresetCreator (index);
+    this.cursorDevice.setPresetCreator (index);
 };
 
 CursorDeviceProxy.prototype.switchToNextPreset = function ()
 {
-    return this.cursorDevice.switchToNextPreset ();
+    this.cursorDevice.switchToNextPreset ();
 };
 
 CursorDeviceProxy.prototype.switchToNextPresetCategory = function ()
 {
-    return this.cursorDevice.switchToNextPresetCategory ();
+    this.cursorDevice.switchToNextPresetCategory ();
 };
 
 CursorDeviceProxy.prototype.switchToNextPresetCreator = function ()
 {
-    return this.cursorDevice.switchToNextPresetCreator ();
+    this.cursorDevice.switchToNextPresetCreator ();
 };
 
 CursorDeviceProxy.prototype.switchToPreviousPreset = function ()
 {
-    return this.cursorDevice.switchToPreviousPreset ();
+    this.cursorDevice.switchToPreviousPreset ();
 };
 
 CursorDeviceProxy.prototype.switchToPreviousPresetCategory = function ()
 {
-    return this.cursorDevice.switchToPreviousPresetCategory ();
+    this.cursorDevice.switchToPreviousPresetCategory ();
 };
 
 CursorDeviceProxy.prototype.switchToPreviousPresetCreator = function ()
 {
-    return this.cursorDevice.switchToPreviousPresetCreator ();
+    this.cursorDevice.switchToPreviousPresetCreator ();
 };
 
 CursorDeviceProxy.prototype.toggleEnabledState = function ()
 {
-    return this.cursorDevice.toggleEnabledState ();
+    this.cursorDevice.toggleEnabledState ();
 };
 
-//--------------------------------------
-// Bitwig CursorDevice API
-//--------------------------------------
+CursorDeviceProxy.prototype.canSelectPreviousFX = function ()
+{
+    return this.canSelectPrevious;
+};
+
+CursorDeviceProxy.prototype.canSelectNextFX = function ()
+{
+    return this.canSelectNext;
+};
 
 CursorDeviceProxy.prototype.selectNext = function ()
 {
-    return this.cursorDevice.selectNext ();
+    var moveBank = this.getPositionInBank () == 7;
+    this.cursorDevice.selectNext ();
+    if (moveBank)
+        this.selectNextBank ();
 };
 
 CursorDeviceProxy.prototype.selectPrevious = function ()
 {
-    return this.cursorDevice.selectPrevious ();
+    var moveBank = this.getPositionInBank () == 0;
+    this.cursorDevice.selectPrevious ();
+    if (moveBank)
+        this.selectPreviousBank ();
 };
 
-//--------------------------------------
-// Public API
-//--------------------------------------
+CursorDeviceProxy.prototype.selectSibling = function (index)
+{
+    this.cursorDevice.selectDevice (this.siblings.getDevice (index));
+};
+
+CursorDeviceProxy.prototype.selectNextBank = function ()
+{
+    this.siblings.scrollPageDown ();
+};
+
+CursorDeviceProxy.prototype.selectPreviousBank = function ()
+{
+    this.siblings.scrollPageUp ();
+};
 
 CursorDeviceProxy.prototype.hasSelectedDevice = function ()
 {
@@ -432,15 +522,149 @@ CursorDeviceProxy.prototype.isNested = function ()
     return this.isNestedValue;
 };
 
-CursorDeviceProxy.prototype.hasDrumPads = function ()
-{
-    return this.hasDrumPadsValue;
-};
-
 CursorDeviceProxy.prototype.hasSlots = function ()
 {
     return this.hasSlotsValue;
 };
+
+CursorDeviceProxy.prototype.isMacroMapping = function (index)
+{
+    return this.isMacroMappings[index];
+};
+
+//--------------------------------------
+// Layer & Drum Pad Abstraction
+//--------------------------------------
+
+CursorDeviceProxy.prototype.getLayerOrDrumPad = function (index)
+{
+    return this.hasDrumPads () ? this.getDrumPad (index) : this.getLayer (index);
+};
+
+CursorDeviceProxy.prototype.getSelectedLayerOrDrumPad = function ()
+{
+    return this.hasDrumPads () ? this.getSelectedDrumPad () : this.getSelectedLayer ();
+};
+
+CursorDeviceProxy.prototype.selectLayerOrDrumPad = function (index)
+{
+    if (this.hasDrumPads ())
+        this.selectDrumPad (index);
+    else
+        this.selectLayer (index);
+};
+
+CursorDeviceProxy.prototype.previousLayerOrDrumPad = function ()
+{
+    if (this.hasDrumPads ())
+        this.previousDrumPad ();
+    else
+        this.previousLayer ();
+};
+
+CursorDeviceProxy.prototype.previousLayerOrDrumPadBank = function ()
+{
+    if (this.hasDrumPads ())
+        this.previousDrumPadBank ();
+    else
+        this.previousLayerBank ();
+};
+
+CursorDeviceProxy.prototype.nextLayerOrDrumPad = function ()
+{
+    if (this.hasDrumPads ())
+        this.nextDrumPad ();
+    else
+        this.nextLayer ();
+};
+
+CursorDeviceProxy.prototype.nextLayerOrDrumPadBank = function ()
+{
+    if (this.hasDrumPads ())
+        this.nextDrumPadBank ();
+    else
+        this.nextLayerBank ();
+};
+
+CursorDeviceProxy.prototype.enterLayerOrDrumPad = function (index)
+{
+    if (this.hasDrumPads ())
+        this.enterDrumPad (index);
+    else
+        this.enterLayer (index);
+};
+
+CursorDeviceProxy.prototype.selectFirstDeviceInLayerOrDrumPad = function (index)
+{
+    if (this.hasDrumPads ())
+        this.selectFirstDeviceInDrumPad (index);
+    else
+        this.selectFirstDeviceInLayer (index);
+};
+
+CursorDeviceProxy.prototype.canScrollLayersOrDrumPadsUp = function ()
+{
+    return this.hasDrumPads () ? this.canScrollDrumPadsUp () : this.canScrollLayersUp ();
+};
+
+CursorDeviceProxy.prototype.canScrollLayersOrDrumPadsDown = function ()
+{
+    return this.hasDrumPads () ? this.canScrollDrumPadsDown () : this.canScrollLayersDown ();
+};
+
+CursorDeviceProxy.prototype.scrollLayersOrDrumPadsPageUp = function ()
+{
+    this.hasDrumPads () ? this.scrollDrumPadsPageUp () : this.scrollLayersPageUp ();
+};
+
+CursorDeviceProxy.prototype.scrollLayersOrDrumPadsPageDown = function ()
+{
+    this.hasDrumPads () ? this.scrollDrumPadsPageDown () : this.scrollLayersPageDown ();
+};
+
+CursorDeviceProxy.prototype.changeLayerOrDrumPadVolume = function (index, value, fractionValue)
+{
+    if (this.hasDrumPads ())
+        this.changeDrumPadVolume (index, value, fractionValue);
+    else
+        this.changeLayerVolume (index, value, fractionValue);
+};
+
+CursorDeviceProxy.prototype.changeLayerOrDrumPadPan = function (index, value, fractionValue)
+{
+    if (this.hasDrumPads ())
+        this.changeDrumPadPan (index, value, fractionValue);
+    else
+        this.changeLayerPan (index, value, fractionValue);
+};
+
+CursorDeviceProxy.prototype.changeLayerOrDrumPadSend = function (index, send, value, fractionValue)
+{
+    if (this.hasDrumPads ())
+        this.changeDrumPadSend (index, send, value, fractionValue);
+    else
+        this.changeLayerSend (index, send, value, fractionValue);
+};
+
+CursorDeviceProxy.prototype.toggleLayerOrDrumPadMute = function (index)
+{
+    if (this.hasDrumPads ())
+        this.toggleDrumPadMute (index);
+    else
+        this.toggleLayerMute (index);
+};
+
+CursorDeviceProxy.prototype.toggleLayerOrDrumPadSolo = function (index)
+{
+    if (this.hasDrumPads ())
+        this.toggleDrumPadSolo (index);
+    else
+        this.toggleLayerSolo (index);
+};
+
+//--------------------------------------
+// Layers
+//--------------------------------------
 
 CursorDeviceProxy.prototype.hasLayers = function ()
 {
@@ -467,6 +691,42 @@ CursorDeviceProxy.prototype.selectLayer = function (index)
     this.layerBank.getChannel (index).selectInEditor ();
 };
 
+CursorDeviceProxy.prototype.previousLayer = function ()
+{
+    var sel = this.getSelectedLayer ();
+    var index = sel == null ? 0 : sel.index - 1;
+    if (index == -1)
+        this.previousLayerBank ();
+    else
+        this.selectLayer (index);
+};
+
+CursorDeviceProxy.prototype.previousLayerBank = function ()
+{
+    if (!this.canScrollLayersUp ())
+        return;
+    this.scrollLayersPageUp ();
+    scheduleTask (doObject (this, this.selectLayer), [ this.numDeviceLayers - 1 ], 75);
+};
+
+CursorDeviceProxy.prototype.nextLayer = function ()
+{
+    var sel = this.getSelectedLayer ();
+    var index = sel == null ? 0 : sel.index + 1;
+    if (index == this.numDeviceLayers)
+        this.nextLayerBank ();
+    else
+        this.selectLayer (index);
+};
+
+CursorDeviceProxy.prototype.nextLayerBank = function ()
+{
+    if (!this.canScrollLayersDown ())
+        return;
+    this.scrollLayersPageDown ();
+    scheduleTask (doObject (this, this.selectLayer), [ 0 ], 75);
+};
+
 CursorDeviceProxy.prototype.enterLayer = function (index)
 {
     this.layerBank.getChannel (index).selectInMixer ();
@@ -477,6 +737,11 @@ CursorDeviceProxy.prototype.selectParent = function ()
     this.cursorDevice.selectParent ();
 };
 
+CursorDeviceProxy.prototype.selectChannel = function ()
+{
+    this.cursorDevice.getChannel ().selectInEditor ();
+};
+
 CursorDeviceProxy.prototype.selectFirstDeviceInLayer = function (index)
 {
     this.cursorDevice.selectDevice (this.deviceBanks[index].getDevice (0));
@@ -484,12 +749,14 @@ CursorDeviceProxy.prototype.selectFirstDeviceInLayer = function (index)
 
 CursorDeviceProxy.prototype.canScrollLayersUp = function ()
 {
-    return this.canScrollLayersUpValue;
+    // TODO Bugfix required - up and down are flipped
+    return this.canScrollLayersDownValue;
 };
 
 CursorDeviceProxy.prototype.canScrollLayersDown = function ()
 {
-    return this.canScrollLayersDownValue;
+    // TODO Bugfix required - up and down are flipped
+    return this.canScrollLayersUpValue;
 };
 
 CursorDeviceProxy.prototype.scrollLayersPageUp = function ()
@@ -516,6 +783,14 @@ CursorDeviceProxy.prototype.changeLayerPan = function (index, value, fractionVal
     this.layerBank.getChannel (index).getPan ().set (t.pan, Config.maxParameterValue);
 };
 
+CursorDeviceProxy.prototype.changeLayerSend = function (index, sendIndex, value, fractionValue)
+{
+    var s = this.getLayer (index).sends[sendIndex];
+    s.volume = changeValue (value, s.volume, fractionValue, Config.maxParameterValue);
+    var send = this.layerBank.getChannel (index).getSend (sendIndex);
+    send.set (s.volume, Config.maxParameterValue);
+};
+
 CursorDeviceProxy.prototype.toggleLayerMute = function (index)
 {
     this.layerBank.getChannel (index).getMute ().set (!this.getLayer (index).mute);
@@ -526,45 +801,144 @@ CursorDeviceProxy.prototype.toggleLayerSolo = function (index)
     this.layerBank.getChannel (index).getSolo ().set (!this.getLayer (index).solo);
 };
 
-CursorDeviceProxy.prototype.canSelectPreviousFX = function ()
+//--------------------------------------
+// Drum Pads
+//--------------------------------------
+
+CursorDeviceProxy.prototype.hasDrumPads = function ()
 {
-    return this.canSelectPrevious;
+    return this.hasDrumPadsValue;
 };
 
-CursorDeviceProxy.prototype.canSelectNextFX = function ()
+CursorDeviceProxy.prototype.getDrumPad = function (index)
 {
-    return this.canSelectNext;
+    return this.drumPadLayers[index];
 };
 
-CursorDeviceProxy.prototype.hasPreviousParameterPage = function ()
+CursorDeviceProxy.prototype.getSelectedDrumPad = function ()
 {
-    return this.hasPreviousParamPage;
+    for (var i = 0; i < this.drumPadLayers.length; i++)
+    {
+        if (this.drumPadLayers[i].selected)
+            return this.drumPadLayers[i];
+    }
+    return null;
 };
 
-CursorDeviceProxy.prototype.hasNextParameterPage = function ()
+CursorDeviceProxy.prototype.selectDrumPad = function (index)
 {
-    return this.hasNextParamPage;
+    var channel = this.drumPadBank.getChannel (index);
+    if (channel != null)
+        channel.selectInEditor ();
 };
 
-CursorDeviceProxy.prototype.getParameterPageNames = function ()
+CursorDeviceProxy.prototype.previousDrumPad = function ()
 {
-    return this.parameterPageNames;
+    var sel = this.getSelectedDrumPad ();
+    var index = sel == null ? 0 : sel.index - 1;
+    while (index > 0 && !this.getDrumPad (index).exists)
+        index--;
+    if (index == -1)
+        this.previousDrumPadBank ();
+    else
+        this.selectDrumPad (index);
 };
 
-CursorDeviceProxy.prototype.getSelectedParameterPageName = function ()
+CursorDeviceProxy.prototype.previousDrumPadBank = function ()
 {
-    return this.selectedParameterPage >= 0 ? this.parameterPageNames[this.selectedParameterPage] : "";
+    if (!this.canScrollDrumPadsUp ())
+        return;
+    this.scrollDrumPadsPageUp ();
+    scheduleTask (doObject (this, this.selectDrumPad), [ this.numDrumPadLayers - 1 ], 75);
 };
 
-CursorDeviceProxy.prototype.getSelectedParameterPage = function ()
+CursorDeviceProxy.prototype.nextDrumPad = function ()
 {
-    return this.selectedParameterPage;
+    var sel = this.getSelectedDrumPad ();
+    var index = sel == null ? 0 : sel.index + 1;
+    while (index < this.numDrumPadLayers - 1 && !this.getDrumPad (index).exists)
+        index++;
+    if (index == this.numDrumPadLayers)
+        this.nextDrumPadBank ();
+    else
+        this.selectDrumPad (index);
 };
 
-CursorDeviceProxy.prototype.setSelectedParameterPage = function (page)
+CursorDeviceProxy.prototype.nextDrumPadBank = function ()
 {
-    this.cursorDevice.setParameterPage (page);
+    if (!this.canScrollDrumPadsDown ())
+        return;
+    this.scrollDrumPadsPageDown ();
+    scheduleTask (doObject (this, this.selectDrumPad), [ 0 ], 75);
 };
+
+CursorDeviceProxy.prototype.enterDrumPad = function (index)
+{
+    this.drumPadBank.getChannel (index).selectInMixer ();
+};
+
+CursorDeviceProxy.prototype.changeDrumPadVolume = function (index, value, fractionValue)
+{
+    var t = this.getDrumPad (index);
+    t.volume = changeValue (value, t.volume, fractionValue, Config.maxParameterValue);
+    this.drumPadBank.getChannel (index).getVolume ().set (t.volume, Config.maxParameterValue);
+};
+
+CursorDeviceProxy.prototype.changeDrumPadPan = function (index, value, fractionValue)
+{
+    var t = this.getDrumPad (index);
+    t.pan = changeValue (value, t.pan, fractionValue, Config.maxParameterValue);
+    this.drumPadBank.getChannel (index).getPan ().set (t.pan, Config.maxParameterValue);
+};
+
+CursorDeviceProxy.prototype.changeDrumPadSend = function (index, sendIndex, value, fractionValue)
+{
+    var s = this.getDrumPad (index).sends[sendIndex];
+    s.volume = changeValue (value, s.volume, fractionValue, Config.maxParameterValue);
+    var send = this.drumPadBank.getChannel (index).getSend (sendIndex);
+    send.set (s.volume, Config.maxParameterValue);
+};
+
+CursorDeviceProxy.prototype.toggleDrumPadMute = function (index)
+{
+    this.drumPadBank.getChannel (index).getMute ().set (!this.getDrumPad (index).mute);
+};
+
+CursorDeviceProxy.prototype.toggleDrumPadSolo = function (index)
+{
+    this.drumPadBank.getChannel (index).getSolo ().set (!this.getDrumPad (index).solo);
+};
+
+CursorDeviceProxy.prototype.selectFirstDeviceInDrumPad = function (index)
+{
+    this.cursorDevice.selectDevice (this.drumPadBanks[index].getDevice (0));
+};
+
+CursorDeviceProxy.prototype.canScrollDrumPadsUp = function ()
+{
+    // TODO API extension required
+    return true;
+};
+
+CursorDeviceProxy.prototype.canScrollDrumPadsDown = function ()
+{
+    // TODO API extension required
+    return true;
+};
+
+CursorDeviceProxy.prototype.scrollDrumPadsPageUp = function ()
+{
+    this.drumPadBank.scrollChannelsPageUp ();
+};
+
+CursorDeviceProxy.prototype.scrollDrumPadsPageDown = function ()
+{
+    this.drumPadBank.scrollChannelsPageDown ();
+};
+
+//--------------------------------------
+// Direct Parameters
+//--------------------------------------
 
 CursorDeviceProxy.prototype.getDirectParameters = function ()
 {
@@ -587,9 +961,84 @@ CursorDeviceProxy.prototype.changeDirectParameter = function (index, value, frac
     this.cursorDevice.setDirectParameterValueNormalized (this.directParameters[index].id, newvalue, 1);
 };
 
-CursorDeviceProxy.prototype.isMacroMapping = function (index)
+CursorDeviceProxy.prototype.hasPreviousDirectParameterPage = function ()
 {
-    return this.isMacroMappings[index];
+    return this.directParameters.length > 0 && this.currentDirectParameterPage > 0;
+};
+
+CursorDeviceProxy.prototype.hasNextDirectParameterPage = function ()
+{
+    return this.directParameters.length > 0 && this.currentDirectParameterPage < this.getDirectParameterPagesLength () - 1;
+};
+
+CursorDeviceProxy.prototype.previousDirectParameterPage = function ()
+{
+    this.setSelectedDirectParameterPage (this.currentDirectParameterPage - 1);
+};
+
+CursorDeviceProxy.prototype.nextDirectParameterPage = function ()
+{
+    this.setSelectedDirectParameterPage (this.currentDirectParameterPage + 1);
+};
+
+CursorDeviceProxy.prototype.previousDirectParameterPageBank = function ()
+{
+    this.setSelectedDirectParameterPage (this.currentDirectParameterPage - 8);
+};
+
+CursorDeviceProxy.prototype.nextDirectParameterPageBank = function ()
+{
+    this.setSelectedDirectParameterPage (this.currentDirectParameterPage + 8);
+};
+
+CursorDeviceProxy.prototype.getSelectedDirectParameterPageName = function (page)
+{
+    return this.directParameterPageNames[page];
+};
+
+CursorDeviceProxy.prototype.getSelectedDirectParameterPage = function ()
+{
+    return this.currentDirectParameterPage;
+};
+
+CursorDeviceProxy.prototype.setSelectedDirectParameterPage = function (index)
+{
+    this.currentDirectParameterPage = Math.max (0, Math.min (index, this.getDirectParameterPagesLength () - 1));
+    this.enableDirectParameterObservation (this.directParameterObservationEnabled);
+};
+
+CursorDeviceProxy.prototype.enableDirectParameterObservation = function (enable)
+{
+    this.directParameterObservationEnabled = enable;
+
+    // Disable / clear old observers
+    this.directParameterValueDisplayObserver.setObservedParameterIds (null);
+
+    if (!enable)
+        return;
+    
+    var paramIds = [];
+    for (var i = 0; i < 8; i++)
+    {
+        var index = this.currentDirectParameterPage * 8 + i;
+        if (index >= this.directParameters.length)
+            break;
+        paramIds.push (this.directParameters[index].id);
+    }
+    this.directParameterValueDisplayObserver.setObservedParameterIds (paramIds);
+};
+
+// Get the number of pages with direct parameters
+CursorDeviceProxy.prototype.getDirectParameterPagesLength = function ()
+{
+    return this.numDirectPageBank;
+};
+
+CursorDeviceProxy.prototype.changeDirectPageParameter = function (index, value, fractionValue)
+{
+    var pos = this.currentDirectParameterPage * 8 + index;
+    if (pos < this.directParameters.length)
+        this.changeDirectParameter (pos, value, fractionValue);
 };
 
 //--------------------------------------
@@ -603,9 +1052,7 @@ CursorDeviceProxy.prototype.handleIsEnabled = function (isEnabled)
 
 CursorDeviceProxy.prototype.handlePosition = function (pos)
 {
-    // TODO FIX always sends 0 and -1
-    if (pos > 0)
-        println ("Device position is fixed! " + pos);
+    this.position = pos;
 };
 
 CursorDeviceProxy.prototype.handleName = function (name)
@@ -663,6 +1110,14 @@ CursorDeviceProxy.prototype.handleDirectParameterIds = function (ids)
     this.directParameters.length = 0;
     for (var i = 0; i < ids.length; i++)
         this.directParameters.push ({ id: ids[i], name: '', valueStr: '', value: '' });
+
+    this.numDirectPageBank = Math.floor (this.directParameters.length / 8) + (this.directParameters.length % 8 > 0 ? 1 : 0);
+    this.directParameterPageNames.length = 0;
+    for (var i = 0; i < this.numDirectPageBank; i++)
+        this.directParameterPageNames.push ("Page " + (i + 1));
+
+    // Reset page to check for new range of pages
+    this.setSelectedDirectParameterPage (this.currentDirectParameterPage);
 };
 
 CursorDeviceProxy.prototype.handleDirectParameterNames = function (id, name)
@@ -793,6 +1248,11 @@ CursorDeviceProxy.prototype.handleHasSlots = function (value)
     this.hasSlotsValue = value;
 };
 
+CursorDeviceProxy.prototype.handleSiblingName = function (index, name)
+{
+    this.siblingDevices[index] = name;
+};
+
 CursorDeviceProxy.prototype.handleLayerExists = function (index, exists)
 {
     this.deviceLayers[index].exists = exists;
@@ -848,101 +1308,104 @@ CursorDeviceProxy.prototype.handleLayerSolo = function (index, isSoloed)
     this.deviceLayers[index].solo = isSoloed;
 };
 
-CursorDeviceProxy.prototype.handleSendName = function (index1, index2, text)
+CursorDeviceProxy.prototype.handleLayerSendName = function (index, index2, text)
 {
     this.deviceLayers[index].sends[index2].name = text;
 };
 
-CursorDeviceProxy.prototype.handleSendVolume = function (index1, index2, value)
+CursorDeviceProxy.prototype.handleLayerSendVolume = function (index, index2, value)
 {
     this.deviceLayers[index].sends[index2].volume = value;
 };
 
-CursorDeviceProxy.prototype.handleSendVolumeStr = function (index1, index2, text)
+CursorDeviceProxy.prototype.handleLayerSendVolumeStr = function (index, index2, text)
 {
     this.deviceLayers[index].sends[index2].volumeStr = text;
 };
 
 CursorDeviceProxy.prototype.handleCanScrollLayerUp = function (canScroll)
 {
-    // TODO Always called with false
-    if (canScroll)
-        println ("CanScrollLayerUp is fixed!");
     this.canScrollLayersUpValue = canScroll;
 };
 
 CursorDeviceProxy.prototype.handleCanScrollLayerDown = function (canScroll)
 {
-    // TODO Always called with false
-    if (canScroll)
-        println ("CanScrollLayerDown is fixed!");
     this.canScrollLayersDownValue = canScroll;
 };
 
 CursorDeviceProxy.prototype.handleDrumPadExists = function (index, exists)
 {
     this.drumPadLayers[index].exists = exists;
-//TODO println(index+" Exists:"+this.drumPadLayers[index].exists);    
+};
+
+CursorDeviceProxy.prototype.handleDrumPadActivated = function (index, activated)
+{
+    this.drumPadLayers[index].activated = activated;
 };
 
 CursorDeviceProxy.prototype.handleDrumPadSelection = function (index, isSelected)
 {
     this.drumPadLayers[index].selected = isSelected;
-//TODO println(index+" Selected:"+this.drumPadLayers[index].selected);    
 };
 
 CursorDeviceProxy.prototype.handleDrumPadName = function (index, name)
 {
     this.drumPadLayers[index].name = name;
-//TODO println(index+" Name:"+this.drumPadLayers[index].name);
 };
 
 CursorDeviceProxy.prototype.handleDrumPadVolume = function (index, value)
 {
     this.drumPadLayers[index].volume = value;
-//TODO println(index+" Volume:"+this.drumPadLayers[index].volume);
 };
 
 CursorDeviceProxy.prototype.handleDrumPadVolumeStr = function (index, text)
 {
     this.drumPadLayers[index].volumeStr = text;
-//TODO println(index+" VolumeStr:"+this.drumPadLayers[index].volumeStr);
 };
 
 CursorDeviceProxy.prototype.handleDrumPadPan = function (index, value)
 {
     this.drumPadLayers[index].pan = value;
-//TODO println(index+" Pan:"+this.drumPadLayers[index].pan);
 };
 
 CursorDeviceProxy.prototype.handleDrumPadPanStr = function (index, text)
 {
     this.drumPadLayers[index].panStr = text;
-//TODO println(index+" PanStr:"+this.drumPadLayers[index].panStr);
 };
 
 CursorDeviceProxy.prototype.handleDrumPadVUMeters = function (index, value)
 {
     this.drumPadLayers[index].vu = value;
-//TODO println(index+" VU:"+this.drumPadLayers[index].vu);
 };
 
 CursorDeviceProxy.prototype.handleDrumPadMute = function (index, isMuted)
 {
     this.drumPadLayers[index].mute = isMuted;
-//TODO println(index+" mute:"+this.drumPadLayers[index].mute);
 };
 
 CursorDeviceProxy.prototype.handleDrumPadSolo = function (index, isSoloed)
 {
     this.drumPadLayers[index].solo = isSoloed;
-//TODO println(index+" solo:"+this.drumPadLayers[index].solo);
 };
 
 CursorDeviceProxy.prototype.handleDrumPadColor = function (index, red, green, blue)
 {
     this.drumPadLayers[index].color = AbstractTrackBankProxy.getColorIndex (red, green, blue);
-// TODO println(index+" color:"+this.drumPadLayers[index].color);
+};
+
+CursorDeviceProxy.prototype.handleDrumPadSendName = function (index, index2, text)
+{
+    this.drumPadLayers[index].sends[index2].name = text;
+};
+
+CursorDeviceProxy.prototype.handleDrumPadSendVolume = function (index, index2, value)
+{
+    this.drumPadLayers[index].sends[index2].volume = value;
+};
+
+CursorDeviceProxy.prototype.handleDrumPadSendVolumeStr = function (index, index2, text)
+{
+    this.drumPadLayers[index].sends[index2].volumeStr = text;
 };
 
 //--------------------------------------
@@ -986,6 +1449,8 @@ CursorDeviceProxy.prototype.createDeviceLayers = function (count)
             solo: false,
             sends: []
         };
+        for (var j = 0; j < this.numSends; j++)
+            l.sends.push ({ index: j, volume: 0 });
         layers.push (l);
     }
     return layers;

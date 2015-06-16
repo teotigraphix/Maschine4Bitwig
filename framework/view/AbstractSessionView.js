@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014
+// (c) 2014-2015
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 // Needs to be overwritten with device specific colors
@@ -83,17 +83,16 @@ AbstractSessionView.prototype.onGridNote = function (note, velocity)
     {
         if (tb.getTrack (t).recarm)
         {
-            if (slot.isRecording)
-                slots.launch (s);
-            else
+            if (!slot.isRecording)
                 slots.record (s);
+            slots.launch (s);
         }
         else
             slots.launch (s);
     }
     slots.select (s);
     
-    /* TODO Focus must be on clip launcher!
+    /* TODO API extension required - Focus must be on clip launcher!
     
     if (this.surface.isDeletePressed ())
     {

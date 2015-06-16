@@ -1,25 +1,29 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014
+// (c) 2014-2015
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function Model (userCCStart, scales, numTracks, numScenes, numSends)
 {
-    numTracks = numTracks ? numTracks : 8;
-    numScenes = numScenes ? numScenes : 8;
-    numSends  = numSends  ? numSends  : 6;
+    if (scales == null)
+        return;
+    
+    this.numTracks = numTracks ? numTracks : 8;
+    this.numScenes = numScenes ? numScenes : 8;
+    this.numSends  = numSends  ? numSends  : 6;
 
     this.application = new ApplicationProxy ();
     this.transport = new TransportProxy ();
     this.groove = new GrooveProxy ();
     this.masterTrack = new MasterTrackProxy ();
-    this.trackBank = new TrackBankProxy (numTracks, numScenes, numSends);
-    this.effectTrackBank = new EffectTrackBankProxy (numTracks, numScenes);
+    this.trackBank = new TrackBankProxy (this.numTracks, this.numScenes, this.numSends);
+    this.effectTrackBank = new EffectTrackBankProxy (this.numTracks, this.numScenes, this.trackBank);
     this.userControlBank = new UserControlBankProxy (userCCStart);
-    this.cursorDevice = new CursorDeviceProxy (numSends);
+
+    this.cursorDevice = new CursorDeviceProxy (host.createEditorCursorDevice (this.numSends), this.numSends);
     this.arranger = new ArrangerProxy ();
     this.mixer = new MixerProxy ();
-    this.sceneBank = new SceneBankProxy (numScenes);
+    this.sceneBank = new SceneBankProxy (this.numScenes);
 
     this.currentTrackBank = this.trackBank;
 
