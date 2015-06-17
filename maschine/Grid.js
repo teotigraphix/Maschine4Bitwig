@@ -18,11 +18,13 @@ function Grid (output)
 
 Grid.prototype.light = function (note, color)
 {
+    //println("Grid.light()");
     this.buttonColors[note] = color;
 };
 
 Grid.prototype.lightEx = function (x, y, color)
 {
+    //println("Grid.lightEx() x:" + x + " y:" + y + " color:" + color);
     this.buttonColors[48 + x - 4 * y] = color;
     //this.setLight (92 + x - 8 * y, color, blinkColor, fast);
 };
@@ -33,17 +35,19 @@ Grid.prototype.blink = function (note, color, fast)
     this.blinkFast[note] = fast;
 };
 
-Grid.prototype.blinkEx = function (x, y, color)
-{
-    var note = 36 + x + 4 * y;
-    this.blinkColors[note] = color;
-    this.blinkFast[note] = fast;
-};
+//Grid.prototype.blinkEx = function (x, y, color)
+//{
+//    var note = 36 + x + 4 * y;
+//    this.blinkColors[note] = color;
+//    this.blinkFast[note] = fast;
+//};
 
 Grid.prototype.flush = function ()
 {
+
     for (var i = 36; i < 52; i++)
     {
+
         if (this.currentButtonColors[i] != this.buttonColors[i])
         {
             this.currentButtonColors[i] = this.buttonColors[i];
@@ -60,12 +64,12 @@ Grid.prototype.sendColor = function (channel, color)
     var hue = Math.floor (color.hue * 127.0 / 360.0);
     var saturation = Math.floor ((1 - Math.pow (1 - color.saturation, 2)) * 127.0);
     var brightness = Math.floor (color.brightness * 127.0);
-    //println("send " + i + ", " + hue + ", " + saturation + ", " + brightness);
+
 
     this.output.sendNoteEx (0, channel, hue);
     this.output.sendNoteEx (1, channel, saturation);
     this.output.sendNoteEx (2, channel, brightness);
-}
+};
 
 Grid.prototype.turnOff = function ()
 {

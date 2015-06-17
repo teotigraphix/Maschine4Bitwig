@@ -91,17 +91,18 @@ PlayView.prototype.usesButton = function (buttonID)
 
 PlayView.prototype.drawGrid = function ()
 {
-    var isKeyboardEnabled = this.canSelectedTrackHoldNotes ();
+    var isKeyboardEnabled = true;//this.canSelectedTrackHoldNotes ();
     var isRecording = this.model.hasRecordingState ();
 
     var tb = this.model.getTrackBank ();
     var selectedTrack = tb.getSelectedTrack ();
     for (var i = 36; i < 52; i++)
     {
+        var c = this.getColor (this.noteMap, i, Config.padTrackColor ? BitwigColor.getColor (selectedTrack.color)
+            : COLOR.ON, Config.padTrackColor ? COLOR.ON_MEDIUM : COLOR.OCEAN);
+        //println(c);
         this.surface.pads.light (i, isKeyboardEnabled ? (this.pressedKeys[i] > 0 ?
-            (isRecording ? COLOR.RED : COLOR.ON) :
-            this.getColor (this.noteMap, i, Config.padTrackColor ? BitwigColor.getColor (selectedTrack.color)
-                : COLOR.ON, Config.padTrackColor ? COLOR.ON_MEDIUM : COLOR.OCEAN)) : COLOR.OFF, null, false);
+            (isRecording ? COLOR.RED : COLOR.ON) : c) : COLOR.OFF, null, false);
     }
 };
 
