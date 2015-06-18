@@ -96,6 +96,9 @@ PlayView.prototype.drawGrid = function ()
 
     var tb = this.model.getTrackBank ();
     var selectedTrack = tb.getSelectedTrack ();
+    if (selectedTrack == null)
+        return;
+
     for (var i = 36; i < 52; i++)
     {
         var c = this.getColor (this.noteMap, i, Config.padTrackColor ? BitwigColor.getColor (selectedTrack.color)
