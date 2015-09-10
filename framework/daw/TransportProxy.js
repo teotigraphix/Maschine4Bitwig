@@ -16,9 +16,12 @@ function TransportProxy ()
     this.isPlaying                       = false;
     this.isRecording                     = false;
     this.isLooping                       = false;
+    this.punchIn                         = false;
+    this.punchOut                        = false;
     this.isOverdub                       = false;
     this.isLauncherOverdub               = false;
     this.automationWriteMode             = "latch";
+    this.isAutomationOverride            = false;
     this.isWritingArrangerAutomation     = false;
     this.isWritingClipLauncherAutomation = false;
     this.crossfade                       = 0;
@@ -32,9 +35,12 @@ function TransportProxy ()
     this.transport.addIsPlayingObserver (doObject (this, TransportProxy.prototype.handleIsPlaying));
     this.transport.addIsRecordingObserver (doObject (this, TransportProxy.prototype.handleIsRecording));
     this.transport.addIsLoopActiveObserver (doObject (this, TransportProxy.prototype.handleIsLoopActive));
+    this.transport.addPunchInObserver (doObject (this, TransportProxy.prototype.handlePunchIn));
+    this.transport.addPunchOutObserver (doObject (this, TransportProxy.prototype.handlePunchOut));
     this.transport.addOverdubObserver (doObject (this, TransportProxy.prototype.handleOverdub));
     this.transport.addLauncherOverdubObserver (doObject (this, TransportProxy.prototype.handleLauncherOverdub));
     this.transport.addAutomationWriteModeObserver (doObject (this, TransportProxy.prototype.handleAutomationWriteMode));
+    this.transport.addAutomationOverrideObserver (doObject (this, TransportProxy.prototype.handleAutomationOverrideObserver));
     this.transport.addIsWritingArrangerAutomationObserver (doObject (this, TransportProxy.prototype.handleIsWritingArrangerAutomation));
     this.transport.addIsWritingClipLauncherAutomationObserver (doObject (this, TransportProxy.prototype.handleIsWritingClipLauncherAutomation));
     this.transport.addMetronomeVolumeObserver (doObject (this, TransportProxy.prototype.handleMetronomeVolume));
@@ -305,6 +311,16 @@ TransportProxy.prototype.handleIsLoopActive = function (isLoop)
     this.isLooping = isLoop;
 };
 
+TransportProxy.prototype.handlePunchIn = function (isActive)
+{
+    this.punchIn = isActive;
+};
+
+TransportProxy.prototype.handlePunchOut = function (isActive)
+{
+    this.punchOut = isActive;
+};
+
 TransportProxy.prototype.handleOverdub = function (isOverdub)
 {
     this.isOverdub = isOverdub;
@@ -318,6 +334,11 @@ TransportProxy.prototype.handleLauncherOverdub = function (isOverdub)
 TransportProxy.prototype.handleAutomationWriteMode = function (writeMode)
 {
     this.automationWriteMode = writeMode;
+};
+
+TransportProxy.prototype.handleAutomationOverrideObserver = function (isOverride)
+{
+    this.isAutomationOverride = isOverride;
 };
 
 TransportProxy.prototype.handleIsWritingArrangerAutomation = function (isAutomation)
