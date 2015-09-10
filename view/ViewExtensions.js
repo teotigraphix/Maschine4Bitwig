@@ -174,7 +174,11 @@ AbstractView.prototype.onJogWheelInternal = function (increase)
                     cursorDevice.nextParameterPage ();
             }
 
-            this.notifyBankChange ();
+            scheduleTask(doObject(this, function ()
+            {
+                this.notifyBankChange ();
+            }), null, 300);
+
         }
         else if (this.surface.isActiveMode (Maschine.MODE_PRESET))
         {
