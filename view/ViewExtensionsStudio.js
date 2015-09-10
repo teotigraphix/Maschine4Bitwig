@@ -124,7 +124,10 @@ AbstractView.prototype.onPlay = function (event)
     if (!event.isDown ())
         return;
 
-    this.model.getTransport ().play ();
+    if (this.model.getTransport().isPlaying)
+        this.model.getTransport().stop ();
+    else
+        this.model.getTransport().play ();
 };
 
 AbstractView.prototype.onErase = function (event)

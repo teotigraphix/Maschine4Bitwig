@@ -25,7 +25,12 @@ AbstractView.prototype.onPlay = function (event)
     else if (this.surface.isSelectPressed ())
         this.model.getTransport ().toggleMetronomeTicks ();
     else
-        this.model.getTransport ().play ();
+    {
+        if (this.model.getTransport().isPlaying)
+            this.model.getTransport().stop ();
+        else
+            this.model.getTransport().play ();
+    }
 };
 
 AbstractView.prototype.onJogWheel = function (increase)
