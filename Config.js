@@ -37,7 +37,7 @@ Config.fixedAccentValue      = 127;                         // Fixed velocity va
 Config.scale                 = 'Major';
 Config.scaleBase             = 'C';
 Config.scaleInKey            = true;
-Config.scaleLayout           = '4th ^';
+Config.scaleLayout           = 'Seqnt^';
 
 Config.padTrackColor         = true;
 Config.modeNotify            = false;
@@ -157,7 +157,7 @@ Config.init = function ()
 
     var scaleNames = Scales.getNames ();
     Configurator.addEnumSetting ("project", Config.SCALES_SCALE, "scaleSetting",
-        "Scale", "Scales", scaleNames, scaleNames[0],
+        "Scale", "Scales", scaleNames, scaleNames[1],
         function (value) {
             Config.scale = value;
         });
@@ -175,7 +175,7 @@ Config.init = function ()
         });
 
     Configurator.addEnumSetting ("project", Config.SCALES_LAYOUT, "scaleLayoutSetting",
-        "Layout", "Scales", Scales.LAYOUT_NAMES, Scales.LAYOUT_NAMES[0],
+        "Layout", "Scales", Scales.LAYOUT_NAMES, Scales.LAYOUT_NAMES[4],
         function (value) {
             Config.scaleLayout = value;
         });
