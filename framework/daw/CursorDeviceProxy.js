@@ -60,6 +60,7 @@ function CursorDeviceProxy (cursorDevice, numSends)
     this.isMacroMappings = initArray (false, this.numParams);
 
     this.cursorDevice.addIsEnabledObserver (doObject (this, CursorDeviceProxy.prototype.handleIsEnabled));
+    this.cursorDevice.addIsPluginObserver (doObject (this, CursorDeviceProxy.prototype.handleIsPlugin));
     this.cursorDevice.addPositionObserver (doObject (this, CursorDeviceProxy.prototype.handlePosition));
     this.cursorDevice.addNameObserver (34, 'None', doObject (this, CursorDeviceProxy.prototype.handleName));
     this.cursorDevice.addCanSelectPreviousObserver (doObject (this, CursorDeviceProxy.prototype.handleCanSelectPrevious));
@@ -544,6 +545,14 @@ CursorDeviceProxy.prototype.resetLayerOrDrumPadVolume = function (index)
         this.resetLayerVolume (index);
 };
 
+CursorDeviceProxy.prototype.touchLayerOrDrumPadVolume = function (index, isBeingTouched)
+{
+    if (this.hasDrumPads ())
+        this.touchDrumPadVolume (index, isBeingTouched);
+    else
+        this.touchLayerVolume (index, isBeingTouched);
+};
+
 CursorDeviceProxy.prototype.changeLayerOrDrumPadPan = function (index, value, fractionValue)
 {
     if (this.hasDrumPads ())
@@ -568,6 +577,14 @@ CursorDeviceProxy.prototype.resetLayerOrDrumPadPan = function (index)
         this.resetLayerPan (index);
 };
 
+CursorDeviceProxy.prototype.touchLayerOrDrumPadPan = function (index, isBeingTouched)
+{
+    if (this.hasDrumPads ())
+        this.touchDrumPadPan (index, isBeingTouched);
+    else
+        this.touchLayerPan (index, isBeingTouched);
+};
+
 CursorDeviceProxy.prototype.changeLayerOrDrumPadSend = function (index, send, value, fractionValue)
 {
     if (this.hasDrumPads ())
@@ -590,6 +607,14 @@ CursorDeviceProxy.prototype.resetLayerOrDrumPadSend = function (index, send)
         this.resetDrumPadSend (index, send);
     else
         this.resetLayerSend (index, send);
+};
+
+CursorDeviceProxy.prototype.touchLayerOrDrumPadSend = function (index, send, isBeingTouched)
+{
+    if (this.hasDrumPads ())
+        this.touchDrumPadSend (index, send, isBeingTouched);
+    else
+        this.touchLayerSend (index, send, isBeingTouched);
 };
 
 CursorDeviceProxy.prototype.toggleLayerOrDrumPadMute = function (index)
@@ -750,6 +775,11 @@ CursorDeviceProxy.prototype.resetLayerVolume = function (index)
     this.layerBank.getChannel (index).getVolume ().reset ();
 };
 
+CursorDeviceProxy.prototype.touchLayerVolume = function (index, isBeingTouched)
+{
+    this.layerBank.getChannel (index).getVolume ().touch (isBeingTouched);
+};
+
 CursorDeviceProxy.prototype.changeLayerPan = function (index, value, fractionValue)
 {
     var t = this.getLayer (index);
@@ -767,6 +797,11 @@ CursorDeviceProxy.prototype.setLayerPan = function (index, value)
 CursorDeviceProxy.prototype.resetLayerPan = function (index)
 {
     this.layerBank.getChannel (index).getPan ().reset ();
+};
+
+CursorDeviceProxy.prototype.touchLayerPan = function (index, isBeingTouched)
+{
+    this.layerBank.getChannel (index).getPan ().touch (isBeingTouched);
 };
 
 CursorDeviceProxy.prototype.changeLayerSend = function (index, sendIndex, value, fractionValue)
@@ -788,6 +823,11 @@ CursorDeviceProxy.prototype.setLayerSend = function (index, sendIndex, value)
 CursorDeviceProxy.prototype.resetLayerSend = function (index, sendIndex)
 {
     this.layerBank.getChannel (index).getSend (sendIndex).reset ();
+};
+
+CursorDeviceProxy.prototype.touchLayerSend = function (index, sendIndex, isBeingTouched)
+{
+    this.layerBank.getChannel (index).getSend (sendIndex).touch (isBeingTouched);
 };
 
 CursorDeviceProxy.prototype.toggleLayerMute = function (index)
@@ -905,6 +945,11 @@ CursorDeviceProxy.prototype.resetDrumPadVolume = function (index)
     this.drumPadBank.getChannel (index).getVolume ().reset ();
 };
 
+CursorDeviceProxy.prototype.touchDrumPadVolume = function (index, isBeingTouched)
+{
+    this.drumPadBank.getChannel (index).getVolume ().touch (isBeingTouched);
+};
+
 CursorDeviceProxy.prototype.changeDrumPadPan = function (index, value, fractionValue)
 {
     var t = this.getDrumPad (index);
@@ -922,6 +967,11 @@ CursorDeviceProxy.prototype.setDrumPadPan = function (index, value)
 CursorDeviceProxy.prototype.resetDrumPadPan = function (index)
 {
     this.drumPadBank.getChannel (index).getPan ().reset ();
+};
+
+CursorDeviceProxy.prototype.touchDrumPadPan = function (index, isBeingTouched)
+{
+    this.drumPadBank.getChannel (index).getPan ().touch (isBeingTouched);
 };
 
 CursorDeviceProxy.prototype.changeDrumPadSend = function (index, sendIndex, value, fractionValue)
@@ -943,6 +993,11 @@ CursorDeviceProxy.prototype.setDrumPadSend = function (index, sendIndex, value)
 CursorDeviceProxy.prototype.resetDrumPadSend = function (index, sendIndex)
 {
     this.drumPadBank.getChannel (index).getSend (sendIndex).reset ();
+};
+
+CursorDeviceProxy.prototype.touchDrumPadSend = function (index, sendIndex, isBeingTouched)
+{
+    this.drumPadBank.getChannel (index).getSend (sendIndex).touch (isBeingTouched);
 };
 
 CursorDeviceProxy.prototype.toggleDrumPadMute = function (index)
@@ -1104,6 +1159,11 @@ CursorDeviceProxy.prototype.changeDirectPageParameter = function (index, value, 
 CursorDeviceProxy.prototype.handleIsEnabled = function (isEnabled)
 {
     this.selectedDevice.enabled = isEnabled;
+};
+
+CursorDeviceProxy.prototype.handleIsPlugin = function (isPlugin)
+{
+    this.selectedDevice.isPlugin = isPlugin;
 };
 
 CursorDeviceProxy.prototype.handlePosition = function (pos)
