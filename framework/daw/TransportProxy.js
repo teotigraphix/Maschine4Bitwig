@@ -270,6 +270,8 @@ TransportProxy.prototype.setLauncherOverdub = function (on)
 
 TransportProxy.prototype.changeMetronomeVolume = function (value, fractionValue)
 {
+    if (typeof value === "boolean")
+        value = value ? 1 : -1;
     this.metroVolume = changeValue (value, this.metroVolume, fractionValue, Config.maxParameterValue);
     this.transport.setMetronomeValue (this.metroVolume, Config.maxParameterValue);
 };
