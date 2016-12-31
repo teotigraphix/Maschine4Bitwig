@@ -1,7 +1,7 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
 //            Alexandre Bique
-// (c) 2014-2015
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 Scales.NOTE_NAMES    = [ 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B' ];
@@ -65,15 +65,22 @@ Scales.INTERVALS =
     { name: 'Spanish',          notes: [ 0, 1, 4, 5, 7,  9,  10 ] }
 ];
 
-Scales.FOURTH_UP     = 0;
-Scales.FOURTH_RIGHT  = 1;
-Scales.THIRD_UP      = 2;
-Scales.THIRD_RIGHT   = 3;
-Scales.SEQUENT_UP    = 4;
-Scales.SEQUENT_RIGHT = 5;
-Scales.EIGTH_UP      = 6;
-Scales.EIGTH_RIGHT   = 7;
-Scales.LAYOUT_NAMES  = [ '4th ^', '4th >', '3rd ^', '3rd >', 'Seqent^', 'Seqent>', '8th ^', '8th >' ];
+Scales.FOURTH_UP          = 0;
+Scales.FOURTH_RIGHT       = 1;
+Scales.THIRD_UP           = 2;
+Scales.THIRD_RIGHT        = 3;
+Scales.SEQUENT_UP         = 4;
+Scales.SEQUENT_RIGHT      = 5;
+Scales.EIGHT_UP           = 6;
+Scales.EIGHT_RIGHT        = 7;
+Scales.EIGHT_UP_CENTER    = 8;
+Scales.EIGHT_RIGHT_CENTER = 9;
+
+Scales.LAYOUT_NAMES  = [ '4th ^', '4th >',
+                         '3rd ^', '3rd >',
+                         'Seqent ^', 'Seqent >',
+                         '8th ^', '8th >',
+                         '8th ^ centered', '8th > centered' ];
 Scales.ORIENT_UP     = 0;
 Scales.ORIENT_RIGHT  = 1;
 
@@ -81,6 +88,9 @@ Scales.SCALE_COLOR_OFF          = 0;
 Scales.SCALE_COLOR_OCTAVE       = 1;
 Scales.SCALE_COLOR_NOTE         = 2;
 Scales.SCALE_COLOR_OUT_OF_SCALE = 3;
+
+Scales.OCTAVE_RANGE       = 4;
+Scales.PIANO_OCTAVE_RANGE = 3;
 
 
 Scales.getNames = function ()
@@ -200,7 +210,7 @@ Scales.prototype.setScaleLayoutByName = function (scaleLayoutName)
 
 Scales.prototype.setScaleLayout = function (scaleLayout)
 {
-    this.scaleLayout = Math.max (Scales.FOURTH_UP, Math.min (scaleLayout, Scales.EIGTH_RIGHT));
+    this.scaleLayout = Math.max (Scales.FOURTH_UP, Math.min (scaleLayout, Scales.EIGHT_RIGHT_CENTER));
     this.orientation = this.scaleLayout % 2 == 0 ? Scales.ORIENT_UP : Scales.ORIENT_RIGHT;
     switch (this.scaleLayout)
     {
@@ -218,6 +228,8 @@ Scales.prototype.setScaleLayout = function (scaleLayout)
             break;
         case 6:
         case 7:
+        case 8:
+        case 9:
             this.setPlayShift (7);
             break;
     }
@@ -240,7 +252,7 @@ Scales.prototype.isChromatic = function ()
 
 Scales.prototype.setOctave = function (octave)
 {
-    this.octave = Math.max (-3, Math.min (octave, 3));
+    this.octave = Math.max (-Scales.OCTAVE_RANGE, Math.min (octave, Scales.OCTAVE_RANGE));
 };
 
 Scales.prototype.getOctave = function ()
@@ -280,7 +292,7 @@ Scales.prototype.decDrumOctave = function ()
 
 Scales.prototype.setPianoOctave = function (octave)
 {
-    this.pianoOctave = Math.max (-3, Math.min (octave, 3));
+    this.pianoOctave = Math.max (-Scales.PIANO_OCTAVE_RANGE, Math.min (octave, Scales.PIANO_OCTAVE_RANGE));
 };
 
 Scales.prototype.getPianoOctave = function ()
@@ -392,7 +404,7 @@ Scales.prototype.getRangeText = function ()
 
 Scales.prototype.getSequencerRangeText = function (from, to)
 {
-    return this.formatNoteAndOctave (from, -2) + ' to ' + this.formatDrumNote (to, -2);
+    return this.formatNoteAndOctave (from, -3) + ' to ' + this.formatNoteAndOctave (to, -3);
 };
 
 Scales.prototype.getDrumRangeText = function ()
@@ -408,7 +420,7 @@ Scales.prototype.getPianoRangeText = function ()
 
 Scales.prototype.formatDrumNote = function (note)
 {
-    return this.formatNoteAndOctave (note, -2);
+    return this.formatNoteAndOctave (note, -3);
 };
 
 Scales.prototype.formatNote = function (note)
@@ -428,14 +440,26 @@ Scales.prototype.createScale = function (scale)
     var chromatic = [];
     var isUp = this.orientation == Scales.ORIENT_UP;
     var shiftedNote = this.shift == this.numRows ? this.numRows : (this.shift == 7 ? 12 : scale.notes[this.shift % len]);
+    var centerOffset = (this.scaleLayout == Scales.EIGHT_UP_CENTER || this.scaleLayout == Scales.EIGHT_RIGHT_CENTER) ? -3 : 0;
+  
     for (var row = 0; row < this.numRows; row++)
     {
         for (var column = 0; column < this.numColumns; column++)
         {
             var y = isUp ? row : column;
             var x = isUp ? column : row;
-            var offset = y * this.shift + x;
-            matrix.push ((Math.floor (offset / len)) * 12 + scale.notes[offset % len]);
+            var offset = y * this.shift + x + centerOffset;
+            
+            var oct = Math.floor (offset / len);
+
+            // Fix negative values introduced by centerOffset
+            if (offset < 0)
+            {
+                offset = len + offset;
+                oct = Math.floor (offset / len) - 1;
+            }
+            
+            matrix.push (oct * 12 + scale.notes[offset % len]);
             chromatic.push (y * shiftedNote + x);
         }
     }
@@ -452,4 +476,10 @@ Scales.prototype.generateMatrices = function ()
     this.scales = [];
     for (var i = 0; i < Scales.INTERVALS.length; i++)
         this.scales.push (this.createScale (Scales.INTERVALS[i]));
+};
+
+// Function to hook in translation for grids who do not send midi notes 36-100
+Scales.prototype.translateMatrixToGrid = function (matrix)
+{
+    return matrix;
 };

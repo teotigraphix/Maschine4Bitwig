@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2015
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function ApplicationProxy ()
@@ -9,31 +9,77 @@ function ApplicationProxy ()
     
     this.panelLayout = 'ARRANGE';
     this.engineActive = false;
+    this.projectName = 'None';
 
-    this.application.addPanelLayoutObserver (doObject (this, ApplicationProxy.prototype.handlePanelLayout), 10);
+    this.application.addPanelLayoutObserver (doObject (this, ApplicationProxy.prototype.handlePanelLayout), GlobalConfig.LAYOUT_TEXT_LENGTH);
     this.application.addHasActiveEngineObserver (doObject (this, ApplicationProxy.prototype.handleHasActiveEngine));
+    this.application.addProjectNameObserver (doObject (this, ApplicationProxy.prototype.handleProjectName), GlobalConfig.PROJECT_TEXT_LENGTH);
 }
 
+ApplicationProxy.prototype.getProjectName = function ()
+{
+    return this.projectName;
+};
+
+ApplicationProxy.prototype.previousProject = function ()
+{
+    this.application.previousProject ();
+};
+
+ApplicationProxy.prototype.nextProject = function ()
+{
+    this.application.nextProject ();
+};
+
+/**
+ * Returns whether the current project's audio engine is active.
+ *
+ * @return {boolean}
+ * @see ApplicationProxy.setEngineActive()
+ */
 ApplicationProxy.prototype.isEngineActive = function ()
 {
     return this.engineActive;
 };
 
+/**
+ * Returns whether the current Bitwig panel layout is ARRANGE.
+ *
+ * @return {boolean}
+ * @see ApplicationProxy.setPanelLayout()
+ */
 ApplicationProxy.prototype.isArrangeLayout = function ()
 {
     return this.panelLayout == 'ARRANGE';
 };
 
+/**
+ * Returns whether the current Bitwig panel layout is MIX.
+ *
+ * @return {boolean}
+ * @see ApplicationProxy.setPanelLayout()
+ */
 ApplicationProxy.prototype.isMixerLayout = function ()
 {
     return this.panelLayout == 'MIX';
 };
 
+/**
+ * Returns whether the current Bitwig panel layout is EDIT.
+ *
+ * @return {boolean}
+ * @see ApplicationProxy.setPanelLayout()
+ */
 ApplicationProxy.prototype.isEditLayout = function ()
 {
     return this.panelLayout == 'EDIT';
 };
 
+/**
+ * Sets whether the active project's audio engine is active.
+ *
+ * @param {boolean} active Current project's engine active.
+ */
 ApplicationProxy.prototype.setEngineActive = function (active)
 {
     if (active)
@@ -42,6 +88,11 @@ ApplicationProxy.prototype.setEngineActive = function (active)
         this.application.deactivateEngine();
 };
 
+/**
+ * Toggles the active project's audio engine on/off.
+ *
+ * @see ApplicationProxy.setEngineActive()
+ */
 ApplicationProxy.prototype.toggleEngineActive = function ()
 {
     this.setEngineActive (!this.engineActive);
@@ -59,7 +110,7 @@ ApplicationProxy.prototype.setPanelLayout = function (panelLayout)
 
 /**
  * Returns the active panel layout (ARRANGE, MIX or EDIT).
- * @returns {string}
+ * @returns {string} (ARRANGE, MIX or EDIT)
  */
 ApplicationProxy.prototype.getPanelLayout = function ()
 {
@@ -152,17 +203,6 @@ ApplicationProxy.prototype.redo = function ()
 ApplicationProxy.prototype.undo = function ()
 {
     this.application.undo ();
-};
-
-/**
- * Quantizes all of the selected and focused clip's contents.
- */
-ApplicationProxy.prototype.quantize = function ()
-{
-    // TODO API extension required
-    // Clip must already be visible in editor and the editor must be focused
-    this.application.getAction ("Select All").invoke ();
-    this.application.getAction ("Quantize").invoke ();
 };
 
 /**
@@ -292,4 +332,9 @@ ApplicationProxy.prototype.handlePanelLayout = function (panelLayout)
 ApplicationProxy.prototype.handleHasActiveEngine = function (active)
 {
     this.engineActive = active;
+};
+
+ApplicationProxy.prototype.handleProjectName = function (name)
+{
+    this.projectName = name;
 };

@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2015
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function TrackBankProxy (numTracks, numScenes, numSends, hasFlatTrackList)
@@ -8,7 +8,12 @@ function TrackBankProxy (numTracks, numScenes, numSends, hasFlatTrackList)
     AbstractTrackBankProxy.call (this, numTracks, numScenes, numSends);
 
     if (hasFlatTrackList)
+    {
         this.trackBank = host.createMainTrackBank (numTracks, numSends, numScenes);
+        
+        // Add support for automatic bank movement which is automatically happening for the sibling trackbank
+        this.cursorTrack.addPositionObserver (doObject (this, TrackBankProxy.prototype.handleTrackSelection));
+    }
     else
         this.trackBank = this.cursorTrack.createSiblingsTrackBank (numTracks, numSends, numScenes, false, false);
     
@@ -45,10 +50,7 @@ TrackBankProxy.prototype.selectParent = function ()
 
 TrackBankProxy.prototype.changeSend = function (index, sendIndex, value, fractionValue)
 {
-    var t = this.getTrack (index);
-    var send = t.sends[sendIndex];
-    send.volume = changeValue (value, send.volume, fractionValue, Config.maxParameterValue);
-    this.trackBank.getChannel (t.index).getSend (sendIndex).set (send.volume, Config.maxParameterValue);
+    this.trackBank.getChannel (index).getSend (sendIndex).inc (calcKnobSpeed (value, fractionValue), Config.maxParameterValue);
 };
 
 TrackBankProxy.prototype.setSend = function (index, sendIndex, value)
@@ -77,6 +79,11 @@ TrackBankProxy.prototype.setSendIndication = function (index, sendIndex, indicat
 //--------------------------------------
 // Callback Handlers
 //--------------------------------------
+
+TrackBankProxy.prototype.handleTrackSelection = function (index)
+{
+   this.scrollToChannel (index);
+};
 
 TrackBankProxy.prototype.handleSendName = function (index1, index2, text)
 {

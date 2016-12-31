@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2015
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function GrooveProxy ()
@@ -63,7 +63,7 @@ GrooveProxy.prototype.isEnabled = function (kind)
 GrooveProxy.prototype.toggleEnabled = function ()
 {
     this.enabled = !this.enabled;
-    this.groove.getEnabled ().set (this.enabled ? 1 : 0, 1);
+    this.groove.getEnabled ().set (this.enabled ? 1 : 0, 2);
 };
 
 GrooveProxy.prototype.getValue = function (kind)
