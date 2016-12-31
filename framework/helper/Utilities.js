@@ -12,9 +12,8 @@ function changeValue (control, value, fractionValue, maxParameterValue, minParam
 {
     if (typeof (minParameterValue) == 'undefined')
         minParameterValue = 0;
-    var isInc = control <= 61;
-    var speed = Math.max ((isInc ? control : 127 - control) * fractionValue, fractionValue);
-    return isInc ? Math.min (value + speed, maxParameterValue - 1) : Math.max (value - speed, minParameterValue);
+    var isInc = control <= 64;
+    var speed = Math.max ((isInc ? control : 128 - control) * fractionValue, fractionValue);
 }
 
 function doObject (object, f)

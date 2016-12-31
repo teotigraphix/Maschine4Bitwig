@@ -232,8 +232,7 @@ TransportProxy.prototype.changeTempo = function (increase, fine)
     if (typeof increase === "boolean")
         increase = increase ? 1 : -1;
     var offset = fine ? 0.01 : 1;
-    offset *= increase;
-    this.tempo = Math.max (TransportProxy.TEMPO_MIN, Math.min (this.tempo + offset, TransportProxy.TEMPO_MAX));
+    this.tempo = changeValue (increase, this.tempo, offset, TransportProxy.TEMPO_MAX, TransportProxy.TEMPO_MIN);
     this.transport.getTempo ().setRaw (this.tempo);
 };
 

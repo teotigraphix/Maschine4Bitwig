@@ -128,14 +128,12 @@ MaschineMK1.prototype.handleEvent = function (cc, value)
             break;
 
         case MaschineButton.JOG_WHEEL:
-            if (value != 127)
-                view.onJogWheel (value == 2);
+            if (value >= 64)
+                value -= 128;
+            view.onJogWheel (value);
             break;
 
         case MaschineMK1Button.JOG2:
-            if (value >= 64)
-                value -= 128;
-            println(value);
             view.onJogWheel2 (value);
             break;
 
