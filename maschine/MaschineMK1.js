@@ -251,3 +251,4 @@ MaschineMK1.prototype.handleEvent = function (cc, value)
             println (cc);
             break;
     }
+}
