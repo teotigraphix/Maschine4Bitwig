@@ -229,8 +229,11 @@ TransportProxy.prototype.tapTempo = function ()
 
 TransportProxy.prototype.changeTempo = function (increase, fine)
 {
+    if (typeof increase === "boolean")
+        increase = increase ? 1 : -1;
     var offset = fine ? 0.01 : 1;
-    this.tempo = increase ? Math.min (this.tempo + offset, TransportProxy.TEMPO_MAX) : Math.max (TransportProxy.TEMPO_MIN, this.tempo - offset);
+    offset *= increase;
+    this.tempo = Math.max (TransportProxy.TEMPO_MIN, Math.min (this.tempo + offset, TransportProxy.TEMPO_MAX));
     this.transport.getTempo ().setRaw (this.tempo);
 };
 
