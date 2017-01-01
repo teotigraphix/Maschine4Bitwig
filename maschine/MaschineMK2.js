@@ -27,16 +27,6 @@ var MASCHINE_MK2_BUTTONS = [
     MaschineButton.TOP_ROW_6,
     MaschineButton.TOP_ROW_7,
 
-    // Encoders
-    MaschineButton.ENCODER_1,
-    MaschineButton.ENCODER_2,
-    MaschineButton.ENCODER_3,
-    MaschineButton.ENCODER_4,
-    MaschineButton.ENCODER_5,
-    MaschineButton.ENCODER_6,
-    MaschineButton.ENCODER_7,
-    MaschineButton.ENCODER_8,
-
     // Studio Master
     //MaschineButton.IN1,
     //MaschineButton.IN2,

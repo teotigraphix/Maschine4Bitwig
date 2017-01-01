@@ -9,7 +9,6 @@ var MASCHINE_MIKRO_MK2_BUTTONS = [
     MaschineMikroMK2Button.F2,
     MaschineMikroMK2Button.F3,
 
-    MaschineButton.JOG_WHEEL,
     MaschineButton.JOG_WHEEL_PUSH,
 
     // Controller

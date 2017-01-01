@@ -26,16 +26,6 @@ var MASCHINE_STUDIO_BUTTONS = [
     MaschineButton.TOP_ROW_6,
     MaschineButton.TOP_ROW_7,
 
-    // Encoders
-    MaschineButton.ENCODER_1,
-    MaschineButton.ENCODER_2,
-    MaschineButton.ENCODER_3,
-    MaschineButton.ENCODER_4,
-    MaschineButton.ENCODER_5,
-    MaschineButton.ENCODER_6,
-    MaschineButton.ENCODER_7,
-    MaschineButton.ENCODER_8,
-
     MaschineStudioButton.ENCODER_1_TOUCH,
     MaschineStudioButton.ENCODER_2_TOUCH,
     MaschineStudioButton.ENCODER_3_TOUCH,
@@ -103,7 +93,6 @@ var MASCHINE_STUDIO_BUTTONS = [
     MaschineButton.CLEAR,
 
     // Navigate
-    MaschineButton.JOG_WHEEL,
     MaschineButton.JOG_WHEEL_PUSH,
     MaschineButton.BACK,
     MaschineButton.LEFT_ARROW,
