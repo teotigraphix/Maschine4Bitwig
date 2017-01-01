@@ -413,23 +413,20 @@ AbstractControlSurface.prototype.handleCC = function (cc, value)
 {
     if (this.isButton (cc))
     {
-        if (cc != MaschineButton.JOG_WHEEL && !(Maschine.INSTANCE == Maschine.MK1 && (cc == MaschineMK1Button.JOG2 || cc == MaschineMK1Button.JOG3)))
+        this.buttonStates[cc] = value > 0 ? ButtonEvent.DOWN : ButtonEvent.UP;
+        if (this.buttonStates[cc] == ButtonEvent.DOWN)
         {
-            this.buttonStates[cc] = value > 0 ? ButtonEvent.DOWN : ButtonEvent.UP;
-            if (this.buttonStates[cc] == ButtonEvent.DOWN)
+            scheduleTask (doObject (this, function (buttonID)
             {
-                scheduleTask (doObject (this, function (buttonID)
-                {
-                    this.checkButtonState (buttonID);
-                }), [ cc ], AbstractControlSurface.buttonStateInterval);
-            }
+                this.checkButtonState (buttonID);
+            }), [ cc ], AbstractControlSurface.buttonStateInterval);
+        }
 
-            // If consumed flag is set ignore the UP event
-            if (this.buttonStates[cc] == ButtonEvent.UP && this.buttonConsumed[cc])
-            {
-                this.buttonConsumed[cc] = false;
-                return;
-            }
+        // If consumed flag is set ignore the UP event
+        if (this.buttonStates[cc] == ButtonEvent.UP && this.buttonConsumed[cc])
+        {
+            this.buttonConsumed[cc] = false;
+            return;
         }
     }
 
