@@ -5,10 +5,7 @@
 // array of cc numbers that are used in the
 var MASCHINE_MK1_BUTTONS = [
 
-    MaschineButton.JOG_WHEEL,
     MaschineButton.JOG_WHEEL_PUSH,
-    MaschineMK1Button.JOG2,
-    MaschineMK1Button.JOG3,
 
     // Controller
     MaschineMK2Button.CONTROL, // CHANNEL (MIDI)
@@ -29,16 +26,6 @@ var MASCHINE_MK1_BUTTONS = [
     MaschineButton.TOP_ROW_5,
     MaschineButton.TOP_ROW_6,
     MaschineButton.TOP_ROW_7,
-
-    // Encoders
-    MaschineButton.ENCODER_1,
-    MaschineButton.ENCODER_2,
-    MaschineButton.ENCODER_3,
-    MaschineButton.ENCODER_4,
-    MaschineButton.ENCODER_5,
-    MaschineButton.ENCODER_6,
-    MaschineButton.ENCODER_7,
-    MaschineButton.ENCODER_8,
 
     // TODO Master Knobs
 
