@@ -14,7 +14,6 @@ ClipLengthMode.prototype = new BaseMode ();
 ClipLengthMode.prototype.onFirstRow = function (index)
 {
     Config.setNewClipLengthIndex (index);
-    this.surface.restoreMode ();
 };
 
 ClipLengthMode.prototype.updateDisplay = function ()
