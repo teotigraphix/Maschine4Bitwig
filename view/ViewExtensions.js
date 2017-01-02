@@ -743,10 +743,6 @@ AbstractView.prototype.onNew = function (event)
 
 AbstractView.prototype.onValueKnob = function (index, value)
 {
-    // TODO MCU vpot weirdness, need to research this
-    if (value == 127)
-        return;
-
     if (value >= 65)
         value = 127 - (value - 64);
 
