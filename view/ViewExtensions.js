@@ -744,7 +744,7 @@ AbstractView.prototype.onNew = function (event)
 AbstractView.prototype.onValueKnob = function (index, value)
 {
     if (value >= 65)
-        value = 127 - (value - 64);
+        value = 127 - (value - 65);
 
     var m = this.surface.getActiveMode ();
     if (m != null)
