@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2015
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function toggleValue (value)
@@ -8,13 +8,22 @@ function toggleValue (value)
     return !value;
 }
 
-function changeValue (control, value, fractionValue, maxParameterValue, minParameterValue)
+function calcKnobSpeed (control, fractionValue)
+{
+    return (control <= 61 ? control :  control - 128) * fractionValue;
+}
+
+function changeIntValue (control, value, fractionValue, maxParameterValue, minParameterValue)
 {
     if (typeof (minParameterValue) == 'undefined')
         minParameterValue = 0;
-    var isInc = control <= 61;
-    var speed = Math.max ((isInc ? control : 127 - control) * fractionValue, fractionValue);
-    return isInc ? Math.min (value + speed, maxParameterValue - 1) : Math.max (value - speed, minParameterValue);
+    var speed = calcKnobSpeed (control, fractionValue);
+    return Math.max (Math.min (value + speed, maxParameterValue - 1), minParameterValue);
+}
+
+function changeValue (control, value, fractionValue, maxParameterValue, minParameterValue)
+{
+    return changeIntValue (control, value, fractionValue, maxParameterValue, minParameterValue);
 }
 
 function doObject (object, f)
@@ -29,9 +38,10 @@ function doObjectIndex (object, index, f)
 {
     return function ()
     {
-        var args = [ index ];
+        var args = new Array (); 
+        args.push (index);
         for (var i = 0; i < arguments.length; i++)
-            args[i + 1] = arguments[i];
+            args.push (arguments[i]);
         f.apply (object, args);
     };
 }
@@ -40,9 +50,11 @@ function doObjectDoubleIndex (object, index1, index2, f)
 {
     return function ()
     {
-        var args = [ index1, index2 ];
+        var args = new Array (); 
+        args.push (index1);
+        args.push (index2);
         for (var i = 0; i < arguments.length; i++)
-            args[i + 2] = arguments[i];
+            args.push (arguments[i]);
         f.apply (object, args);
     };
 }

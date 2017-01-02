@@ -115,13 +115,11 @@ MaschineMK1.prototype.handleEvent = function (cc, value)
             break;
 
         case MaschineButton.JOG_WHEEL:
-            if (value != 127)
-                view.onJogWheel (value == 2);
+            view.onJogWheel (value);
             break;
 
         case MaschineMK1Button.JOG2:
-            if (value != 127)
-                view.onJogWheel2 (value == 2);
+            view.onJogWheel2 (value);
             break;
 
         case MaschineMK1Button.JOG3:
@@ -236,4 +234,4 @@ MaschineMK1.prototype.handleEvent = function (cc, value)
             println (cc);
             break;
     }
-};
+}

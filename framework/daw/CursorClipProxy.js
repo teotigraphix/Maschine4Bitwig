@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2015
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function CursorClipProxy (stepSize, rowSize)
@@ -68,6 +68,10 @@ CursorClipProxy.prototype.changePlayStart = function (value, fractionValue)
 {
     this.playStart = Math.min (this.playEnd, changeValue (value, this.playStart, fractionValue, Number.MAX_VALUE));
     this.setPlayStart (this.playStart);
+  
+// TODO Crashes 1.3.15:
+//    this.clip.getPlayStart ().inc (calcKnobSpeed (value, fractionValue), Config.maxParameterValue);
+    
 };
 
 CursorClipProxy.prototype.getPlayEnd = function ()
@@ -143,7 +147,7 @@ CursorClipProxy.prototype.getAccent = function ()
 
 CursorClipProxy.prototype.changeAccent = function (value, fractionValue)
 {
-    this.accent = Math.max (-1, changeValue (value, this.accent, fractionValue / 100, 1, -1));
+    this.accent = Math.max (-1, changeValue (value, this.accent, fractionValue / 100, 2, -1));
     this.clip.getAccent ().setRaw (this.accent);
 };
 
@@ -169,7 +173,7 @@ CursorClipProxy.prototype.getStep = function (step, row)
     if (typeof (this.data[step]) == 'undefined' || typeof (this.data[step][row]) == 'undefined')
     {
         host.errorln ("Attempt to get undefined step data: " + step + " : " + row);
-        return false;
+        return 0;
     }
     return this.data[step][row];
 };
@@ -186,15 +190,7 @@ CursorClipProxy.prototype.setStep = function (step, row, velocity, duration)
 
 CursorClipProxy.prototype.clearRow = function (row)
 {
-    // Can be calculated but it is complicated:
-    //   var quartersPerPad = this.model.getQuartersPerMeasure ();
-    //   var stepsPerMeasure = Math.round (quartersPerPad / this.resolutions[this.selectedIndex]);
-    //   var numOfSteps = this.playEnd * stepsPerMeasure;
-    
-    // We suggest a maximum of 32 measures with a resolution of 64 steps each
-    // Would be nice to have a dedicated function
-    for (var step = 0; step < 64 * 32; step++)
-        this.clip.clearStep (step, row);
+    this.clip.clearSteps (row);
 };
 
 CursorClipProxy.prototype.hasRowData = function (row)
@@ -226,6 +222,26 @@ CursorClipProxy.prototype.scrollStepsPageForward = function ()
     this.clip.scrollStepsPageForward ();
 };
 
+CursorClipProxy.prototype.duplicate = function ()
+{
+    this.clip.duplicate ();
+};
+
+CursorClipProxy.prototype.duplicateContent = function ()
+{
+    this.clip.duplicateContent ();
+};
+
+CursorClipProxy.prototype.quantize = function (amount)
+{
+    this.clip.quantize (amount);
+};
+
+CursorClipProxy.prototype.transpose = function (semitones)
+{
+    this.clip.transpose (semitones);
+};
+
 //--------------------------------------
 // Callback Handlers
 //--------------------------------------
@@ -237,7 +253,8 @@ CursorClipProxy.prototype.handlePlayingStep = function (step)
     
 CursorClipProxy.prototype.handleStepData = function (col, row, state)
 {
-    this.data[col][row] = state; // true/false
+    // state: step is empty (0) or a note continues playing (1) or starts playing (2)
+    this.data[col][row] = state;
 };
 
 CursorClipProxy.prototype.handlePlayStart = function (position)

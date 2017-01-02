@@ -158,6 +158,7 @@ AbstractView.prototype.onNoteRepeat = function () {};
 
 AbstractView.prototype.onJogWheelInternal = function (increase)
 {
+    increase = increase <= 64 ? true : false;
     if (this.model.hasSelectedDevice ())
     {
         var cursorDevice = this.model.getCursorDevice ();

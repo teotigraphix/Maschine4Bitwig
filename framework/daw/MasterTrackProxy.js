@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2015
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function MasterTrackProxy ()
@@ -12,6 +12,7 @@ function MasterTrackProxy ()
     this.color = null;
     this.mute = null;
     this.solo = null;
+    this.recarm = false;
     this.monitor = false;
     this.autoMonitor = false;
     this.activated = true;
@@ -53,14 +54,17 @@ MasterTrackProxy.prototype.addTrackSelectionListener = function (listener)
     this.listeners.push (listener);
 };
 
-//--------------------------------------
-// Properties
-//--------------------------------------
-
 MasterTrackProxy.prototype.isSelected = function () { return this.selected; };
 MasterTrackProxy.prototype.getName = function () { return this.name; };
 MasterTrackProxy.prototype.getVU = function () { return this.vu; };
+
+MasterTrackProxy.prototype.getColorEntry = function ()
+{ 
+    return AbstractTrackBankProxy.getColorEntry (this.color);
+};
+
 MasterTrackProxy.prototype.getColor = function () { return this.color; };
+
 MasterTrackProxy.prototype.isMute = function () { return this.mute; };
 MasterTrackProxy.prototype.isSolo = function () { return this.solo; };
 MasterTrackProxy.prototype.getPan = function () { return this.pan; };
@@ -70,8 +74,7 @@ MasterTrackProxy.prototype.getVolumeString = function () { return this.volumeStr
 
 MasterTrackProxy.prototype.changeVolume = function (value, fractionValue)
 {
-    this.volume = changeValue (value, this.volume, fractionValue, Config.maxParameterValue);
-    this.masterTrack.getVolume ().set (this.volume, Config.maxParameterValue);
+    this.masterTrack.getVolume ().inc (calcKnobSpeed (value, fractionValue), Config.maxParameterValue);
 };
 
 MasterTrackProxy.prototype.setVolume = function (value)
@@ -97,8 +100,7 @@ MasterTrackProxy.prototype.touchVolume = function (isBeingTouched)
 
 MasterTrackProxy.prototype.changePan = function (value, fractionValue)
 {
-    this.pan = changeValue (value, this.pan, fractionValue, Config.maxParameterValue);
-    this.masterTrack.getPan ().set (this.pan, Config.maxParameterValue);
+    this.masterTrack.getPan ().inc (calcKnobSpeed (value, fractionValue), Config.maxParameterValue);
 };
 
 MasterTrackProxy.prototype.setPan = function (value)
@@ -156,7 +158,6 @@ MasterTrackProxy.prototype.toggleSolo = function ()
 
 MasterTrackProxy.prototype.setArm = function (value)
 {
-    this.recarm = value;
     this.masterTrack.getArm ().set (value);
 };
 

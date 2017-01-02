@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2015
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function MidiOutput ()
@@ -8,9 +8,19 @@ function MidiOutput ()
     this.port = host.getMidiOutPort (0);
 }
 
+MidiOutput.prototype.setShouldSendMidiBeatClock = function (shouldSendClock)
+{
+	this.port.setShouldSendMidiBeatClock (shouldSendClock);
+};
+
 MidiOutput.prototype.sendCC = function (cc, value)
 {
     this.port.sendMidi (0xB0, cc, value);
+};
+
+MidiOutput.prototype.sendCCEx = function (channel, cc, value)
+{
+    this.port.sendMidi (0xB0 + channel, cc, value);
 };
 
 MidiOutput.prototype.sendNote = function (note, velocity)

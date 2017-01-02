@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2015
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function AbstractView (model)
@@ -18,10 +18,7 @@ function AbstractView (model)
     // Override in subclass with specific Config value
     this.scrollerInterval = 100;
 
-    this.scrollerLeft = new TimerTask (this, this.scrollLeft, this.scrollerInterval);
-    this.scrollerRight = new TimerTask (this, this.scrollRight, this.scrollerInterval);
-    this.scrollerUp = new TimerTask (this, this.scrollUp, this.scrollerInterval);
-    this.scrollerDown = new TimerTask (this, this.scrollDown, this.scrollerInterval);
+    this.scrollerTask = new TimerTask (this, null, this.scrollerInterval);
 }
 
 AbstractView.prototype.attachTo = function (surface)
@@ -42,6 +39,8 @@ AbstractView.prototype.onActivate = function ()
 {
     this.updateNoteMapping ();
 };
+
+AbstractView.prototype.onChannelAftertouch = function (value) {};
 
 AbstractView.prototype.onPolyAftertouch = function (note, value) {};
 
@@ -74,42 +73,50 @@ AbstractView.prototype.onFirstRow = function (event, index)
 
 AbstractView.prototype.onUp = function (event)
 {
-    if (event.isDown ())
-        this.scrollUp (event);
-    else if (event.isLong ())
-        this.scrollerUp.start ([event]);
-    else if (event.isUp ())
-        this.scrollerUp.stop ();
+    this.handleScroller (event, this.scrollUp);
 };
 
 AbstractView.prototype.onDown = function (event)
 {
-    if (event.isDown ())
-        this.scrollDown (event);
-    else if (event.isLong ())
-        this.scrollerDown.start ([event]);
-    else if (event.isUp ())
-        this.scrollerDown.stop ();
+    this.handleScroller (event, this.scrollDown);
 };
 
 AbstractView.prototype.onLeft = function (event)
 {
-    if (event.isDown ())
-        this.scrollLeft (event);
-    else if (event.isLong ())
-        this.scrollerLeft.start ([event]);
-    else if (event.isUp ())
-        this.scrollerLeft.stop ();
+    this.handleScroller (event, this.scrollLeft);
 };
 
 AbstractView.prototype.onRight = function (event)
 {
+    this.handleScroller (event, this.scrollRight);
+};
+
+AbstractView.prototype.handleScroller = function (event, method)
+{
     if (event.isDown ())
-        this.scrollRight (event);
+        method.call (this, event);
     else if (event.isLong ())
-        this.scrollerRight.start ([event]);
+    {
+        this.scrollerTask.stop ();
+        this.scrollerTask.callback = method;
+        this.scrollerTask.start ([event]);
+    }
     else if (event.isUp ())
-        this.scrollerRight.stop ();
+        this.scrollerTask.stop ();
+};
+
+AbstractView.prototype.getColor = function (pad, selectedTrack)
+{
+    var color = this.scales.getColor (this.noteMap, pad);
+    // Replace the octave color with the track color
+    if (color == Scales.SCALE_COLOR_OCTAVE)
+    {
+        if (selectedTrack == null)
+            return Scales.SCALE_COLOR_OCTAVE;
+        var c = selectedTrack.color;
+        return c == null ? Scales.SCALE_COLOR_OCTAVE : c;
+    }
+    return color;
 };
 
 
@@ -125,7 +132,9 @@ AbstractView.prototype.scrollRight = function (event) {};
 
 AbstractView.prototype.selectTrack = function (index)
 {
-    this.model.getCurrentTrackBank ().select (index);
+    var tb = this.model.getCurrentTrackBank ();
+    tb.select (index);
+    tb.makeVisible (index);
 };
 
 AbstractView.prototype.updateButtons = function () {};
@@ -144,4 +153,39 @@ AbstractView.prototype.doubleClickTest = function ()
     {
         this.restartFlag = false;
     }), null, 250);
+};
+
+AbstractView.prototype.handlePlayOptions = function ()
+{
+    var transport = this.model.getTransport ();
+    if (this.restartFlag)
+    {
+        transport.stopAndRewind ();
+        this.restartFlag = false;
+    }
+    else
+    {
+        switch (Config.behaviourOnStop)
+        {
+            case Config.BEHAVIOUR_ON_STOP_RETURN_TO_ZERO:
+                if (transport.isPlaying)
+                    transport.stopAndRewind ();
+                else
+                    transport.play ();
+                break;
+            
+            case Config.BEHAVIOUR_ON_STOP_MOVE_PLAY_CURSOR:
+                transport.play ();
+                this.doubleClickTest ();
+                break;
+                
+            case Config.BEHAVIOUR_ON_STOP_PAUSE:
+                if (transport.isPlaying)
+                    transport.stop ();
+                else
+                    transport.play ();
+                this.doubleClickTest ();
+                break;
+        }
+    }
 };

@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2015
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 AbstractControlSurface.buttonStateInterval = 400;
@@ -19,6 +19,9 @@ function AbstractControlSurface (output, input, buttons)
     
     this.selectButtonId = -1;
     this.shiftButtonId  = -1;
+    this.deleteButtonId = -1;
+    this.soloButtonId   = -1;
+    this.muteButtonId   = -1;
 
     // Mode related
     this.previousMode  = null;
@@ -42,14 +45,20 @@ function AbstractControlSurface (output, input, buttons)
     this.buttons = buttons;
     this.buttonStates = [];
     this.buttonConsumed = [];
+    var i;
     if (this.buttons)
     {
-        for (var i = 0; i < this.buttons.length; i++)
+        for (i = 0; i < this.buttons.length; i++)
         {
             this.buttonStates[this.buttons[i]] = ButtonEvent.UP;
             this.buttonConsumed[this.buttons[i]] = false;
         }
     }
+    
+    // Optimisation for button LED updates, cache 128 possible note values on all 16 channels
+    this.buttonCache = new Array ();
+    for (i = 0; i < 128; i++)
+        this.buttonCache.push (initArray (-1, 16));
     
     // Flush optimisation
     this.displayScheduled = false;
@@ -66,7 +75,25 @@ AbstractControlSurface.prototype.getDisplay = function ()
 // Display
 //--------------------------------------
 
+
+AbstractControlSurface.prototype.updateButton = function (button, value)
+{
+    if (this.buttonCache[button][0] == value)
+        return;
+    this.setButton (button, value);
+    this.buttonCache[button][0] = value;
+};
+
+AbstractControlSurface.prototype.updateButtonEx = function (button, channel, value)
+{
+    if (this.buttonCache[button][channel] == value)
+        return;
+    this.setButtonEx (button, channel, value);
+    this.buttonCache[button][channel] = value;
+};
+
 AbstractControlSurface.prototype.setButton = function (button, state) {};
+AbstractControlSurface.prototype.setButtonEx = function (button, channel, state) {};
 
 AbstractControlSurface.prototype.flush = function ()
 {
@@ -186,7 +213,7 @@ AbstractControlSurface.prototype.isActiveView = function (viewId)
 // Set the previous view as the active one
 AbstractControlSurface.prototype.restoreView = function ()
 {
-    return this.activeViewId = this.previousViewId;
+    this.setActiveView (this.previousViewId);
 };
 
 AbstractControlSurface.prototype.addViewChangeListener = function (listener)
@@ -297,8 +324,25 @@ AbstractControlSurface.prototype.isShiftPressed = function ()
     return this.isPressed (this.shiftButtonId);
 };
 
+AbstractControlSurface.prototype.isDeletePressed = function ()
+{
+    return this.isPressed (this.deleteButtonId);
+};
+
+AbstractControlSurface.prototype.isSoloPressed = function ()
+{
+    return this.isPressed (this.soloButtonId);
+};
+
+AbstractControlSurface.prototype.isMutePressed = function ()
+{
+    return this.isPressed (this.muteButtonId);
+};
+
 AbstractControlSurface.prototype.isPressed = function (button)
 {
+    if (button == -1)
+        return false;
     switch (this.buttonStates[button])
     {
         case ButtonEvent.DOWN:
@@ -318,6 +362,7 @@ AbstractControlSurface.prototype.handleMidi = function (status, data1, data2)
     var code = status & 0xF0;
     switch (code)
     {
+        // Note on/off
         case 0x80:
         case 0x90:
             if (this.isGridNote (data1))
@@ -333,8 +378,16 @@ AbstractControlSurface.prototype.handleMidi = function (status, data1, data2)
                 view.onPolyAftertouch (data1, data2);
             break;
 
+        // CC
         case 0xB0:
             this.handleCC (data1, data2);
+            break;
+
+        // Channel Aftertouch
+        case 0xD0:
+            var view = this.getActiveView ();
+            if (view != null)
+                view.onChannelAftertouch (data1);
             break;
             
         // Pitch Bend
@@ -363,10 +416,10 @@ AbstractControlSurface.prototype.handleCC = function (cc, value)
         this.buttonStates[cc] = value > 0 ? ButtonEvent.DOWN : ButtonEvent.UP;
         if (this.buttonStates[cc] == ButtonEvent.DOWN)
         {
-            scheduleTask (function (object, buttonID)
+            scheduleTask (doObject (this, function (buttonID)
             {
-                object.checkButtonState (buttonID);
-            }, [this, cc], AbstractControlSurface.buttonStateInterval);
+                this.checkButtonState (buttonID);
+            }), [ cc ], AbstractControlSurface.buttonStateInterval);
         }
 
         // If consumed flag is set ignore the UP event
