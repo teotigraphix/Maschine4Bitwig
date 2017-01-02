@@ -4,11 +4,11 @@
 
 function SceneTriggerView (model)
 {
-    AbstractView.call (this, model);
+    BaseMaschineView.call (this, model);
 
     this.sceneBank = new SceneBankProxy (16);
 }
-SceneTriggerView.prototype = new AbstractView ();
+SceneTriggerView.prototype = new BaseMaschineView ();
 
 SceneTriggerView.prototype.drawGrid = function ()
 {

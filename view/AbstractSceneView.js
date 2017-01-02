@@ -17,19 +17,19 @@ AbstractSceneView.USE_CLIP_COLOR                 = true;
 
 function AbstractSceneView (model, rows, columns)
 {
-    AbstractView.call (this, model);
-    
+    BaseMaschineView.call (this, model);
+
     this.rows = rows;
     this.columns = columns;
 
     this.scrollerInterval = Config.sceneScrollInterval;
     this.isTemporary = false;
 }
-AbstractSceneView.prototype = new AbstractView ();
+AbstractSceneView.prototype = new BaseMaschineView ();
 
 AbstractSceneView.prototype.onActivate = function ()
 {
-    AbstractView.prototype.onActivate.call (this);
+    BaseMaschineView.prototype.onActivate.call (this);
 
     this.getCurrentTrackBank ().setIndication (true);
 };
@@ -43,7 +43,7 @@ AbstractSceneView.prototype.updateArrowStates = function ()
 {
     var tb = this.getCurrentTrackBank ();
 
-    AbstractView.prototype.updateArrowStates.call (this);
+    BaseMaschineView.prototype.updateArrowStates.call (this);
     this.canScrollUp = tb.canScrollScenesUp ();
     this.canScrollDown = tb.canScrollScenesDown ();
 };
@@ -104,13 +104,13 @@ AbstractSceneView.prototype.notifyTrackRange = function ()
 
 AbstractSceneView.prototype.scrollLeft = function (event)
 {
-    AbstractView.prototype.scrollLeft.call (this, event);
+    BaseMaschineView.prototype.scrollLeft.call (this, event);
     this.notifyTrackRange ();
 };
 
 AbstractSceneView.prototype.scrollRight = function (event)
 {
-    AbstractView.prototype.scrollRight.call (this, event);
+    BaseMaschineView.prototype.scrollRight.call (this, event);
     this.notifyTrackRange ();
 };
 
