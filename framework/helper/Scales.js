@@ -176,7 +176,7 @@ Scales.prototype.setScaleOffset = function (scaleOffset)
 
 Scales.prototype.changeScaleOffset = function (value)
 {
-    this.scaleOffset = changeValue (value, this.scaleOffset, 1, Scales.OFFSETS.length - 1);
+    this.scaleOffset = changeValue (value, this.scaleOffset, 1, Scales.OFFSETS.length);
 };
 
 Scales.prototype.setScaleOffsetByName = function (scaleOffsetName)

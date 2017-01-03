@@ -13,7 +13,7 @@ CrossFadeMode.prototype = new BaseMode ();
 CrossFadeMode.prototype.onValueKnob = function (index, value)
 {
     var tb = this.model.getCurrentTrackBank ();
-    tb.setCrossfadeModeAsNumber (index, changeValue (value, tb.getCrossfadeModeAsNumber (index), 1, 2));
+    tb.setCrossfadeModeAsNumber (index, changeValue (value, tb.getCrossfadeModeAsNumber (index), 1, 1 + 1));
 };
 
 CrossFadeMode.prototype.updateDisplay = function ()
