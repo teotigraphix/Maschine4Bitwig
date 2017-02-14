@@ -1,17 +1,12 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2016
+// (c) 2014-2017
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function MidiOutput ()
 {
     this.port = host.getMidiOutPort (0);
 }
-
-MidiOutput.prototype.setShouldSendMidiBeatClock = function (shouldSendClock)
-{
-	this.port.setShouldSendMidiBeatClock (shouldSendClock);
-};
 
 MidiOutput.prototype.sendCC = function (cc, value)
 {
