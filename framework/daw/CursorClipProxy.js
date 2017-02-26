@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2017
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function CursorClipProxy (stepSize, rowSize)
@@ -32,11 +32,6 @@ function CursorClipProxy (stepSize, rowSize)
     this.clip.getShuffle ().addValueObserver (doObject (this, CursorClipProxy.prototype.handleShuffle));
     this.clip.getAccent ().addRawValueObserver (doObject (this, CursorClipProxy.prototype.handleAccent));
 }
-
-CursorClipProxy.prototype.setColor = function (red, green, blue)
-{
-    this.clip.color ().set (red, green, blue);
-};
 
 CursorClipProxy.prototype.getPlayStart = function ()
 {
@@ -74,9 +69,9 @@ CursorClipProxy.prototype.changePlayStart = function (value, fractionValue)
     this.playStart = Math.min (this.playEnd, changeValue (value, this.playStart, fractionValue, Number.MAX_VALUE));
     this.setPlayStart (this.playStart);
   
-    // TODO Bugfix required - Crashes 1.3.15
-    // https://github.com/teotigraphix/Framework4Bitwig/issues/137
-    // this.clip.getPlayStart ().inc (calcKnobSpeed (value, fractionValue), Config.maxParameterValue);
+// TODO Crashes 1.3.15:
+//    this.clip.getPlayStart ().inc (calcKnobSpeed (value, fractionValue), Config.maxParameterValue);
+    
 };
 
 CursorClipProxy.prototype.getPlayEnd = function ()
@@ -90,10 +85,6 @@ CursorClipProxy.prototype.changePlayEnd = function (value, fractionValue)
     if (this.loopEnabled)
         this.playEnd = Math.min (this.loopStart + this.loopLength, this.playEnd);
     this.setPlayEnd (this.playEnd);
-
-    // TODO Bugfix required - Crashes 1.3.15
-    // https://github.com/teotigraphix/Framework4Bitwig/issues/137
-    //    this.clip.getPlayStop ().inc (calcKnobSpeed (value, fractionValue), Config.maxParameterValue);
 };
 
 CursorClipProxy.prototype.getLoopStart = function ()
@@ -156,7 +147,7 @@ CursorClipProxy.prototype.getAccent = function ()
 
 CursorClipProxy.prototype.changeAccent = function (value, fractionValue)
 {
-    this.accent = Math.max (-1, changeValue (value, this.accent, fractionValue / 100, 2, -1));
+    this.accent = Math.max (-1, changeValue (value, this.accent, fractionValue / 100, 1 + 1, -1));
     this.clip.getAccent ().setRaw (this.accent);
 };
 

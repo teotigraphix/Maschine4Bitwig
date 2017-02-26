@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2017
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function EffectTrackBankProxy (numTracks, numScenes, audioInstrumentTrackBank)
@@ -23,7 +23,7 @@ EffectTrackBankProxy.prototype.setSendIndication = function (index, sendIndex, i
 EffectTrackBankProxy.prototype.scrollToChannel = function (channel)
 {
     channel = channel - this.audioInstrumentTrackBank.getTrackCount ();
-    if (channel >= 0 && channel < this.getTrackCount ())
+    if (channel >= 0 && channel < this.trackCount)
         this.trackBank.scrollToChannel (Math.floor (channel / this.numTracks) * this.numTracks);
 };
 

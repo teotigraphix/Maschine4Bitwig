@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2017
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 AbstractControlSurface.buttonStateInterval = 400;
@@ -474,9 +474,4 @@ AbstractControlSurface.prototype.getFractionValue = function ()
 AbstractControlSurface.prototype.changeValue = function (control, value)
 {
     return changeValue (control, value, this.getFractionValue (), Config.maxParameterValue);
-};
-
-AbstractControlSurface.prototype.sendMidiEvent = function (status, data1, data2)
-{
-    this.noteInput.sendRawMidiEvent (status, data1, data2);
 };

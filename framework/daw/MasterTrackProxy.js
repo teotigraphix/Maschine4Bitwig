@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2017
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function MasterTrackProxy ()
@@ -26,7 +26,7 @@ function MasterTrackProxy ()
     this.textLength = GlobalConfig.MASTER_TRACK_TEXT_LENGTH;
 
     // DeviceChain attributes
-    this.masterTrack.addIsSelectedInEditorObserver (doObject (this, MasterTrackProxy.prototype.handleIsSelected));
+    this.masterTrack.addIsSelectedObserver (doObject (this, MasterTrackProxy.prototype.handleIsSelected));
     this.masterTrack.addNameObserver (this.textLength, '', doObject (this, MasterTrackProxy.prototype.handleName));
     
     // Channel attributes
@@ -64,11 +64,6 @@ MasterTrackProxy.prototype.getColorEntry = function ()
 };
 
 MasterTrackProxy.prototype.getColor = function () { return this.color; };
-
-MasterTrackProxy.prototype.setColor = function (red, green, blue)
-{
-    this.masterTrack.color ().set (red, green, blue);
-};
 
 MasterTrackProxy.prototype.isMute = function () { return this.mute; };
 MasterTrackProxy.prototype.isSolo = function () { return this.solo; };

@@ -1,6 +1,6 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2017
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 TransportProxy.INC_FRACTION_TIME      = 1.0;        // 1 beat
@@ -56,7 +56,7 @@ function TransportProxy ()
     this.transport.getTempo ().addRawValueObserver (doObject (this, TransportProxy.prototype.handleTempo));
     this.transport.getCrossfade ().addValueObserver (Config.maxParameterValue, doObject (this, TransportProxy.prototype.handleCrossfade));
     this.transport.getPosition ().addTimeObserver (":", 3, 2, 2, 2, doObject (this, TransportProxy.prototype.handlePosition));
-    
+
     var ts = this.transport.getTimeSignature ();
     ts.getNumerator ().addValueObserver (doObject (this, TransportProxy.prototype.handleNumerator));
     ts.getDenominator ().addValueObserver (doObject (this, TransportProxy.prototype.handleDenominator));
@@ -75,6 +75,21 @@ TransportProxy.prototype.getInPosition = function ()
 TransportProxy.prototype.getOutPosition = function ()
 {
     return this.transport.getOutPosition ();
+};
+
+TransportProxy.prototype.getPosition = function ()
+{
+    return this.transport.getPosition ();
+};
+
+TransportProxy.prototype.getPositionText = function ()
+{
+    return this.position;
+};
+
+TransportProxy.prototype.incPosition = function (deltaBase, snap)
+{
+    this.transport.incPosition (deltaBase, snap);
 };
 
 TransportProxy.prototype.play = function ()
@@ -138,30 +153,9 @@ TransportProxy.prototype.setOverdub = function (on)
     this.transport.setOverdub (on);
 };
 
-TransportProxy.prototype.getPosition = function ()
-{
-    return this.transport.getPosition ();
-};
-
-TransportProxy.prototype.getPositionText = function ()
-{
-    return this.position;
-};
-
 TransportProxy.prototype.setPosition = function (beats)
 {
     this.transport.setPosition (beats);
-};
-
-TransportProxy.prototype.changePosition = function (increase, slow)
-{
-    var frac = slow ? TransportProxy.INC_FRACTION_TIME_SLOW : TransportProxy.INC_FRACTION_TIME;
-    this.transport.incPosition (increase ? frac : -frac, false);
-};
-
-TransportProxy.prototype.incPosition = function (deltaBase, snap)
-{
-    this.transport.incPosition (deltaBase, snap);
 };
 
 TransportProxy.prototype.stop = function ()
@@ -234,6 +228,12 @@ TransportProxy.prototype.stopAndRewind = function ()
     }), null, 100);
 };
 
+TransportProxy.prototype.changePosition = function (increase, slow)
+{
+    var frac = slow ? TransportProxy.INC_FRACTION_TIME_SLOW : TransportProxy.INC_FRACTION_TIME;
+    this.transport.incPosition (increase ? frac : -frac, false);
+};
+
 TransportProxy.prototype.tapTempo = function ()
 {
     this.transport.tapTempo ();
@@ -241,8 +241,11 @@ TransportProxy.prototype.tapTempo = function ()
 
 TransportProxy.prototype.changeTempo = function (increase, fine)
 {
+    if (typeof increase === "boolean")
+        increase = increase ? 1 : -1;
     var offset = fine ? 0.01 : 1;
-    this.transport.getTempo ().incRaw (increase ? offset : -offset);
+    this.tempo = changeValue (increase, this.tempo, offset, TransportProxy.TEMPO_MAX + 1, TransportProxy.TEMPO_MIN);
+    this.transport.getTempo ().setRaw (this.tempo);
 };
 
 TransportProxy.prototype.setTempo = function (bpm)
@@ -279,6 +282,8 @@ TransportProxy.prototype.setLauncherOverdub = function (on)
 
 TransportProxy.prototype.changeMetronomeVolume = function (value, fractionValue)
 {
+    if (typeof value === "boolean")
+        value = value ? 1 : -1;
     this.metroVolume = changeValue (value, this.metroVolume, fractionValue, Config.maxParameterValue);
     this.transport.setMetronomeValue (this.metroVolume, Config.maxParameterValue);
 };

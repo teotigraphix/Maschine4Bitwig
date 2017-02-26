@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2014-2017
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 AbstractDrumView.DRUM_START_KEY = 36;
@@ -215,8 +215,7 @@ AbstractDrumView.prototype.clearPressedKeys = function ()
 AbstractDrumView.prototype.updateArrowStates = function ()
 {
     this.canScrollLeft = this.offsetX > 0;
-    // You can always scroll "after" the end
-    this.canScrollRight = true;
+    this.canScrollRight = true; // TODO API extension required - We do not know the number of steps
 };
 
 AbstractDrumView.prototype.updateNoteMapping = function ()
@@ -312,8 +311,6 @@ AbstractDrumView.prototype.onSelect = function (event)
 {
     if (!event.isLong ())
         this.updateNoteMapping ();
-    
-    AbstractView.prototype.onSelect.call (this, event);
 };
 
 AbstractDrumView.prototype.onDelete = function (event)

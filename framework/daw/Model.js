@@ -1,14 +1,14 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
 //            Michael Schmalle - teotigraphix.com
-// (c) 2014-2017
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
-function Model (userCCStart,               // The MIDI CC at which the user parameters start          - TODO Remove
+function Model (userCCStart,               // The MIDI CC at which the user parameters start
                 scales,                    // The scales object
                 numTracks,                 // The number of track to monitor (per track bank)
                 numScenes,                 // The number of scenes to monitor (per scene bank)
                 numSends,                  // The number of sends to monitor
-                numFilterColumns,          // The number of filters columns in the browser to monitor - TODO Remove
+                numFilterColumns,          // The number of filters columns in the browser to monitor
                 numFilterColumnEntries,    // The number of entries in one filter column to monitor
                 numResults,                // The number of search results in the browser to monitor
                 hasFlatTrackList,          // Don't navigate groups, all tracks are flat
@@ -39,15 +39,15 @@ function Model (userCCStart,               // The MIDI CC at which the user para
     this.masterTrack = new MasterTrackProxy ();
     this.trackBank = new TrackBankProxy (this.numTracks, this.numScenes, this.numSends, this.hasFlatTrackList);
     this.effectTrackBank = new EffectTrackBankProxy (this.numTracks, this.numScenes, this.trackBank);
+    if (userCCStart >= 0)
+        this.userControlBank = new UserControlBankProxy (userCCStart);
 
     this.cursorDevice = new CursorDeviceProxy (host.createEditorCursorDevice (this.numSends), this.numSends);
-    this.sceneBank = new SceneBankProxy (this.numScenes);
-
-    this.project = host.getProject ();
     this.arranger = new ArrangerProxy ();
     this.mixer = new MixerProxy ();
+    this.sceneBank = new SceneBankProxy (this.numScenes);
     
-    this.browser = new BrowserProxy (this.trackBank.cursorTrack, this.cursorDevice, this.numFilterColumnEntries, this.numResults);
+    this.browser = new BrowserProxy (this.trackBank, this.cursorDevice, this.numFilterColumns, this.numFilterColumnEntries, this.numResults);
 
     this.currentTrackBank = this.trackBank;
 
@@ -71,8 +71,6 @@ Model.prototype.getSelectedDevice = function ()
 {
     return this.cursorDevice.getSelectedDevice ();
 };
-
-Model.prototype.getProject = function () { return this.project; };
 
 /**
  * @returns {ArrangerProxy}
@@ -141,16 +139,13 @@ Model.prototype.getCursorDevice = function () { return this.cursorDevice; };
  */
 Model.prototype.getDevice = function ()
 {
-    if (this.hasSelectedDevice ())
-        return this.getCursorDevice ();
-
-    var tb = this.getCurrentTrackBank ();
-    var primary = tb.primaryDevice;
-    if (primary.hasSelectedDevice ())
-        return primary;
-    
-    return this.getCursorDevice ();
+    return this.hasSelectedDevice () ? this.getCursorDevice () : this.getCurrentTrackBank ().primaryDevice;
 };
+
+/**
+ * @returns {UserControlBankProxy}
+ */
+Model.prototype.getUserControlBank = function () { return this.userControlBank; };
 
 /**
  * @returns {ApplicationProxy}

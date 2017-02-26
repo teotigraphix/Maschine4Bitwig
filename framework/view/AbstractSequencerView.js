@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2014-2017
+// (c) 2014-2016
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 function AbstractSequencerView (model, rows, cols)
@@ -28,8 +28,7 @@ AbstractSequencerView.prototype.updateArrowStates = function ()
     this.canScrollUp = this.offsetY + offset < this.clip.getRowSize ();
     this.canScrollDown = this.offsetY - offset >= 0;
     this.canScrollLeft = this.offsetX > 0;
-    // You can always scroll "after" the end
-    this.canScrollRight = true;
+    this.canScrollRight = true; // TODO API extension required - We do not know the number of steps
 };
 
 AbstractSequencerView.prototype.scrollLeft = function (event)
